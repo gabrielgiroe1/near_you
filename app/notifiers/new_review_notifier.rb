@@ -1,5 +1,4 @@
 class NewReviewNotifier < Noticed::Event
-  deliver_by :database
 
 
   def message_provider
