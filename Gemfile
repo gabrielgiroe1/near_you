@@ -1,9 +1,9 @@
 source "https://rubygems.org"
 
-ruby "3.3.0"
+ruby "3.4.1"
 
 # Bundle edge Rails instead: gem "rails", github: "rails/rails", branch: "main"
-gem 'rails', '~> 8.0', '>= 8.0.1'
+gem "rails", "~> 8.0", ">= 8.0.1"
 
 # The original asset pipeline for Rails [https://github.com/rails/sprockets-rails]
 gem "sprockets-rails"
@@ -50,7 +50,7 @@ gem "image_processing", "~> 1.2"
 group :development, :test do
   # See https://guides.rubyonrails.org/debugging_rails_applications.html#debugging-with-the-debug-gem
   gem "debug", platforms: %i[mri windows]
-  gem "dotenv-rails", "~> 3.1", ">= 3.1.4"
+  gem "dotenv", "~> 3.1", ">= 3.1.7"
 end
 
 group :development do
@@ -72,13 +72,18 @@ group :test do
   gem "selenium-webdriver"
 end
 
-gem "stripe", "~> 13.1", ">= 13.1.1"
+gem "stripe", "~> 13.4", ">= 13.4.1"
 gem "devise", "4.9.4"
 gem "standard", "~> 1.41", ">= 1.41.1"
 gem "pundit"
 gem "avo"
 gem "httparty"
-gem "sidekiq"
-gem 'noticed', '~> 2.5'
+gem "noticed", "~> 2.5"
 gem "language_filter", "~> 0.3.01"
 gem "aws-sdk-s3", require: false
+gem "kamal", "~> 2.5", ">= 2.5.2"
+
+gem "solid_cache"
+gem "solid_queue"
+gem "solid_cable"
+gem "health_check"

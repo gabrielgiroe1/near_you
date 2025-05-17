@@ -20,8 +20,21 @@ default: &default
   pool: <%= ENV.fetch("RAILS_MAX_THREADS") { 5 } %>
 
 development:
-  <<: *default
-  database: near_you_development
+  primary: &primary_development
+    <<: *default
+    database: near_you_development
+  queue:
+    <<: *primary_development
+    database: near_you_development_queue
+    migrations_paths: db/queue_migrate
+  cache:
+    <<: *primary_development
+    database: near_you_development_cache
+    migrations_paths: db/cache_migrate
+  cable:
+    <<: *primary_development
+    database: near_you_development_cable
+    migrations_paths: db/cable_migrate
 
   # The specified database role being used to connect to PostgreSQL.
   # To create additional roles in PostgreSQL see `$ createuser --help`.
@@ -77,8 +90,47 @@ test:
 # Read https://guides.rubyonrails.org/configuring.html#configuring-a-database
 # for a full overview on how database connection configuration can be specified.
 #
+
+staging:
+  primary: &primary_staging
+    <<: *default
+    username: <%= ENV["POSTGRES_USER"] %>
+    password: <%= ENV["POSTGRES_PASSWORD"] %>
+    database: near_you_staging
+    host: <%= ENV["DB_HOST"] %>
+
+  queue:
+    <<: *primary_staging
+    database: near_you_staging_queue
+    migrations_paths: db/queue_migrate
+  cache:
+    <<: *primary_staging
+    database: near_you_staging_cache
+    migrations_paths: db/cache_migrate
+  cable:
+    <<: *primary_staging
+    database: near_you_staging_cable
+    migrations_paths: db/cable_migrate
+
+
+
+
 production:
-  <<: *default
-  username: <%= ENV["POSTGRES_USER"] %>
-  password: <%= ENV["POSTGRES_PASSWORD"] %>
-  host: <%= ENV["DB_HOST"] %>
+  primary: &primary_production
+    <<: *default
+    username: <%= ENV["POSTGRES_USER"] %>
+    password: <%= ENV["POSTGRES_PASSWORD"] %>
+    database: near_you_production
+    host: <%= ENV["DB_HOST"] %>
+  queue:
+    <<: *primary_production
+    database: near_you_production_queue
+    migrations_paths: db/queue_migrate
+  cache:
+    <<: *primary_production
+    database: near_you_production_cache
+    migrations_paths: db/cache_migrate
+  cable:
+    <<: *primary_production
+    database: near_you_production_cable
+    migrations_paths: db/cable_migrate
