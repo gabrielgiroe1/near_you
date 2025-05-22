@@ -1,0 +1,57 @@
+name: Deploy Workflow
+
+on:
+  workflow_call:
+    inputs:
+      kamal-destination:
+        required: true
+        type: string
+    secrets:
+      KAMAL_REGISTRY_PASSWORD:
+        required: true
+      RAILS_MASTER_KEY:
+        required: true
+      POSTGRES_PASSWORD:
+        required: true
+      SSH_PRIVATE_KEY:
+        required: true
+
+env:
+  DOCKER_BUILDKIT: 1
+  KAMAL_REGISTRY_PASSWORD: ${{ secrets.KAMAL_REGISTRY_PASSWORD }}
+  POSTGRES_PASSWORD: ${{ secrets.POSTGRES_PASSWORD }}
+  RAILS_MASTER_KEY: ${{ secrets.RAILS_MASTER_KEY }}
+  PUBLISHABLE_KEY: ${{ secrets.PUBLISHABLE_KEY }}
+  SECRET_KEY: ${{ secrets.SECRET_KEY }}
+
+jobs:
+  deploy:
+    name: Kamal Deployment
+    timeout-minutes: 10
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Set up Ruby and install dependencies
+        uses: ruby/setup-ruby@v1
+        with:
+          bundler-cache: true
+
+      - name: Set up SSH agent
+        uses: webfactory/ssh-agent@v0.9.1
+        with:
+          ssh-private-key: ${{ secrets.SSH_PRIVATE_KEY }}
+
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v3
+
+      - name: Install Kamal
+        run: gem install kamal
+
+      - name: Release deploy lock
+        run: kamal lock release -d ${{ inputs.kamal-destination }}
+
+      - name: Deploy with Kamal
+        run: kamal deploy -v -d ${{ inputs.kamal-destination }}

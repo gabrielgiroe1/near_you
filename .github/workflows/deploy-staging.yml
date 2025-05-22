@@ -1,0 +1,24 @@
+name: Deployment (Staging)
+
+on:
+  push:
+    branches:
+      - main
+
+concurrency:
+  group: deployment-staging
+  cancel-in-progress: false
+
+jobs:
+  deploy:
+    name: Deploy to Staging
+    uses: ./.github/workflows/shared-job-kamal-deploy.yml
+    with:
+      kamal-destination: staging
+    secrets:
+      KAMAL_REGISTRY_PASSWORD: ${{ secrets.KAMAL_REGISTRY_PASSWORD }}
+      SSH_PRIVATE_KEY: ${{ secrets.SSH_PRIVATE_KEY }}
+      POSTGRES_PASSWORD: ${{ secrets.POSTGRES_PASSWORD }}
+      RAILS_MASTER_KEY: ${{ secrets.RAILS_MASTER_KEY }}
+      PUBLISHABLE_KEY: ${{ secrets.PUBLISHABLE_KEY }}
+      SECRET_KEY: ${{ secrets.SECRET_KEY }}
