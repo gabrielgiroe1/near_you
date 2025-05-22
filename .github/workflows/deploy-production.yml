@@ -1,0 +1,23 @@
+name: Deployment (Production)
+
+on:
+  release:
+    types: [published]
+
+concurrency:
+  group: deployment-production
+  cancel-in-progress: false
+
+jobs:
+  deploy:
+    name: Deploy to Production
+    uses: ./.github/workflows/shared-job-kamal-deploy.yml
+    with:
+      kamal-destination: production
+    secrets:
+      KAMAL_REGISTRY_PASSWORD: ${{ secrets.KAMAL_REGISTRY_PASSWORD }}
+      SSH_PRIVATE_KEY: ${{ secrets.SSH_PRIVATE_KEY }}
+      POSTGRES_PASSWORD: ${{ secrets.POSTGRES_PASSWORD }}
+      RAILS_MASTER_KEY: ${{ secrets.RAILS_MASTER_KEY }}
+      PUBLISHABLE_KEY: ${{ secrets.PUBLISHABLE_KEY }}
+      SECRET_KEY: ${{ secrets.SECRET_KEY }}
