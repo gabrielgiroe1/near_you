@@ -8,3 +8,36 @@
 #     command: "SoftDeletedRecord.due.delete_all"
 #     priority: 2
 #     schedule: at 5am every day
+development:
+  appointment_confirmation:
+    class: AppointmentConfirmationJob
+    queue: default
+    schedule: every day at 2am
+    description: Automatically declines trades pending for more than 5 days
+
+  appointment_reminder:
+    class: AppointmentReminderJob
+    queue: default
+    schedule: every day at 2am
+    description: Automatically declines trades pending for more than 5 days
+
+  cleanup_pending_appointments_job:
+    class: CleanupPendingAppointmentsJob
+    queue: default
+    schedule: every day at 2am
+    description: Automatically declines trades pending for more than 5 days
+
+production:
+  expire_pending_trades:
+    class: ExpirePendingTradesJob
+    queue: default
+    schedule: every day at 2am
+    description: Automatically declines trades pending for more than 5 days
+
+staging:
+  expire_pending_trades:
+    class: ExpirePendingTradesJob
+    queue: default
+    schedule: every day at 2am
+    description: Automatically declines trades pending for more than 5 days
+
