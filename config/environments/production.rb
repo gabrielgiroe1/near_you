@@ -53,6 +53,9 @@ Rails.application.configure do
   config.active_job.queue_adapter = :solid_queue
   config.solid_queue.connects_to = { database: { writing: :queue } }
 
+  config.action_cable.adapter = :solid_cable
+  config.solid_cable.connects_to = { database: { writing: :cable } }
+
   # Ignore bad email addresses and do not raise email delivery errors.
   # Set this to true and configure the email server for immediate delivery to raise delivery errors.
   # config.action_mailer.raise_delivery_errors = false
@@ -91,6 +94,4 @@ Rails.application.configure do
   # Skip DNS rebinding protection for the default health check endpoint.
   # config.host_authorization = { exclude: ->(request) { request.path == "/up" } }
   # config.public_file_server.enabled = true
-  config.action_cable.adapter = :solid_cable
-  config.solid_cable.connects_to = { database: { writing: :cable } }
 end
