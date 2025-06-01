@@ -27,7 +27,7 @@ env:
     - POSTGRES_PASSWORD
   clear:
     SOLID_QUEUE_IN_PUMA: true
-    DB_HOST: near_you-postgres
+    DB_HOST: near-you-4gb-hel1-2-postgres
 
 
 # Aliases are triggered with "bin/kamal <alias>". You can overwrite arguments on invocation:
