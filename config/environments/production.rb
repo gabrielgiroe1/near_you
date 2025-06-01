@@ -53,8 +53,10 @@ Rails.application.configure do
   config.active_job.queue_adapter = :solid_queue
   config.solid_queue.connects_to = { database: { writing: :queue } }
 
-  config.action_cable.adapter = :solid_cable
-  config.solid_cable.connects_to = { database: { writing: :cable } }
+  if config.respond_to?(:solid_cable)
+    config.action_cable.adapter = :solid_cable
+    config.solid_cable.connects_to = { database: { writing: :cable } }
+  end
 
   # Ignore bad email addresses and do not raise email delivery errors.
   # Set this to true and configure the email server for immediate delivery to raise delivery errors.
