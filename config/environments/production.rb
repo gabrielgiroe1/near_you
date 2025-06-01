@@ -91,4 +91,6 @@ Rails.application.configure do
   # Skip DNS rebinding protection for the default health check endpoint.
   # config.host_authorization = { exclude: ->(request) { request.path == "/up" } }
   # config.public_file_server.enabled = true
+  config.action_cable.adapter = :solid_cable
+  config.solid_cable.connects_to = { database: { writing: :cable } }
 end

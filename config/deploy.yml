@@ -28,6 +28,9 @@ env:
   clear:
     SOLID_QUEUE_IN_PUMA: true
     DB_HOST: near-you-4gb-hel1-2-postgres
+    DB_PORT: 5432
+    POSTGRES_USER: near_you
+    POSTGRES_DB: near_you_staging
 
 
 # Aliases are triggered with "bin/kamal <alias>". You can overwrite arguments on invocation:
