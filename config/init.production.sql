@@ -1,0 +1,4 @@
+CREATE DATABASE near_you_production;
+CREATE DATABASE near_you_production_cache;
+CREATE DATABASE near_you_production_queue;
+CREATE DATABASE near_you_production_cable;
