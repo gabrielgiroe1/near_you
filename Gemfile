@@ -88,7 +88,7 @@ gem 'avo'
 gem 'aws-sdk-s3', require: false
 gem 'devise', '4.9.4'
 gem 'httparty'
-gem 'kamal', '~> 2.5', '>= 2.5.2'
+gem "kamal", require: false
 gem 'language_filter', '~> 0.3.01'
 gem 'noticed', '~> 2.5'
 gem 'pundit'

@@ -536,7 +536,7 @@ DEPENDENCIES
   image_processing (~> 1.2)
   importmap-rails
   jbuilder
-  kamal (~> 2.5, >= 2.5.2)
+  kamal
   language_filter (~> 0.3.01)
   letter_opener
   mission_control-jobs
