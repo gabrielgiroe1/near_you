@@ -40,4 +40,5 @@
 /config/credentials/development.key
 
 /config/credentials/production.key
-config/credentials/development.yml.enc
+/config/credentials/development.yml.enc
+/config/credentials/staging.key
