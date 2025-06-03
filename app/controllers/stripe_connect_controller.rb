@@ -2,7 +2,7 @@ class StripeConnectController < ApplicationController
   before_action :authenticate_user!
   before_action :set_provider, only: [:create]
   NGROK_URL = "https://2b4a-109-166-129-187.ngrok-free.app"
-  NEAR_YOU_URL = "https://near-you-nf5o.onrender.com/"
+  NEAR_YOU_URL = "https://staging.localhub.solutions"
 
   def create
     # Create a new Stripe Connect account if one doesn't exist
