@@ -101,4 +101,5 @@ gem 'solid_cable'
 gem 'solid_cache'
 gem 'solid_queue'
 gem "thruster", require: false
-
+gem 'sentry-rails', '~> 5.24'
+gem 'sentry-ruby', '~> 5.24'
