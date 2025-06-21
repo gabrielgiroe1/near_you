@@ -89,8 +89,8 @@ class AppointmentsController < ApplicationController
         @appointment.update(stripe_session_id: session.id)
         redirect_to session.url, allow_other_host: true
       else
-        redirect_to provider_path(@provider), 
-                    alert: "Could not create appointment: #{@appointment.errors.full_messages.join(', ')}"
+        redirect_to provider_path(@provider),
+          alert: "Could not create appointment: #{@appointment.errors.full_messages.join(', ')}"
       end
     else
       redirect_to provider_path(@provider), alert: "This time slot is not available."
@@ -100,14 +100,14 @@ class AppointmentsController < ApplicationController
   def success
     @appointment = Appointment.find(params[:id])
     @appointment.update(status: :confirmed)
-    
+
     # Schedule confirmation emails
     AppointmentConfirmationJob.perform_now(@appointment.id)
-    
+
     # Schedule reminder emails for 1 hour before the appointment
     reminder_time = @appointment.start_time - 1.hour
     AppointmentReminderJob.set(wait_until: reminder_time).perform_later(@appointment.id)
-    
+
     redirect_to appointments_path, notice: "Appointment confirmed successfully!"
   end
 

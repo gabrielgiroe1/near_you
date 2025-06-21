@@ -25,7 +25,7 @@ class ProvidersController < ApplicationController
         format.turbo_stream do
           render turbo_stream: turbo_stream.replace("providers",
             partial: "providers_list",
-            locals: {providers: @providers})
+            locals: { providers: @providers })
         end
       end
     end
@@ -116,9 +116,9 @@ class ProvidersController < ApplicationController
 
     if availability&.available?
       slots = generate_slots(date, availability)
-      render json: {slots: slots}
+      render json: { slots: slots }
     else
-      render json: {slots: []}
+      render json: { slots: [] }
     end
   end
 

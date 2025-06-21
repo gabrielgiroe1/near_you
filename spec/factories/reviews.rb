@@ -4,6 +4,6 @@ FactoryBot.define do
     association :provider
     association :appointment
     rating { 5 }
-    content { 'Great service provided!' }
+    content { "Great service provided!" }
   end
 end

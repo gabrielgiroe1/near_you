@@ -2,11 +2,11 @@ User.destroy_all
 Provider.destroy_all
 
 users = [
-  {name: "provider1", email: 'provider1@gmail.com', password: 'password', role: 'provider' },
-  {name: "provider2", email: 'provider2@gmail.com', password: 'password', role: 'provider' },
-  {name: "provider3", email: 'provider3@gmail.com', password: 'password', role: 'provider' },
-  {name: "user1", email: 'user1@gmail.com', password: 'password', role: 'user' },
-  {name: "user2", email: 'user2@gmail.com', password: 'password', role: 'user' }
+  { name: "provider1", email: 'provider1@gmail.com', password: 'password', role: 'provider' },
+  { name: "provider2", email: 'provider2@gmail.com', password: 'password', role: 'provider' },
+  { name: "provider3", email: 'provider3@gmail.com', password: 'password', role: 'provider' },
+  { name: "user1", email: 'user1@gmail.com', password: 'password', role: 'user' },
+  { name: "user2", email: 'user2@gmail.com', password: 'password', role: 'user' }
 ]
 
 users.each_with_index do |user_data, index|
@@ -24,6 +24,5 @@ users.each_with_index do |user_data, index|
     )
   end
 end
-
 
 puts "Seeding completed! Created #{User.count} users and #{Provider.count} providers."

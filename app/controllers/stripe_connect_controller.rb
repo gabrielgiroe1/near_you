@@ -39,8 +39,8 @@ class StripeConnectController < ApplicationController
       country: "RO",
       business_type: "individual",
       capabilities: {
-        card_payments: {requested: true},
-        transfers: {requested: true}
+        card_payments: { requested: true },
+        transfers: { requested: true }
       }
     })
 

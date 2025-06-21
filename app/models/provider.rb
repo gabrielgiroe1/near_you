@@ -10,7 +10,7 @@ class Provider < ApplicationRecord
 
   validates :user_id, uniqueness: true, presence: true
 
-  enum :stripe_status, {incomplete: "incomplete", active: "active"}
+  enum :stripe_status, { incomplete: "incomplete", active: "active" }
 
   enum :service_type, {
     # Health & Wellness
@@ -65,23 +65,24 @@ class Provider < ApplicationRecord
     tailor: "Tailor"
   }
 
+  # rubocop:disable Style/HashSyntax
   def self.categories
     {
       "Health & Wellness" => [
-        "Masseur", "Personal Trainer", "Nutritionist", 
+        "Masseur", "Personal Trainer", "Nutritionist",
         "Yoga Instructor", "Chiropractor", "Physical Therapist"
       ],
       "Beauty & Grooming" => [
-        "Hairstylist", "Makeup Artist", "Nail Technician", 
-        "Eyelash Technician", "Facial Expert", "Tanning Specialist", 
+        "Hairstylist", "Makeup Artist", "Nail Technician",
+        "Eyelash Technician", "Facial Expert", "Tanning Specialist",
         "Barber"
       ],
       "Home Services" => [
-        "Electrician", "Plumber", "Gardener", "House Cleaner", 
+        "Electrician", "Plumber", "Gardener", "House Cleaner",
         "Handyman", "Painter", "Window Cleaner"
       ],
       "Education" => [
-        "Tutor", "Music Teacher", "Language Coach", 
+        "Tutor", "Music Teacher", "Language Coach",
         "Coding Instructor", "Art Instructor"
       ],
       "Creative Services" => [
@@ -91,7 +92,7 @@ class Provider < ApplicationRecord
         "DJ", "Caterer", "Entertainer"
       ],
       "Specialty & Miscellaneous" => [
-        "Astrologer", "Tarot Reader", "Translator", 
+        "Astrologer", "Tarot Reader", "Translator",
         "Pet Groomer", "Tailor"
       ]
     }

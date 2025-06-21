@@ -2,7 +2,7 @@
 # The values disaplayed here are the default ones. Uncomment and change them to fit your needs.
 Avo.configure do |config|
   ## == Routing ==
-  config.root_path = '/avo'
+  config.root_path = "/avo"
   # used only when you have custom `map` configuration in your config.ru
   # config.prefix_path = "/internal"
 
@@ -63,7 +63,6 @@ Avo.configure do |config|
 
   ## == Response messages dismiss time ==
   # config.alert_dismiss_time = 5000
-
 
   ## == Number of search results to display ==
   # config.search_results_count = 8

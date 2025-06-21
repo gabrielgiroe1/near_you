@@ -11,22 +11,22 @@ class StripeController < ApplicationController
 
       # Handle the event
       case event["type"]
-      when "account.updated"
-        handle_account_updated(event["data"]["object"])
-      when "payment_intent.succeeded"
-        handle_payment_intent_succeeded(event["data"]["object"])
-      when "payment_intent.payment_failed"
-        handle_payment_intent_failed(event["data"]["object"])
-      # Add more event types as needed
-      else
-        Rails.logger.info "Unhandled event type: #{event["type"]}"
+        when "account.updated"
+          handle_account_updated(event["data"]["object"])
+        when "payment_intent.succeeded"
+          handle_payment_intent_succeeded(event["data"]["object"])
+        when "payment_intent.payment_failed"
+          handle_payment_intent_failed(event["data"]["object"])
+          # Add more event types as needed
+        else
+          Rails.logger.info "Unhandled event type: #{event["type"]}"
       end
 
-      render json: {message: "Success"}, status: 200
+      render json: { message: "Success" }, status: 200
     rescue JSON::ParserError => e
-      render json: {error: "Invalid payload"}, status: 400
+      render json: { error: "Invalid payload" }, status: 400
     rescue Stripe::SignatureVerificationError => e
-      render json: {error: "Invalid signature"}, status: 400
+      render json: { error: "Invalid signature" }, status: 400
     end
   end
 

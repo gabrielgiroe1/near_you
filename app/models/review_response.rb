@@ -3,7 +3,7 @@ class ReviewResponse < ApplicationRecord
   belongs_to :provider
 
   before_save :filter_content
-  validates :content, presence: true, length: {minimum: 10, maximum: 500}
+  validates :content, presence: true, length: { minimum: 10, maximum: 500 }
 
   private
 

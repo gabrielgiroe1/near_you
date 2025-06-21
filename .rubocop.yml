@@ -1,0 +1,186 @@
+inherit_gem:
+  rubocop-rails-omakase: rubocop.yml
+
+require:
+  - rubocop-rspec
+
+AllCops:
+  TargetRubyVersion: 3.2
+  NewCops: enable
+
+Layout/AccessModifierIndentation:
+  EnforcedStyle: indent
+
+Layout/ArgumentAlignment:
+  EnforcedStyle: with_fixed_indentation
+  IndentationWidth: 2
+
+Layout/ArrayAlignment:
+  EnforcedStyle: with_fixed_indentation
+  IndentationWidth: 2
+
+Layout/BlockAlignment:
+  EnforcedStyleAlignWith: start_of_block
+
+Layout/BlockEndNewline:
+  Enabled: true
+
+Layout/CaseIndentation:
+  EnforcedStyle: end
+  IndentOneStep: true
+  IndentationWidth: 2
+
+Layout/ClosingParenthesisIndentation:
+  Enabled: true
+
+Layout/DotPosition:
+  EnforcedStyle: leading
+
+Layout/EmptyLines:
+  Enabled: true
+
+Layout/EmptyLinesAroundAccessModifier:
+  EnforcedStyle: around
+
+Layout/EndOfLine:
+  EnforcedStyle: native
+
+Layout/FirstArgumentIndentation:
+  EnforcedStyle: consistent
+  IndentationWidth: 2
+
+Layout/FirstArrayElementIndentation:
+  EnforcedStyle: consistent
+  IndentationWidth: 2
+
+Layout/FirstHashElementIndentation:
+  EnforcedStyle: consistent
+  IndentationWidth: 2
+
+Layout/FirstHashElementLineBreak:
+  AllowMultilineFinalElement: true
+
+Layout/FirstParameterIndentation:
+  EnforcedStyle: consistent
+  IndentationWidth: 2
+
+Layout/HashAlignment:
+  EnforcedHashRocketStyle: key
+  EnforcedColonStyle: key
+  EnforcedLastArgumentHashStyle: always_inspect
+
+Layout/IndentationConsistency:
+  EnforcedStyle: normal
+
+Layout/IndentationWidth:
+  Width: 2
+
+Layout/LineLength:
+  Max: 120
+  Exclude:
+    - 'db/migrate/*.rb'
+
+Layout/MultilineArrayLineBreaks:
+  AllowMultilineFinalElement: true
+
+Layout/MultilineBlockLayout:
+  Enabled: true
+
+Layout/MultilineHashBraceLayout:
+  EnforcedStyle: new_line
+
+Layout/MultilineHashKeyLineBreaks:
+  AllowMultilineFinalElement: true
+
+Layout/MultilineMethodArgumentLineBreaks:
+  AllowMultilineFinalElement: true
+
+Layout/MultilineMethodParameterLineBreaks:
+  AllowMultilineFinalElement: true
+
+Layout/MultilineMethodCallIndentation:
+  EnforcedStyle: indented
+  IndentationWidth: 2
+
+Layout/MultilineMethodCallBraceLayout:
+  EnforcedStyle: new_line
+
+Layout/ParameterAlignment:
+  EnforcedStyle: with_fixed_indentation
+  IndentationWidth: 2
+
+Layout/SpaceInsideArrayLiteralBrackets:
+  EnforcedStyle: no_space
+  EnforcedStyleForEmptyBrackets: no_space
+
+Layout/TrailingEmptyLines:
+  EnforcedStyle: final_newline
+
+Naming/AccessorMethodName:
+  Enabled: true
+
+Naming/ConstantName:
+  Enabled: true
+
+Naming/InclusiveLanguage:
+  Enabled: true
+
+Naming/MethodParameterName:
+  MinNameLength: 3
+  AllowNamesEndingInNumbers: false
+
+Naming/PredicateName:
+  Enabled: true
+
+Naming/VariableName:
+  EnforcedStyle: snake_case
+
+Style/BlockDelimiters:
+  EnforcedStyle: semantic
+  AllowBracesOnProceduralOneLiners: true
+
+Style/GuardClause:
+  MinBodyLength: 1
+  AllowConsecutiveConditionals: false
+
+Style/StringLiterals:
+  EnforcedStyle: double_quotes
+  ConsistentQuotesInMultiline: true
+  Include:
+    - "app/**/*"
+    - "config/**/*"
+    - "spec/**/*"
+
+Style/StringHashKeys:
+  Enabled: true
+
+Style/StringLiteralsInInterpolation:
+  EnforcedStyle: double_quotes
+
+Style/WordArray:
+  EnforcedStyle: brackets
+
+RSpec/EmptyLineAfterHook:
+  AllowConsecutiveOneLiners: true
+
+RSpec/ExampleLength:
+  Enabled: false  # Can enable with Max if needed
+
+RSpec/ExampleWording:
+  Enabled: true
+
+RSpec/ImplicitSubject:
+  EnforcedStyle: single_statement_only
+
+RSpec/ImplicitExpect:
+  EnforcedStyle: is_expected
+
+RSpec/NestedGroups:
+  Max: 4
+
+Style/HashSyntax:
+  EnforcedStyle: ruby19_no_mixed_keys
+  SupportedStyles:
+    - ruby19_no_mixed_keys
+  AllowMixedKeys: false
+  EnforcedStringStyle: always_rocket

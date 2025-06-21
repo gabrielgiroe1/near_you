@@ -18,11 +18,11 @@ module LanguageFilter
   ].freeze
 
   # Combine all matchlists into one, including custom bad words
-  combined_matchlist = CUSTOM_BAD_WORDS + 
-                       LanguageFilter::Filter.new(matchlist: :hate).matchlist + 
-                       LanguageFilter::Filter.new(matchlist: :profanity).matchlist + 
-                       LanguageFilter::Filter.new(matchlist: :sex).matchlist + 
-                       LanguageFilter::Filter.new(matchlist: :violence).matchlist
+  combined_matchlist = CUSTOM_BAD_WORDS +
+    LanguageFilter::Filter.new(matchlist: :hate).matchlist +
+    LanguageFilter::Filter.new(matchlist: :profanity).matchlist +
+    LanguageFilter::Filter.new(matchlist: :sex).matchlist +
+    LanguageFilter::Filter.new(matchlist: :violence).matchlist
 
   # Ensure the combined matchlist is not empty
   if combined_matchlist.empty?
