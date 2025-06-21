@@ -31,6 +31,7 @@ env:
     DB_PORT: 5432
     POSTGRES_USER: near_you
     POSTGRES_DB: near_you_staging
+    SECRET_KEY_BASE: <%= ENV["SECRET_KEY_BASE"] %>
 
 
 # Aliases are triggered with "bin/kamal <alias>". You can overwrite arguments on invocation:
