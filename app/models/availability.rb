@@ -4,7 +4,7 @@ class Availability < ApplicationRecord
   validates :day_of_week, presence: true
   validates :start_time, presence: true
   validates :end_time, presence: true
-  validates :available, inclusion: {in: [true, false]}
+  validates :available, inclusion: { in: [true, false] }
   validate :start_time_before_end_time
 
   # Add day of week validation

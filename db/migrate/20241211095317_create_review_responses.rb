@@ -6,6 +6,5 @@ class CreateReviewResponses < ActiveRecord::Migration[7.1]
       t.text :content, null: false
       t.timestamps
     end
-
   end
 end

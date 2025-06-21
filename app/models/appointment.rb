@@ -3,7 +3,7 @@ class Appointment < ApplicationRecord
   belongs_to :provider
   has_many :reviews, dependent: :destroy
 
-  enum :status, {pending: 0, confirmed: 1, completed: 2, cancelled: 3}
+  enum :status, { pending: 0, confirmed: 1, completed: 2, cancelled: 3 }
 
   # Virtual attribute for appointment duration
   attr_accessor :duration

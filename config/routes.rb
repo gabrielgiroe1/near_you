@@ -7,7 +7,7 @@ Rails.application.routes.draw do
     mount Avo::Engine, at: Avo.configuration.root_path
   end
 
-  devise_for :users, controllers: {registrations: "users/registrations"}
+  devise_for :users, controllers: { registrations: "users/registrations" }
 
   root "providers#index"
 
