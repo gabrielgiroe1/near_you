@@ -36,6 +36,18 @@
                 </div>
               </div>
               <%= render "shared/notifications" if user_signed_in? %>
+            <% else %>
+              <!-- Guest Navigation Links -->
+              <div data-controller="dropdown">
+                <button data-action="click->dropdown#toggle" class="flex items-center space-x-2">
+                  <%= inline_svg_tag("default_profile_picture.svg", class: "w-6 h-4 cursor-pointer rounded-full", override: true) %>
+                </button>
+                <div data-dropdown-target="menu" class="absolute right-0 mt-2 w-48 bg-white rounded-md shadow-lg py-1 hidden z-10">
+                  <%= link_to "Sign In", new_user_session_path, class: "block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100" %>
+                  <%= link_to "Sign Up", new_user_registration_path, class: "block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100" %>
+                </div>
+              </div>
+
             <% end %>
           </div>
         </div>
