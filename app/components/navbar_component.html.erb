@@ -2,6 +2,13 @@
       <div class="max-w-6xl mx-auto px-4 py-3">
         <div class="flex justify-between items-center">
           <%= link_to "Near You", root_path, class:"text-2xl font-bold text-blue-500"%>
+          <div class="flex-1 mx-4">
+            <%= form_with url: providers_path, method: :get, local: true do |form| %>
+              <div class="relative">
+                <%= form.search_field :search, value: params[:search], placeholder: "Search services or providers", class: "w-full border rounded-lg py-1 px-3" %>
+              </div>
+            <% end %>
+          </div>
           <div class="flex items-center space-x-4">
             <% if user_signed_in? %>
               <!-- Main Navigation Menu -->
