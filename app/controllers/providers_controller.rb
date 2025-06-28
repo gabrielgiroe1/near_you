@@ -176,6 +176,14 @@ class ProvidersController < ApplicationController
     if params[:location].present? && params[:location].strip.present?
       scope = scope.where("lower(location) LIKE ?", "%#{params[:location].downcase}%")
     end
+
+    if params[:search].present? && params[:search].strip.present?
+      term = "%#{params[:search].downcase}%"
+      scope = scope.joins(:user).where(
+        "lower(providers.name) LIKE :term OR lower(users.name) LIKE :term OR lower(service_type) LIKE :term",
+        term: term
+      )
+    end
     scope
   end
 
