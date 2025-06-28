@@ -5,13 +5,14 @@
           <div class="flex-grow max-w-md">
             <%= form_with url: providers_path, method: :get, local: true do |form| %>
               <div class="relative">
-                <div class="absolute inset-y-0 left-0 flex items-center ">
-                  <%= inline_svg_tag("search.svg", class: "w-4 h-4 text-gray-400") %>
+                <div class="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none">
+                  <%= inline_svg_tag("search.svg", class: "w-5 h-5 text-gray-400") %>
                 </div>
                 <%= form.search_field :search,
                   value: params[:search],
                   placeholder: "Search services or providers",
-                  class: "w-full border rounded-md py-2 pl-10 pr-4 text-sm placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-blue-400" %>
+                  class: "w-full border border-gray-300 bg-gray-50 rounded-md py-2 pl-11 pr-4 text-sm placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-blue-400" %>
+
               </div>
             <% end %>
           </div>
