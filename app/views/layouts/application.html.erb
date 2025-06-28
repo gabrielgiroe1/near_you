@@ -9,12 +9,11 @@
     <%= stylesheet_link_tag "application", "data-turbo-track": "reload" %>
     <%= javascript_importmap_tags %>
     <%= javascript_include_tag "https://js.stripe.com/v3/"%>
-    <%= csrf_meta_tags %>
     <%= Sentry.get_trace_propagation_meta.html_safe %>
   </head>
   <body>
     <%= render(NavbarComponent.new) %>
-    <main class="container mx-auto px-4">
+    <main class="flex-grow container mx-auto px-4">
       <% if notice %>
         <div class="bg-green-100 border border-green-400 text-green-700 px-4 py-3 rounded mb-4">
           <%= notice %>
@@ -27,6 +26,7 @@
       <% end %>
       <%= yield %>
     </main>
-    <script src="https://cdn.jsdelivr.net/npm/flowbite@1.5.3/dist/flowbite.min.js"></script>
+    <%= render FooterComponent.new %>
+
   </body>
 </html>
