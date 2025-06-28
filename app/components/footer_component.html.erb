@@ -1,36 +1,76 @@
-<footer class="<%= container_classes %> bg-gray-100 border-t border-black/10 w-full">
-  <div class="max-w-[1440px] mx-auto px-4 sm:px-8 md:px-16 lg:px-[108px]">
-    <div class="py-8 md:py-12 space-y-6">
-      <!-- Logo & Socials -->
-      <div class="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-6">
-        <%= link_to root_path do %>
-          <%= inline_svg_tag("home/near-you-logo-footer.svg",
-              class: "h-[18px] sm:h-[20px] w-[100px] sm:w-[120px]") %>
+<footer class="<%= container_classes %> bg-gray-100 w-full mt-auto">
+  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+    <div class="py-6">
+      <!-- Logo -->
+      <div class="mb-4">
+        <%= link_to root_path, class: "transition-opacity hover:opacity-80" do %>
+          <h2 class="text-2xl font-bold text-gray-900">Near You</h2>
         <% end %>
+      </div>
 
-        <div class="flex items-center gap-4">
-          <%= link_to "#", class: "text-sm md:text-base text-black/60 hover:text-black underline transition" do %>
-            Instagram
-          <% end %>
-          <%= link_to "#", class: "text-sm md:text-base text-black/60 hover:text-black underline transition" do %>
-            Facebook
-          <% end %>
+      <!-- Multi-Column Grid -->
+      <div class="grid grid-cols-2 md:grid-cols-4 gap-6 md:gap-8">
+        <!-- Services Column -->
+        <div>
+          <h3 class="text-base font-semibold mb-3 text-gray-900">Services</h3>
+          <ul class="space-y-2">
+            <li><%= link_to "Home Services", "#", class: "text-sm text-gray-600 hover:text-gray-900 transition-colors duration-200" %></li>
+            <li><%= link_to "Beauty & Wellness", "#", class: "text-sm text-gray-600 hover:text-gray-900 transition-colors duration-200" %></li>
+            <li><%= link_to "Health Services", "#", class: "text-sm text-gray-600 hover:text-gray-900 transition-colors duration-200" %></li>
+            <li><%= link_to "Education", "#", class: "text-sm text-gray-600 hover:text-gray-900 transition-colors duration-200" %></li>
+          </ul>
+        </div>
+
+        <!-- Company Column -->
+        <div>
+          <h3 class="text-base font-semibold mb-3 text-gray-900">Company</h3>
+          <ul class="space-y-2">
+            <li><%= link_to "About Us", "#", class: "text-sm text-gray-600 hover:text-gray-900 transition-colors duration-200" %></li>
+            <li><%= link_to "How it Works", "#", class: "text-sm text-gray-600 hover:text-gray-900 transition-colors duration-200" %></li>
+            <li><%= link_to "Careers", "#", class: "text-sm text-gray-600 hover:text-gray-900 transition-colors duration-200" %></li>
+            <li><%= link_to "Help Center", "#", class: "text-sm text-gray-600 hover:text-gray-900 transition-colors duration-200" %></li>
+          </ul>
+        </div>
+
+        <!-- Support Column -->
+        <div>
+          <h3 class="text-base font-semibold mb-3 text-gray-900">Support</h3>
+          <ul class="space-y-2">
+            <li><%= link_to "Contact Us", "#", class: "text-sm text-gray-600 hover:text-gray-900 transition-colors duration-200" %></li>
+            <li><%= link_to "FAQ", "#", class: "text-sm text-gray-600 hover:text-gray-900 transition-colors duration-200" %></li>
+            <li><%= link_to "Terms", "#", class: "text-sm text-gray-600 hover:text-gray-900 transition-colors duration-200" %></li>
+            <li><%= link_to "Privacy", "#", class: "text-sm text-gray-600 hover:text-gray-900 transition-colors duration-200" %></li>
+          </ul>
+        </div>
+
+        <!-- Connect Column -->
+        <div>
+          <h3 class="text-base font-semibold mb-3 text-gray-900">Connect</h3>
+          <ul class="space-y-2">
+            <li>
+              <%= link_to "#", class: "text-sm text-gray-600 hover:text-gray-900 transition-colors duration-200 flex items-center gap-1" do %>
+                <%= inline_svg_tag("instagram-icon.svg", class: "w-3 h-3") %>
+                Instagram
+              <% end %>
+            </li>
+            <li>
+              <%= link_to "#", class: "text-sm text-gray-600 hover:text-gray-900 transition-colors duration-200 flex items-center gap-1" do %>
+                <%= inline_svg_tag("facebook-icon.svg", class: "w-3 h-3") %>
+                Facebook
+              <% end %>
+            </li>
+          </ul>
         </div>
       </div>
 
-      <div class="h-px w-full bg-black/10"></div>
+      <!-- Divider -->
+      <div class="h-px w-full bg-gray-300 my-4"></div>
 
-      <!-- Copyright & Links -->
-      <div class="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
-        <p class="text-sm text-black/50">
-          © <%= Date.current.year %> Near you. All rights reserved.
+      <!-- Copyright -->
+      <div class="text-center pb-4">
+        <p class="text-sm text-gray-500">
+          © <%= Date.current.year %> Near You. All rights reserved.
         </p>
-
-        <div class="flex items-center gap-4">
-          <%= link_to "Terms", "#", class: "text-sm text-black/50 hover:text-black underline transition" %>
-          <%= link_to "Privacy", "#", class: "text-sm text-black/50 hover:text-black underline transition" %>
-          <%= link_to "Cookies", "#", class: "text-sm text-black/50 hover:text-black underline transition" %>
-        </div>
       </div>
     </div>
   </div>
