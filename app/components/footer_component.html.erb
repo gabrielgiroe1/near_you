@@ -1,0 +1,37 @@
+<footer class="<%= container_classes %> bg-gray-100 border-t border-black/10 w-full">
+  <div class="max-w-[1440px] mx-auto px-4 sm:px-8 md:px-16 lg:px-[108px]">
+    <div class="py-8 md:py-12 space-y-6">
+      <!-- Logo & Socials -->
+      <div class="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-6">
+        <%= link_to root_path do %>
+          <%= inline_svg_tag("home/near-you-logo-footer.svg",
+              class: "h-[18px] sm:h-[20px] w-[100px] sm:w-[120px]") %>
+        <% end %>
+
+        <div class="flex items-center gap-4">
+          <%= link_to "#", class: "text-sm md:text-base text-black/60 hover:text-black underline transition" do %>
+            Instagram
+          <% end %>
+          <%= link_to "#", class: "text-sm md:text-base text-black/60 hover:text-black underline transition" do %>
+            Facebook
+          <% end %>
+        </div>
+      </div>
+
+      <div class="h-px w-full bg-black/10"></div>
+
+      <!-- Copyright & Links -->
+      <div class="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
+        <p class="text-sm text-black/50">
+          © <%= Date.current.year %> Near you. All rights reserved.
+        </p>
+
+        <div class="flex items-center gap-4">
+          <%= link_to "Terms", "#", class: "text-sm text-black/50 hover:text-black underline transition" %>
+          <%= link_to "Privacy", "#", class: "text-sm text-black/50 hover:text-black underline transition" %>
+          <%= link_to "Cookies", "#", class: "text-sm text-black/50 hover:text-black underline transition" %>
+        </div>
+      </div>
+    </div>
+  </div>
+</footer>
