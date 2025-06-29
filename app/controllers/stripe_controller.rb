@@ -48,10 +48,19 @@ class StripeController < ApplicationController
   end
 
   def handle_payment_intent_succeeded(payment_intent)
-    # Logic for successful payment
-    appointment = Appointment.find_by(stripe_session_id: payment_intent["id"])
-    appointment&.update!(status: :confirmed)
-    Rails.logger.info "Payment succeeded for appointment ID: #{appointment&.id}"
+    # Find appointment by payment intent ID
+    session = Stripe::Checkout::Session.list(payment_intent: payment_intent["id"]).data.first
+    appointment = Appointment.find_by(stripe_session_id: session&.id) if session
+
+    if appointment
+      appointment.update!(status: :confirmed)
+      Rails.logger.info "Payment succeeded for appointment ID: #{appointment.id}"
+
+      # The transfer happens automatically due to transfer_data in payment intent
+      # But we can add additional logic here if needed for tracking
+    else
+      Rails.logger.error "No appointment found for payment intent: #{payment_intent["id"]}"
+    end
   end
 
   def handle_payment_intent_failed(payment_intent)

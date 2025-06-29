@@ -1,14 +1,11 @@
 class StripeConnectController < ApplicationController
   before_action :authenticate_user!
   before_action :set_provider, only: [:create]
-  NGROK_URL = "https://2b4a-109-166-129-187.ngrok-free.app"
-  NEAR_YOU_URL = "https://staging.localhub.solutions"
-
   def create
     # Create a new Stripe Connect account if one doesn't exist
     create_stripe_account unless @provider.stripe_account_id
 
-    redirect_url = Rails.env.production? ? NEAR_YOU_URL : NGROK_URL
+    redirect_url = ENV["BASE_URL"] || request.base_url
     # Generate the Stripe onboarding link
     account_link = Stripe::AccountLink.create({
       account: @provider.stripe_account_id,

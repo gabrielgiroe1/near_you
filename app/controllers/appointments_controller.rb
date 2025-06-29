@@ -68,6 +68,10 @@ class AppointmentsController < ApplicationController
         # Schedule cleanup job for this appointment
         CleanupPendingAppointmentsJob.set(wait: 30.minutes).perform_later
 
+        platform_fee_rate = Rails.configuration.stripe[:platform_fee_rate]
+        total_amount = @provider.hourly_rate.to_i * 100
+        application_fee = (total_amount * platform_fee_rate).to_i
+
         session = Stripe::Checkout::Session.create(
           payment_method_types: ["card"],
           line_items: [{
@@ -76,14 +80,21 @@ class AppointmentsController < ApplicationController
               product_data: {
                 name: "Appointment with #{@provider.name}"
               },
-              unit_amount: @provider.hourly_rate.to_i * 100
+              unit_amount: total_amount
             },
             quantity: 1
           }],
           mode: "payment",
           success_url: success_appointment_url(@appointment),
           cancel_url: cancel_appointment_url(@appointment),
-          expires_at: Time.now.to_i + (30 * 60) # Expire after 30 minutes
+          expires_at: Time.now.to_i + (30 * 60), # Expire after 30 minutes
+          payment_intent_data: {
+            application_fee_amount: application_fee,
+            on_behalf_of: @provider.stripe_account_id,
+            transfer_data: {
+              destination: @provider.stripe_account_id
+            }
+          }
         )
 
         @appointment.update(stripe_session_id: session.id)
@@ -113,7 +124,31 @@ class AppointmentsController < ApplicationController
 
   def cancel
     @appointment = Appointment.find(params[:id])
-    @appointment.update(status: :cancelled)
-    redirect_to appointments_path, alert: "Appointment cancelled."
+
+    # Process refund if payment was successful
+    if @appointment.stripe_session_id.present? && @appointment.confirmed?
+      begin
+        # Retrieve the checkout session to get the payment intent
+        session = Stripe::Checkout::Session.retrieve(@appointment.stripe_session_id)
+        payment_intent = Stripe::PaymentIntent.retrieve(session.payment_intent)
+
+        # Create refund
+        refund = Stripe::Refund.create({
+          payment_intent: payment_intent.id,
+          reverse_transfer: true # This reverses the transfer to the provider
+        })
+
+        Rails.logger.info "Refund created for appointment #{@appointment.id}: #{refund.id}"
+        @appointment.update(status: :cancelled)
+        redirect_to appointments_path, notice: "Appointment cancelled and refund processed."
+      rescue Stripe::StripeError => e
+        Rails.logger.error "Refund failed for appointment #{@appointment.id}: #{e.message}"
+        @appointment.update(status: :cancelled)
+        redirect_to appointments_path, alert: "Appointment cancelled but refund failed. Please contact support."
+      end
+    else
+      @appointment.update(status: :cancelled)
+      redirect_to appointments_path, notice: "Appointment cancelled."
+    end
   end
 end
