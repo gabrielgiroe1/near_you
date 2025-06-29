@@ -20,6 +20,8 @@ class StripeController < ApplicationController
           handle_payment_intent_succeeded(event["data"]["object"])
         when "payment_intent.payment_failed"
           handle_payment_intent_failed(event["data"]["object"])
+        when "checkout.session.expired"
+          handle_checkout_session_expired(event.data.object)
           # Add more event types as needed
         else
           Rails.logger.info "Unhandled event type: #{event["type"]}"
@@ -78,5 +80,16 @@ class StripeController < ApplicationController
     else
       Rails.logger.error "Payment failed for unknown payment intent: #{payment_intent["id"]}"
     end
+  end
+
+  def handle_checkout_session_expired(session)
+    appointment_id = session.dig("metadata", "appointment_id")
+    return unless appointment_id
+
+    appointment = Appointment.find_by(id: appointment_id)
+    return unless appointment&.pending?
+
+    Rails.logger.info "Deleting expired pending appointment #{appointment.id} from Stripe session #{session.id}"
+    appointment.destroy
   end
 end

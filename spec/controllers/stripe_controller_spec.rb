@@ -5,7 +5,6 @@ RSpec.describe StripeController, type: :controller do
   let(:controller_instance) { StripeController.new }
 
   describe "Webhook handlers" do
-
     context "when handling payment_intent.succeeded" do
       let(:appointment) { create(:appointment, :with_stripe_session) }
       let(:payment_intent_data) do
@@ -81,7 +80,7 @@ RSpec.describe StripeController, type: :controller do
 
       it "updates provider Stripe status to incomplete when not fully enabled" do
         account_data["charges_enabled"] = false
-        
+
         expect {
           controller_instance.send(:handle_account_updated, account_data)
         }.to change { provider.reload.stripe_status }.to("incomplete")
@@ -97,8 +96,41 @@ RSpec.describe StripeController, type: :controller do
       end
     end
 
-    # Note: HTTP-level webhook testing (signature verification, JSON parsing) 
-    # is better handled through integration tests or by testing against 
+    # Note: HTTP-level webhook testing (signature verification, JSON parsing)
+    # is better handled through integration tests or by testing against
     # actual Stripe webhook endpoints in a staging environment
+
+    context "when handling checkout.session.expired" do
+      let!(:appointment) { create(:appointment, status: :pending) }
+
+      let(:expired_session_data) do
+        OpenStruct.new(
+          id: "cs_test_expired",
+          metadata: {
+            "appointment_id" => appointment.id
+          }
+        )
+      end
+
+      it "destroys the pending appointment" do
+        expect {
+          controller_instance.send(:handle_checkout_session_expired, expired_session_data)
+        }.to change(Appointment, :count).by(-1)
+      end
+
+      it "does nothing if appointment is not found" do
+        expired_session_data["metadata"]["appointment_id"] = "nonexistent_id"
+        expect {
+          controller_instance.send(:handle_checkout_session_expired, expired_session_data)
+        }.not_to change(Appointment, :count)
+      end
+
+      it "does nothing if appointment is not pending" do
+        appointment.update!(status: :confirmed)
+        expect {
+          controller_instance.send(:handle_checkout_session_expired, expired_session_data)
+        }.not_to change(Appointment, :count)
+      end
+    end
   end
 end

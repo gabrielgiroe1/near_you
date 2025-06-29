@@ -65,9 +65,6 @@ class AppointmentsController < ApplicationController
       )
 
       if @appointment.save
-        # Schedule cleanup job for this appointment
-        CleanupPendingAppointmentsJob.set(wait: 30.minutes).perform_later
-
         platform_fee_rate = Rails.configuration.stripe[:platform_fee_rate]
         total_amount = @provider.hourly_rate.to_i * 100
         application_fee = (total_amount * platform_fee_rate).to_i
