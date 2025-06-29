@@ -8,13 +8,21 @@ class Appointment < ApplicationRecord
   # Virtual attribute for appointment duration
   attr_accessor :duration
 
-  before_save :set_end_time
+  before_validation :set_end_time
   validate :time_slot_available, on: :create
 
   scope :active, -> { where(status: [:pending, :confirmed]) }
   scope :overlapping, ->(start_time, end_time) {
-    where("(start_time, end_time) OVERLAPS (?, ?)", start_time, end_time)
+    where("start_time < ? AND end_time > ?", end_time, start_time)
   }
+
+  def refunded?
+    refunded_at.present?
+  end
+
+  def refundable?
+    confirmed? && !refunded?
+  end
 
   private
 
