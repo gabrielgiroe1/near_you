@@ -63,6 +63,8 @@ group :development, :test do
   gem "faker", "~> 3.5"
   gem "rails-controller-testing"
   gem "shoulda-matchers", "~> 6.1"
+  # HTTP request mocking for testing [https://github.com/bblimke/webmock]
+  gem "webmock"
 end
 
 group :development do
