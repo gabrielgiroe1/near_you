@@ -1,0 +1,85 @@
+<!-- Hero Section -->
+<div class="bg-gradient-to-b from-blue-50 to-white py-16 mb-12">
+  <div class="max-w-4xl mx-auto text-center px-4">
+    <h1 class="text-5xl font-bold text-gray-900 mb-4">
+      Find trusted professionals in
+      <span class="text-blue-600">Romania</span>
+    </h1>
+    <p class="text-xl text-gray-600 mb-8">
+      Book home services, beauty treatments, health consultations, and more with verified providers near you.
+    </p>
+
+    <!-- Search Bar -->
+    <div class="max-w-lg mx-auto">
+      <div class="flex bg-white rounded-lg shadow-lg border border-gray-200 overflow-hidden">
+        <input
+          type="text"
+          placeholder="Enter your city in Romania..."
+          class="flex-1 px-4 py-3 text-gray-700 focus:outline-none"
+        >
+        <button class="bg-blue-600 text-white px-6 py-3 hover:bg-blue-700 transition-colors">
+          Search
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Services Section -->
+<div class="py-16 bg-white">
+  <div class="max-w-6xl mx-auto px-4">
+    <div class="text-center mb-12">
+      <h2 class="text-3xl font-bold text-gray-900 mb-4">
+        Popular Services in Romania
+      </h2>
+      <p class="text-lg text-gray-600">
+        Discover the most requested services in your area
+      </p>
+    </div>
+
+    <!-- Service Cards Grid -->
+    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+      <%= render ServiceCardComponent.new(
+        icon: "home-services-icon.svg",
+        title: "Home Services",
+        description: "Plumbing, electrical, cleaning, repairs",
+        link: "#"
+      ) %>
+
+      <%= render ServiceCardComponent.new(
+        icon: "beauty-services-icon.svg",
+        title: "Beauty & Wellness",
+        description: "Hair, nails, massage, skincare",
+        link: "#"
+      ) %>
+
+      <%= render ServiceCardComponent.new(
+        icon: "health-services-icon.svg",
+        title: "Health Services",
+        description: "Personal training, nutrition, therapy",
+        link: "#"
+      ) %>
+
+      <%= render ServiceCardComponent.new(
+        icon: "education-services-icon.svg",
+        title: "Education",
+        description: "Tutoring, language lessons, music",
+        link: "#"
+      ) %>
+
+      <%= render ServiceCardComponent.new(
+        icon: "creative-services-icon.svg",
+        title: "Creative Services",
+        description: "Photography, design, videography",
+        link: "#"
+      ) %>
+
+      <%= render ServiceCardComponent.new(
+        icon: "event-services-icon.svg",
+        title: "Event Services",
+        description: "DJ, catering, entertainment, planning",
+        link: "#"
+      ) %>
+    </div>
+  </div>
+</div>

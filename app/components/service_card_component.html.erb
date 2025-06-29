@@ -1,0 +1,29 @@
+<%= link_to link, class: "group bg-white rounded-xl p-6 border border-gray-200 hover:border-gray-300 hover:shadow-lg transition-all duration-200 cursor-pointer" do %>
+  <div class="flex items-center justify-between">
+    <div class="flex items-center space-x-4">
+      <!-- Service Icon -->
+      <div class="flex-shrink-0 w-12 h-12 bg-blue-50 rounded-lg flex items-center justify-center">
+        <%= inline_svg_tag(icon, class: "w-6 h-6 text-blue-600") %>
+      </div>
+
+      <!-- Service Content -->
+      <div class="flex-1">
+        <h3 class="text-lg font-semibold text-gray-900 group-hover:text-blue-600 transition-colors">
+          <%= title %>
+        </h3>
+        <% if description %>
+          <p class="text-sm text-gray-500 mt-1">
+            <%= description %>
+          </p>
+        <% end %>
+      </div>
+    </div>
+
+    <!-- Arrow Icon -->
+    <% if show_arrow %>
+      <div class="flex-shrink-0 ml-4">
+        <%= inline_svg_tag("arrow-down.svg", class: "w-5 h-5 text-gray-400 group-hover:text-blue-600 transition-colors transform group-hover:translate-x-1") %>
+      </div>
+    <% end %>
+  </div>
+<% end %>
