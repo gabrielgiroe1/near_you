@@ -3,7 +3,6 @@ require "ostruct"
 module StripeHelpers
   def setup_stripe_mocks
     # Mock job queuing to avoid Solid Queue dependency in tests
-    allow(CleanupPendingAppointmentsJob).to receive_message_chain(:set, :perform_later)
     allow(AppointmentConfirmationJob).to receive(:perform_now)
     allow(AppointmentReminderJob).to receive_message_chain(:set, :perform_later)
     # Mock successful checkout session creation
