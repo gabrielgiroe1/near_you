@@ -2,7 +2,10 @@ class StripeController < ApplicationController
   skip_before_action :verify_authenticity_token # Webhooks don't include CSRF tokens
 
   def webhook
+    # Handle both raw body (production) and params (test environment)
     payload = request.body.read
+    payload = params.to_json if payload.blank? && params.present?
+
     sig_header = request.env["HTTP_STRIPE_SIGNATURE"]
     endpoint_secret = ENV["STRIPE_WEBHOOK_SECRET"]
 
@@ -48,11 +51,13 @@ class StripeController < ApplicationController
   end
 
   def handle_payment_intent_succeeded(payment_intent)
-    # Find appointment by payment intent ID
-    session = Stripe::Checkout::Session.list(payment_intent: payment_intent["id"]).data.first
-    appointment = Appointment.find_by(stripe_session_id: session&.id) if session
+    # Find appointment by payment intent ID (more efficient than session lookup)
+    appointment = Appointment.find_by(stripe_payment_intent_id: payment_intent["id"])
 
     if appointment
+      # Idempotency check - don't process if already confirmed
+      return if appointment.confirmed?
+
       appointment.update!(status: :confirmed)
       Rails.logger.info "Payment succeeded for appointment ID: #{appointment.id}"
 
@@ -64,7 +69,14 @@ class StripeController < ApplicationController
   end
 
   def handle_payment_intent_failed(payment_intent)
-    # Logic for failed payment
-    Rails.logger.error "Payment failed: #{payment_intent["id"]}"
+    # Find appointment by payment intent ID and mark as failed
+    appointment = Appointment.find_by(stripe_payment_intent_id: payment_intent["id"])
+
+    if appointment
+      appointment.update!(status: :cancelled)
+      Rails.logger.info "Payment failed for appointment ID: #{appointment.id}, marked as cancelled"
+    else
+      Rails.logger.error "Payment failed for unknown payment intent: #{payment_intent["id"]}"
+    end
   end
 end

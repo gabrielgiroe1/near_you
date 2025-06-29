@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.0].define(version: 2025_02_11_113851) do
+ActiveRecord::Schema[8.0].define(version: 2025_06_29_094245) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pg_catalog.plpgsql"
 
@@ -51,7 +51,11 @@ ActiveRecord::Schema[8.0].define(version: 2025_02_11_113851) do
     t.string "stripe_session_id"
     t.datetime "start_time"
     t.datetime "end_time"
+    t.string "stripe_payment_intent_id"
+    t.datetime "refunded_at"
+    t.string "stripe_refund_id"
     t.index ["provider_id"], name: "index_appointments_on_provider_id"
+    t.index ["stripe_payment_intent_id"], name: "index_appointments_on_stripe_payment_intent_id"
     t.index ["user_id"], name: "index_appointments_on_user_id"
   end
 

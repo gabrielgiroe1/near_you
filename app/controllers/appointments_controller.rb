@@ -93,15 +93,23 @@ class AppointmentsController < ApplicationController
             on_behalf_of: @provider.stripe_account_id,
             transfer_data: {
               destination: @provider.stripe_account_id
+            },
+            metadata: {
+              appointment_id: @appointment.id,
+              provider_id: @provider.id,
+              user_id: current_user.id
             }
           }
         )
 
-        @appointment.update(stripe_session_id: session.id)
+        @appointment.update!(
+          stripe_session_id: session.id,
+          stripe_payment_intent_id: session.payment_intent
+        )
         redirect_to session.url, allow_other_host: true
       else
         redirect_to provider_path(@provider),
-          alert: "Could not create appointment: #{@appointment.errors.full_messages.join(', ')}"
+          alert: "Could not create appointment: #{@appointment.errors.full_messages.join(",")}"
       end
     else
       redirect_to provider_path(@provider), alert: "This time slot is not available."
@@ -125,25 +133,25 @@ class AppointmentsController < ApplicationController
   def cancel
     @appointment = Appointment.find(params[:id])
 
-    # Process refund if payment was successful
-    if @appointment.stripe_session_id.present? && @appointment.confirmed?
+    # Process refund if payment was successful and not already refunded
+    if @appointment.stripe_payment_intent_id.present? && @appointment.confirmed? && @appointment.refunded_at.nil?
       begin
-        # Retrieve the checkout session to get the payment intent
-        session = Stripe::Checkout::Session.retrieve(@appointment.stripe_session_id)
-        payment_intent = Stripe::PaymentIntent.retrieve(session.payment_intent)
-
-        # Create refund
+        # Create refund using stored payment intent ID
         refund = Stripe::Refund.create({
-          payment_intent: payment_intent.id,
+          payment_intent: @appointment.stripe_payment_intent_id,
           reverse_transfer: true # This reverses the transfer to the provider
         })
 
         Rails.logger.info "Refund created for appointment #{@appointment.id}: #{refund.id}"
-        @appointment.update(status: :cancelled)
+        @appointment.update!(
+          status: :cancelled,
+          refunded_at: Time.current,
+          stripe_refund_id: refund.id
+        )
         redirect_to appointments_path, notice: "Appointment cancelled and refund processed."
       rescue Stripe::StripeError => e
         Rails.logger.error "Refund failed for appointment #{@appointment.id}: #{e.message}"
-        @appointment.update(status: :cancelled)
+        @appointment.update!(status: :cancelled)
         redirect_to appointments_path, alert: "Appointment cancelled but refund failed. Please contact support."
       end
     else
