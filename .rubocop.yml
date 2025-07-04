@@ -129,8 +129,8 @@ Naming/MethodParameterName:
   MinNameLength: 3
   AllowNamesEndingInNumbers: false
 
-Naming/PredicateName:
-  Enabled: true
+# Naming/PredicatePrefix:  # Commented out due to version compatibility issues
+#   Enabled: true
 
 Naming/VariableName:
   EnforcedStyle: snake_case
