@@ -1,28 +1,44 @@
 .pagy {
-  @apply flex gap-1 font-semibold text-sm text-gray-500;
+  display: flex;
+  gap: 0.25rem;
+  font-weight: 600;
+  font-size: 0.875rem;
+  color: #6b7280;
 
   a:not(.gap) {
-    @apply block rounded-lg px-3 py-1 bg-gray-200;
+    display: block;
+    border-radius: 0.5rem;
+    padding: 0.25rem 0.75rem;
+    background-color: #e5e7eb;
 
     &:hover {
-      @apply bg-gray-300;
+      background-color: #d1d5db;
     }
 
     &:not([href]) {
       /* disabled links */
-      @apply text-gray-300 bg-gray-100 cursor-default;
+      color: #d1d5db;
+      background-color: #f3f4f6;
+      cursor: default;
     }
 
     &.current {
-      @apply text-white bg-gray-400;
+      color: #ffffff;
+      background-color: #9ca3af;
     }
   }
 
   label {
-    @apply inline-block whitespace-nowrap bg-gray-200 rounded-lg px-3 py-0.5;
+    display: inline-block;
+    white-space: nowrap;
+    background-color: #e5e7eb;
+    border-radius: 0.5rem;
+    padding: 0.125rem 0.75rem;
 
     input {
-      @apply bg-gray-100 border-none rounded-md;
+      background-color: #f3f4f6;
+      border: none;
+      border-radius: 0.375rem;
     }
   }
 }
