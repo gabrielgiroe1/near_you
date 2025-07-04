@@ -5,7 +5,7 @@ plugins:
   - rubocop-rspec
 
 AllCops:
-  TargetRubyVersion: 3.2
+  TargetRubyVersion: 3.4
   NewCops: enable
 
 Layout/AccessModifierIndentation:
@@ -129,8 +129,8 @@ Naming/MethodParameterName:
   MinNameLength: 3
   AllowNamesEndingInNumbers: false
 
-Naming/PredicateName:
-  Enabled: true
+# Naming/PredicatePrefix:  # Commented out due to version compatibility issues
+#   Enabled: true
 
 Naming/VariableName:
   EnforcedStyle: snake_case
@@ -153,6 +153,10 @@ Style/StringLiterals:
 
 Style/StringHashKeys:
   Enabled: true
+  Exclude:
+    - 'spec/support/stripe_helpers.rb'  # Stripe webhooks use string keys
+    - 'spec/controllers/stripe_controller_spec.rb'  # Stripe webhook simulation
+    - 'spec/integration/stripe_payment_flow_spec.rb'  # Stripe webhook simulation
 
 Style/StringLiteralsInInterpolation:
   EnforcedStyle: double_quotes
@@ -177,6 +181,27 @@ RSpec/ImplicitExpect:
 
 RSpec/NestedGroups:
   Max: 4
+
+RSpec/MultipleExpectations:
+  Max: 15  # Allow complex integration tests
+
+RSpec/MultipleMemoizedHelpers:
+  Max: 10  # Allow complex test setup
+
+RSpec/MessageSpies:
+  Enabled: false  # Allow both expect().to receive() and have_received styles
+
+RSpec/LetSetup:
+  Enabled: false  # Allow let! for test data setup
+
+RSpec/StubbedMock:
+  Enabled: false  # Allow expect().to receive() for mocking
+
+RSpec/ContextWording:
+  Enabled: false  # Allow flexible context descriptions
+
+RSpec/MessageChain:
+  Enabled: false  # Allow receive_message_chain for complex mocking
 
 Style/HashSyntax:
   EnforcedStyle: ruby19_no_mixed_keys

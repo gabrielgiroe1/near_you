@@ -2,7 +2,7 @@ require "rails_helper"
 
 RSpec.describe StripeController, type: :controller do
   include StripeHelpers
-  let(:controller_instance) { StripeController.new }
+  let(:controller_instance) { described_class.new }
 
   describe "Webhook handlers" do
     context "when handling payment_intent.succeeded" do
@@ -104,12 +104,12 @@ RSpec.describe StripeController, type: :controller do
       let!(:appointment) { create(:appointment, status: :pending) }
 
       let(:expired_session_data) do
-        OpenStruct.new(
-          id: "cs_test_expired",
-          metadata: {
+        {
+          "id" => "cs_test_expired",
+          "metadata" => {
             "appointment_id" => appointment.id
           }
-        )
+        }
       end
 
       it "destroys the pending appointment" do

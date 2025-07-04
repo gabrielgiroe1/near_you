@@ -68,7 +68,7 @@ class ReviewsController < ApplicationController
     end
   end
 
-  # Whitelist review parameters
+  # Allowlist review parameters
   def review_params
     params.require(:review).permit(:rating, :content)
   end

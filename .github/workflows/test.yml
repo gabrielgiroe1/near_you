@@ -1,0 +1,252 @@
+name: CI
+
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+
+env:
+  RAILS_ENV: test
+
+jobs:
+  # Fast tests - run first to fail fast
+  lint:
+    name: Lint & Code Quality
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Set up Ruby
+        uses: ruby/setup-ruby@v1
+        with:
+          ruby-version: 3.4.1
+          bundler-cache: true
+
+      - name: Run RuboCop
+        run: bundle exec rubocop --parallel
+
+  security:
+    name: Security Analysis
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Set up Ruby
+        uses: ruby/setup-ruby@v1
+        with:
+          ruby-version: 3.4.1
+          bundler-cache: true
+
+      - name: Run Brakeman
+        run: bundle exec brakeman -q -w2
+
+      - name: Run bundle audit
+        run: |
+          bundle exec bundle audit --update
+          bundle exec bundle audit
+
+  # Unit tests (fast)
+  test-models:
+    name: Model Tests
+    runs-on: ubuntu-latest
+    services:
+      postgres:
+        image: postgres:17-alpine
+        ports:
+          - 5432:5432
+        env:
+          POSTGRES_DB: near_you_test
+          POSTGRES_USER: postgres
+          POSTGRES_PASSWORD: ${{ secrets.POSTGRES_PASSWORD }}
+        options: >-
+          --health-cmd pg_isready
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 5
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Set up Ruby
+        uses: ruby/setup-ruby@v1
+        with:
+          ruby-version: 3.4.1
+          bundler-cache: true
+
+      - name: Set up database
+        env:
+          DATABASE_URL: "postgresql://postgres:${{ secrets.POSTGRES_PASSWORD }}@localhost:5432/near_you_test"
+        run: |
+          bundle exec rails db:create
+          bundle exec rails db:schema:load
+
+      - name: Run model tests
+        env:
+          DATABASE_URL: "postgresql://postgres:${{ secrets.POSTGRES_PASSWORD }}@localhost:5432/near_you_test"
+        run: bundle exec rspec spec/models/
+
+  # Component tests (fast)
+  test-components:
+    name: Component Tests
+    runs-on: ubuntu-latest
+    services:
+      postgres:
+        image: postgres:17-alpine
+        ports:
+          - 5432:5432
+        env:
+          POSTGRES_DB: near_you_test
+          POSTGRES_USER: postgres
+          POSTGRES_PASSWORD: ${{ secrets.POSTGRES_PASSWORD }}
+        options: >-
+          --health-cmd pg_isready
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 5
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Set up Ruby
+        uses: ruby/setup-ruby@v1
+        with:
+          ruby-version: 3.4.1
+          bundler-cache: true
+
+      - name: Set up database
+        env:
+          DATABASE_URL: "postgresql://postgres:${{ secrets.POSTGRES_PASSWORD }}@localhost:5432/near_you_test"
+        run: |
+          bundle exec rails db:create
+          bundle exec rails db:schema:load
+
+      - name: Run component tests
+        env:
+          DATABASE_URL: "postgresql://postgres:${{ secrets.POSTGRES_PASSWORD }}@localhost:5432/near_you_test"
+        run: bundle exec rspec spec/components/
+
+  # Integration tests (medium speed)
+  test-integration:
+    name: Integration Tests
+    runs-on: ubuntu-latest
+    services:
+      postgres:
+        image: postgres:17-alpine
+        ports:
+          - 5432:5432
+        env:
+          POSTGRES_DB: near_you_test
+          POSTGRES_USER: postgres
+          POSTGRES_PASSWORD: ${{ secrets.POSTGRES_PASSWORD }}
+        options: >-
+          --health-cmd pg_isready
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 5
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Set up Ruby
+        uses: ruby/setup-ruby@v1
+        with:
+          ruby-version: 3.4.1
+          bundler-cache: true
+
+      - name: Set up database
+        env:
+          DATABASE_URL: "postgresql://postgres:${{ secrets.POSTGRES_PASSWORD }}@localhost:5432/near_you_test"
+        run: |
+          bundle exec rails db:create
+          bundle exec rails db:schema:load
+
+      - name: Run integration tests
+        env:
+          DATABASE_URL: "postgresql://postgres:${{ secrets.POSTGRES_PASSWORD }}@localhost:5432/near_you_test"
+        run: bundle exec rspec spec/integration/ spec/controllers/ spec/requests/
+
+  # Full test suite with coverage
+  test-full:
+    name: Full Test Suite
+    runs-on: ubuntu-latest
+    services:
+      postgres:
+        image: postgres:17-alpine
+        ports:
+          - 5432:5432
+        env:
+          POSTGRES_DB: near_you_test
+          POSTGRES_USER: postgres
+          POSTGRES_PASSWORD: ${{ secrets.POSTGRES_PASSWORD }}
+        options: >-
+          --health-cmd pg_isready
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 5
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Set up Ruby
+        uses: ruby/setup-ruby@v1
+        with:
+          ruby-version: 3.4.1
+          bundler-cache: true
+
+      - name: Set up database
+        env:
+          DATABASE_URL: "postgresql://postgres:${{ secrets.POSTGRES_PASSWORD }}@localhost:5432/near_you_test"
+        run: |
+          bundle exec rails db:create
+          bundle exec rails db:schema:load
+
+      - name: Run full test suite
+        env:
+          DATABASE_URL: "postgresql://postgres:${{ secrets.POSTGRES_PASSWORD }}@localhost:5432/near_you_test"
+        run: bundle exec rspec --format progress
+
+      - name: Upload coverage to Codecov
+        uses: codecov/codecov-action@v5
+        if: success()
+        with:
+          token: ${{ secrets.CODECOV_TOKEN }}
+          file: coverage/lcov.info
+          fail_ci_if_error: false
+
+  # Code review automation
+  pronto:
+    name: Code Review
+    runs-on: ubuntu-latest
+    if: github.event_name == 'pull_request'
+    permissions:
+      contents: read
+      pull-requests: write
+      checks: write
+      statuses: write
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Set up Ruby
+        uses: ruby/setup-ruby@v1
+        with:
+          ruby-version: 3.4.1
+          bundler-cache: true
+
+      - name: Setup pronto
+        run: gem install rugged:1.6.3 pronto pronto-rubocop rubocop-rspec
+
+      - name: Run Pronto
+        env:
+          PRONTO_PULL_REQUEST_ID: ${{ github.event.pull_request.number }}
+          PRONTO_GITHUB_ACCESS_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: pronto run -f text -c origin/${{ github.base_ref }}

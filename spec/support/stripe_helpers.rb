@@ -6,13 +6,6 @@ module StripeHelpers
     allow(AppointmentConfirmationJob).to receive(:perform_now)
     allow(AppointmentReminderJob).to receive_message_chain(:set, :perform_later)
     # Mock successful checkout session creation
-    allow(Stripe::Checkout::Session).to receive(:create).and_return(
-      OpenStruct.new(
-        id: "cs_test_123",
-        url: "https://checkout.stripe.com/pay/cs_test_123",
-        payment_intent: "pi_test_123"
-      )
-    )
 
     # Mock successful account creation
     allow(Stripe::Account).to receive(:create).and_return(
@@ -35,12 +28,14 @@ module StripeHelpers
     )
 
     # Mock checkout session retrieval
-    allow(Stripe::Checkout::Session).to receive(:retrieve).and_return(
-      OpenStruct.new(
+    allow(Stripe::Checkout::Session).to receive_messages(create: OpenStruct.new(
+        id: "cs_test_123",
+        url: "https://checkout.stripe.com/pay/cs_test_123",
+        payment_intent: "pi_test_123"
+      ), retrieve: OpenStruct.new(
         id: "cs_test_123",
         payment_intent: "pi_test_123"
-      )
-    )
+      ))
 
     # Mock payment intent retrieval
     allow(Stripe::PaymentIntent).to receive(:retrieve).and_return(

@@ -57,6 +57,8 @@ group :development, :test do
   gem "rubocop-rspec", require: false
   # This is Static analysis for security vulnerabilities [https://brakemanscanner.org/]
   gem "brakeman", require: false
+  # Bundler audit for security vulnerabilities [https://github.com/rubysec/bundler-audit]
+  gem "bundler-audit", require: false
 
   gem "rspec-rails", "~> 7.1"
   # Generated faker data for testing [https://github.com/faker-ruby/faker]
@@ -94,7 +96,7 @@ gem "kamal", require: false
 gem "language_filter", "~> 0.3.01"
 gem "noticed", "~> 2.5"
 gem "pundit"
-gem "standard", "~> 1.41", ">= 1.41.1"
+# gem "standard", "~> 1.41", ">= 1.41.1"  # Removed due to conflict with RuboCop
 gem "stripe", "~> 13.4", ">= 13.4.1"
 
 gem "health_check"

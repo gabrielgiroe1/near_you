@@ -159,8 +159,12 @@ RSpec.describe "Stripe Payment Flow Integration", type: :request do
         start_time: next_monday.in_time_zone.change(hour: 10, min: 0),
         end_time: next_monday.in_time_zone.change(hour: 11, min: 0))
 
+      # Update appointment_params to use the same Monday date
+      overlapping_params = appointment_params.deep_dup
+      overlapping_params[:appointment][:appointment_date] = next_monday.strftime("%Y-%m-%d")
+
       expect {
-        post "/providers/#{provider.id}/appointments", params: appointment_params
+        post "/providers/#{provider.id}/appointments", params: overlapping_params
       }.not_to change(Appointment, :count)
 
       expect(response).to redirect_to(provider_path(provider))
