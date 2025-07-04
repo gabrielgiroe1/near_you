@@ -96,7 +96,7 @@ gem "kamal", require: false
 gem "language_filter", "~> 0.3.01"
 gem "noticed", "~> 2.5"
 gem "pundit"
-gem "standard", "~> 1.41", ">= 1.41.1"
+# gem "standard", "~> 1.41", ">= 1.41.1"  # Removed due to conflict with RuboCop
 gem "stripe", "~> 13.4", ">= 13.4.1"
 
 gem "health_check"

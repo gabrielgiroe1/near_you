@@ -27,9 +27,6 @@ jobs:
       - name: Run RuboCop
         run: bundle exec rubocop --parallel
 
-      - name: Run Standard
-        run: bundle exec standardrb
-
   security:
     name: Security Analysis
     runs-on: ubuntu-latest
