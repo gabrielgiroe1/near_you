@@ -57,6 +57,8 @@ group :development, :test do
   gem "rubocop-rspec", require: false
   # This is Static analysis for security vulnerabilities [https://brakemanscanner.org/]
   gem "brakeman", require: false
+  # Bundler audit for security vulnerabilities [https://github.com/rubysec/bundler-audit]
+  gem "bundler-audit", require: false
 
   gem "rspec-rails", "~> 7.1"
   # Generated faker data for testing [https://github.com/faker-ruby/faker]
