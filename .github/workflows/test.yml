@@ -8,7 +8,6 @@ on:
 
 env:
   RAILS_ENV: test
-  DATABASE_URL: "postgresql://postgres:postgres@localhost:5432/near_you_test"
 
 jobs:
   # Fast tests - run first to fail fast
@@ -82,11 +81,15 @@ jobs:
           bundler-cache: true
 
       - name: Set up database
+        env:
+          DATABASE_URL: "postgresql://postgres:${{ secrets.POSTGRES_PASSWORD }}@localhost:5432/near_you_test"
         run: |
           bundle exec rails db:create
           bundle exec rails db:schema:load
 
       - name: Run model tests
+        env:
+          DATABASE_URL: "postgresql://postgres:${{ secrets.POSTGRES_PASSWORD }}@localhost:5432/near_you_test"
         run: bundle exec rspec spec/models/
 
   # Component tests (fast)
@@ -119,11 +122,15 @@ jobs:
           bundler-cache: true
 
       - name: Set up database
+        env:
+          DATABASE_URL: "postgresql://postgres:${{ secrets.POSTGRES_PASSWORD }}@localhost:5432/near_you_test"
         run: |
           bundle exec rails db:create
           bundle exec rails db:schema:load
 
       - name: Run component tests
+        env:
+          DATABASE_URL: "postgresql://postgres:${{ secrets.POSTGRES_PASSWORD }}@localhost:5432/near_you_test"
         run: bundle exec rspec spec/components/
 
   # Integration tests (medium speed)
@@ -156,11 +163,15 @@ jobs:
           bundler-cache: true
 
       - name: Set up database
+        env:
+          DATABASE_URL: "postgresql://postgres:${{ secrets.POSTGRES_PASSWORD }}@localhost:5432/near_you_test"
         run: |
           bundle exec rails db:create
           bundle exec rails db:schema:load
 
       - name: Run integration tests
+        env:
+          DATABASE_URL: "postgresql://postgres:${{ secrets.POSTGRES_PASSWORD }}@localhost:5432/near_you_test"
         run: bundle exec rspec spec/integration/ spec/controllers/ spec/requests/
 
   # Full test suite with coverage
@@ -193,11 +204,15 @@ jobs:
           bundler-cache: true
 
       - name: Set up database
+        env:
+          DATABASE_URL: "postgresql://postgres:${{ secrets.POSTGRES_PASSWORD }}@localhost:5432/near_you_test"
         run: |
           bundle exec rails db:create
           bundle exec rails db:schema:load
 
       - name: Run full test suite
+        env:
+          DATABASE_URL: "postgresql://postgres:${{ secrets.POSTGRES_PASSWORD }}@localhost:5432/near_you_test"
         run: bundle exec rspec --format progress
 
       - name: Upload coverage to Codecov
