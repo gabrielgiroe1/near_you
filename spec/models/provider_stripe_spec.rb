@@ -146,7 +146,7 @@ RSpec.describe Provider, type: :model do
       let(:user) { create(:user) }
 
       context "when provider has no Stripe account" do
-        it "should block appointment creation in controller" do
+        it "blocks appointment creation in controller" do
           # This is tested in the controller spec, but the model allows it
           appointment = build(:appointment, provider: provider, user: user)
           expect(appointment).to be_valid # Model doesn't enforce this constraint
