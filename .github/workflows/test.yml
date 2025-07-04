@@ -229,6 +229,7 @@ jobs:
       contents: read
       pull-requests: write
       checks: write
+      statuses: write
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
@@ -248,4 +249,4 @@ jobs:
         env:
           PRONTO_PULL_REQUEST_ID: ${{ github.event.pull_request.number }}
           PRONTO_GITHUB_ACCESS_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        run: pronto run -f github_status github_pr -c origin/${{ github.base_ref }}
+        run: pronto run -f text -c origin/${{ github.base_ref }}
