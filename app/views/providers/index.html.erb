@@ -26,10 +26,10 @@
       <h4 class="text-lg font-semibold text-gray-800 mt-4"><%= category %></h4>
 
       <!-- Interest Buttons -->
-      <div class="flex flex-wrap gap-4"> <!-- ✨ spacing added here -->
+      <div class="flex flex-wrap gap-4">
         <% interests.each do |interest| %>
-          <div class="inline-flex items-center px-4 py-2 bg-[#F5F3FF] text-sm font-medium text-gray-800 border border-gray-200 rounded-full shadow-sm hover:bg-[#e8ecf7] transition duration-200 cursor-pointer">
-            <%= inline_svg_tag("check.svg", class: "w-4 h-4 mr-2 text-indigo-400") %>
+          <div class="inline-flex items-center px-4 py-2 bg-blue-50 text-sm font-medium text-gray-800 border border-gray-200 rounded-full shadow-sm hover:bg-blue-100 transition duration-200 cursor-pointer">
+            <%= inline_svg_tag("check.svg", class: "w-4 h-4 mr-2 text-blue-400") %>
             <span><%= interest %></span>
           </div>
         <% end %>
