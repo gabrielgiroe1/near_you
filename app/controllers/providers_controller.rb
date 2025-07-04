@@ -16,7 +16,7 @@ class ProvidersController < ApplicationController
 
       @providers = Provider.includes(:user)
 
-      @providers = apply_filters(@providers, params)
+      @pagy, @providers = pagy(apply_filters(@providers, params))
 
       @service_types = params[:category].present? ? Provider.categories[params[:category]] : Provider.distinct.pluck(:service_type)
 

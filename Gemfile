@@ -108,3 +108,4 @@ gem "thruster", require: false
 gem "sentry-rails", "~> 5.24"
 gem "sentry-ruby", "~> 5.24"
 gem "view_component", "~> 3.23", ">= 3.23.2"
+gem "pagy", "~> 9.1"
