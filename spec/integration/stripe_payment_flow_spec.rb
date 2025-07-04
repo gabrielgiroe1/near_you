@@ -22,7 +22,6 @@ RSpec.describe "Stripe Payment Flow Integration", type: :request do
   end
 
   describe "Complete appointment booking and payment flow" do
-
     it "completes full payment lifecycle" do
       # Step 1: Create appointment and redirect to Stripe
       expect {

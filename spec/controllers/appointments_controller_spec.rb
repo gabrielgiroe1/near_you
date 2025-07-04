@@ -34,7 +34,6 @@ RSpec.describe AppointmentsController, type: :controller do
     end
   end
 
-
   describe "POST #create" do
     let(:appointment_params) do
       {
@@ -107,8 +106,8 @@ RSpec.describe AppointmentsController, type: :controller do
     context "when appointment overlaps with existing booking" do
       let(:next_monday) { Date.tomorrow.beginning_of_week(:monday) + 1.week }
       let!(:existing_appointment) do
-        create(:appointment, :confirmed, 
-               provider: provider, 
+        create(:appointment, :confirmed,
+               provider: provider,
                start_time: next_monday.in_time_zone.change(hour: 10, min: 0),
                end_time: next_monday.in_time_zone.change(hour: 11, min: 0))
       end
@@ -176,7 +175,7 @@ RSpec.describe AppointmentsController, type: :controller do
 
       it "cancels without processing refund again" do
         expect(Stripe::Refund).not_to receive(:create)
-        
+
         get :cancel, params: { id: appointment.id }
         expect(response).to redirect_to(appointments_path)
         expect(flash[:notice]).to include("cancelled")
@@ -208,7 +207,7 @@ RSpec.describe AppointmentsController, type: :controller do
 
       it "cancels without refund processing" do
         expect(Stripe::Refund).not_to receive(:create)
-        
+
         get :cancel, params: { id: appointment.id }
         expect(appointment.reload.status).to eq("cancelled")
         expect(response).to redirect_to(appointments_path)

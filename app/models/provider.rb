@@ -58,8 +58,6 @@ class Provider < ApplicationRecord
     entertainer: "Entertainer",
 
     # Specialty & Miscellaneous
-    astrologer: "Astrologer",
-    tarot_reader: "Tarot Reader",
     translator: "Translator",
     pet_groomer: "Pet Groomer",
     tailor: "Tailor"
@@ -92,7 +90,7 @@ class Provider < ApplicationRecord
         "DJ", "Caterer", "Entertainer"
       ],
       "Specialty & Miscellaneous" => [
-        "Astrologer", "Tarot Reader", "Translator",
+        "Translator",
         "Pet Groomer", "Tailor"
       ]
     }

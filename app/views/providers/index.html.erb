@@ -16,14 +16,25 @@
     </div>
   <% end %>
 <% else %>
-  <div class="text-center py-12">
-    <h1 class="text-3xl font-semibold mb-6">Welcome to NearYou</h1>
-    <p class="text-lg mb-8">Find and book local service providers</p>
-    <div class="space-x-4">
-      <%= link_to "Sign In", new_user_session_path, 
-          class: "bg-blue-500 hover:bg-blue-700 text-white font-bold py-3 px-6 rounded-lg transition duration-300" %>
-      <%= link_to "Sign Up", new_user_registration_path, 
-          class: "bg-green-500 hover:bg-green-700 text-white font-bold py-3 px-6 rounded-lg transition duration-300" %>
+<!-- Interests -->
+<div class="space-y-10">
+  <h3 class="text-2xl font-bold text-gray-900">Services Offered</h3>
+
+  <% Provider.categories.each do |category, interests| %>
+    <div class="space-y-4">
+      <!-- Category Title -->
+      <h4 class="text-lg font-semibold text-gray-800 mt-4"><%= category %></h4>
+
+      <!-- Interest Buttons -->
+      <div class="flex flex-wrap gap-4">
+        <% interests.each do |interest| %>
+          <div class="inline-flex items-center px-4 py-2 bg-blue-50 text-sm font-medium text-gray-800 border border-gray-200 rounded-full shadow-sm hover:bg-blue-100 transition duration-200 cursor-pointer">
+            <%= inline_svg_tag("check.svg", class: "w-4 h-4 mr-2 text-blue-400") %>
+            <span><%= interest %></span>
+          </div>
+        <% end %>
+      </div>
     </div>
-  </div>
+  <% end %>
+</div>
 <% end %>

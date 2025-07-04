@@ -1,7 +1,7 @@
 inherit_gem:
   rubocop-rails-omakase: rubocop.yml
 
-require:
+plugins:
   - rubocop-rspec
 
 AllCops:
@@ -182,5 +182,5 @@ Style/HashSyntax:
   EnforcedStyle: ruby19_no_mixed_keys
   SupportedStyles:
     - ruby19_no_mixed_keys
-  AllowMixedKeys: false
-  EnforcedStringStyle: always_rocket
+  UseHashRocketsWithSymbolValues: false
+  PreferHashRocketsForNonAlnumEndingSymbols: false
