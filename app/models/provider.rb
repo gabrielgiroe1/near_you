@@ -66,30 +66,30 @@ class Provider < ApplicationRecord
   # rubocop:disable Style/HashSyntax
   def self.categories
     {
-      "Health & Wellness" => [
+      :"Health & Wellness" => [
         "Masseur", "Personal Trainer", "Nutritionist",
         "Yoga Instructor", "Chiropractor", "Physical Therapist"
       ],
-      "Beauty & Grooming" => [
+      :"Beauty & Grooming" => [
         "Hairstylist", "Makeup Artist", "Nail Technician",
         "Eyelash Technician", "Facial Expert", "Tanning Specialist",
         "Barber"
       ],
-      "Home Services" => [
+      :"Home Services" => [
         "Electrician", "Plumber", "Gardener", "House Cleaner",
         "Handyman", "Painter", "Window Cleaner"
       ],
-      "Education" => [
+      :Education => [
         "Tutor", "Music Teacher", "Language Coach",
         "Coding Instructor", "Art Instructor"
       ],
-      "Creative Services" => [
+      :"Creative Services" => [
         "Photographer", "Videographer", "Event Decorator", "Florist"
       ],
-      "Event Services" => [
+      :"Event Services" => [
         "DJ", "Caterer", "Entertainer"
       ],
-      "Specialty & Miscellaneous" => [
+      :"Specialty & Miscellaneous" => [
         "Translator",
         "Pet Groomer", "Tailor"
       ]
