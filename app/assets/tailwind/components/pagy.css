@@ -1,5 +1,6 @@
 .pagy {
-  @apply flex gap-1 font-semibold text-sm text-gray-500;
+  @apply flex font-semibold text-sm text-gray-500;
+  gap: 0.25rem; /* equivalent to gap-1 in Tailwind */
 }
 
 .pagy a:not(.gap) {

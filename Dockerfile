@@ -32,13 +32,8 @@ FROM base AS build
 # Install packages needed to build gems
 RUN apt-get update -qq && \
     apt-get install --no-install-recommends -y \
-    imagemagick build-essential git libpq-dev pkg-config \
-    nodejs npm && \
+    imagemagick build-essential git libpq-dev pkg-config && \
     rm -rf /var/lib/apt/lists /var/cache/apt/archives
-
-# Install required npm packages
-COPY package.json postcss.config.js ./
-RUN npm install
 
 # Install application gems
 COPY Gemfile Gemfile.lock ./
