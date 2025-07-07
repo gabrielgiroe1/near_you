@@ -1,30 +1,28 @@
 .pagy {
-  @apply flex font-semibold text-sm text-gray-500;
-  gap: 0.25rem; /* equivalent to gap-1 in Tailwind */
-}
+  @apply flex space-x-1 font-semibold text-sm text-gray-500;
 
-.pagy a:not(.gap) {
-  @apply block rounded-lg bg-gray-200;
-  padding: 0.25rem 0.75rem;
-}
+  a:not(.gap) {
+    @apply block rounded-lg px-3 py-1 bg-gray-200;
 
-.pagy a:not(.gap):hover {
-  @apply bg-gray-300;
-}
+    &:hover {
+      @apply bg-gray-300;
+    }
 
-.pagy a:not(.gap):not([href]) {
-  @apply text-gray-300 bg-gray-100 cursor-default;
-}
+    &:not([href]) {
+      /* disabled links */
+      @apply text-gray-300 bg-gray-100 cursor-default;
+    }
 
-.pagy a:not(.gap).current {
-  @apply text-white bg-gray-400;
-}
+    &.current {
+      @apply text-white bg-gray-400;
+    }
+  }
 
-.pagy label {
-  @apply inline-block whitespace-nowrap bg-gray-200 rounded-lg;
-  padding: 0.125rem 0.75rem;
-}
+  label {
+    @apply inline-block whitespace-nowrap bg-gray-200 rounded-lg px-3 py-0.5;
 
-.pagy label input {
-  @apply bg-gray-100 border-none rounded-md;
+    input {
+      @apply bg-gray-100 border-none rounded-md;
+    }
+  }
 }
