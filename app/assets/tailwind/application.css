@@ -3,7 +3,5 @@
 @source "../../../app/helpers/**/*.rb";
 @source "../../../app/javascript/**/*.js";
 @source "../../../app/views/**/*";
-@source "../../../app/components/**/*";
-@source "./components/*.css";
 
 @import "./components/pagy.css";
