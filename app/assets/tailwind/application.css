@@ -7,3 +7,11 @@
 @source "./components/*.css";
 
 @import "./components/pagy.css";
+
+.test-nesting {
+  color: red;
+
+  a {
+    @apply text-blue-500;
+  }
+}
