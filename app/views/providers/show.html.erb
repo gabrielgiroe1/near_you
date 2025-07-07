@@ -20,7 +20,7 @@
       <% end %>
     </div>
     <!-- Slider indicators -->
-    <div class="absolute z-30 flex -translate-x-1/2 bottom-5 left-1/2 space-x-3 rtl:space-x-reverse">
+    <div class="absolute z-30 flex -translate-x-1/2 bottom-5 left-1/2 gap-3">
       <% @provider.images.each_with_index do |image, index| %>
         <button type="button" class="w-3 h-3 rounded-full" aria-current="<%= index == 0 ? 'true' : 'false' %>" aria-label="Slide <%= index + 1 %>" data-carousel-slide-to="<%= index %>"></button>
       <% end %>
@@ -43,7 +43,7 @@
       </span>
     </button>
   </div>
-  <div class="mt-6 flex items-center space-x-2" data-controller="copy">
+  <div class="mt-6 flex items-center gap-2" data-controller="copy">
     <%= image_tag "copy.svg", alt: "Copy Link", class: "w-4 h-4 cursor-pointer", data: { action: "click->copy#copy" } %>
   </div>
   <div class="grid grid-cols-2 gap-4 mb-6">
@@ -147,7 +147,7 @@
                 Would you like to book this appointment with <%= @provider.name %>?
               </p>
             </div>
-            <div class="mt-6 flex justify-end space-x-3">
+            <div class="mt-6 flex justify-end gap-3">
               <button type="button"
                 class="bg-gray-200 text-gray-700 px-4 py-2 rounded hover:bg-gray-300"
                 data-action="click->appointment-calendar#hideConfirmation">
