@@ -4,7 +4,8 @@
 }
 
 .pagy a:not(.gap) {
-  @apply block rounded-lg px-3 py-1 bg-gray-200;
+  @apply block rounded-lg bg-gray-200;
+  padding: 0.25rem 0.75rem;
 }
 
 .pagy a:not(.gap):hover {
@@ -20,7 +21,8 @@
 }
 
 .pagy label {
-  @apply inline-block whitespace-nowrap bg-gray-200 rounded-lg px-3 py-0.5;
+  @apply inline-block whitespace-nowrap bg-gray-200 rounded-lg;
+  padding: 0.125rem 0.75rem;
 }
 
 .pagy label input {
