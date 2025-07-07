@@ -1,44 +1,28 @@
 .pagy {
-  display: flex;
-  gap: 0.25rem;
-  font-weight: 600;
-  font-size: 0.875rem;
-  color: #6b7280;
+  @apply flex space-x-1 font-semibold text-sm text-gray-500;
 
   a:not(.gap) {
-    display: block;
-    border-radius: 0.5rem;
-    padding: 0.25rem 0.75rem;
-    background-color: #e5e7eb;
+    @apply block rounded-lg px-3 py-1 bg-gray-200;
 
     &:hover {
-      background-color: #d1d5db;
+      @apply bg-gray-300;
     }
 
     &:not([href]) {
       /* disabled links */
-      color: #d1d5db;
-      background-color: #f3f4f6;
-      cursor: default;
+      @apply text-gray-300 bg-gray-100 cursor-default;
     }
 
     &.current {
-      color: #ffffff;
-      background-color: #9ca3af;
+      @apply text-white bg-gray-400;
     }
   }
 
   label {
-    display: inline-block;
-    white-space: nowrap;
-    background-color: #e5e7eb;
-    border-radius: 0.5rem;
-    padding: 0.125rem 0.75rem;
+    @apply inline-block whitespace-nowrap bg-gray-200 rounded-lg px-3 py-0.5;
 
     input {
-      background-color: #f3f4f6;
-      border: none;
-      border-radius: 0.375rem;
+      @apply bg-gray-100 border-none rounded-md;
     }
   }
 }
