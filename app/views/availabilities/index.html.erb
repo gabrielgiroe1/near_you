@@ -3,7 +3,7 @@
   <div class="mb-8">
     <h3 class="text-lg font-semibold mb-4">Add New Availability</h3>
     <% existing_availability = @provider.availabilities.find_by(day_of_week: params[:day_of_week]) %>
-    <%= form_with(model: [@provider, existing_availability || Availability.new], local: true, class: "space-y-4") do |f| %>
+    <%= form_with(model: [@provider, existing_availability || Availability.new], local: true, class: "flex flex-col gap-4") do |f| %>
       <div class="grid grid-cols-1 md:grid-cols-4 gap-4">
         <div>
           <%= f.label :day_of_week, class: "block text-sm font-medium text-gray-700" %>

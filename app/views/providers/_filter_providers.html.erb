@@ -6,7 +6,7 @@
   </button>
   <div id="filter-dropdown" class="hidden absolute mt-2 w-64 bg-white rounded-lg shadow-lg z-20">
     <%= form_with url: providers_path, method: :get, local: true, id: "filters-form" do |form| %>
-      <div class="p-4 space-y-4">
+      <div class="p-4 flex flex-col gap-4">
         <!-- Filter by Category -->
         <%= render "shared/category_service_type",
           form: form,
