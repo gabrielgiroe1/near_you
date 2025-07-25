@@ -1,4 +1,17 @@
 @import "tailwindcss";
+
+/* Add theme tokens here */
+@theme {
+  --spacing-xs: 0.25rem;
+  /* old gap-1 */
+  --spacing-sm: 0.5rem;
+  /* old gap-2 */
+  --spacing-md: 1rem;
+  /* old gap-4 */
+  --spacing-lg: 1.5rem;
+  /* optional */
+}
+
 @source "../../../public/*.html";
 @source "../../../app/helpers/**/*.rb";
 @source "../../../app/javascript/**/*.js";
