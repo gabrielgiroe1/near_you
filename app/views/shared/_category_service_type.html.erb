@@ -1,22 +1,22 @@
 <div data-controller="category-service" data-category-service-frame-id-value="<%= h(frame_id) %>">
   <div>
     <%= form.label :category, "Category", class: "block text-sm font-medium text-gray-700" %>
-    <%= form.select :category, 
-        Provider.categories.keys, 
-        { prompt: "Select a category", selected: selected_category }, 
-        { 
-          class: "mt-1 block w-full rounded-md border-gray-300 shadow-sm",
+    <%= form.select :category,
+        Provider.categories.keys,
+        { prompt: "Select a category", selected: selected_category },
+        {
+          class: "mt-1 block w-full rounded-md border-gray-300 shadow-xs",
           data: { action: "change->category-service#fetchServiceTypes", "category-service-target": "categorySelect" }
         } %>
   </div>
   <turbo-frame id="<%= h(frame_id) %>">
     <div>
       <%= form.label :service_type, "Service Type", class: "block text-sm font-medium text-gray-700 mt-4" %>
-      <%= form.select :service_type, 
+      <%= form.select :service_type,
           options_for_select(service_types || [], selected_service_type),
-          { prompt: "Select a Service Type" }, 
-          { 
-            class: "mt-1 block w-full rounded-md border-gray-300 shadow-sm",
+          { prompt: "Select a Service Type" },
+          {
+            class: "mt-1 block w-full rounded-md border-gray-300 shadow-xs",
             data: { "category-service-target": "serviceSelect" }
           } %>
     </div>

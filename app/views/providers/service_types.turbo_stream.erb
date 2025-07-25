@@ -3,7 +3,7 @@
     <turbo-frame id="<%= @frame_id %>">
       <div>
         <label for="service_type" class="block text-sm font-medium text-gray-700 mt-4">Service Type</label>
-        <select name="provider[service_type]" id="service_type" class="form-select w-full mt-1 rounded-md border-gray-300 shadow-sm">
+        <select name="provider[service_type]" id="service_type" class="form-select w-full mt-1 rounded-md border-gray-300 shadow-xs">
           <option value="">Select a Service Type</option>
           <% @service_types.each do |service_type| %>
             <option value="<%= service_type %>"><%= service_type %></option>
