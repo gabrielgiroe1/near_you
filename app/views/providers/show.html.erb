@@ -20,7 +20,7 @@
       <% end %>
     </div>
     <!-- Slider indicators -->
-    <div class="absolute z-30 flex -translate-x-1/2 bottom-5 left-1/2 gap-3">
+    <div class="absolute z-30 flex -translate-x-1/2 bottom-5 left-1/2 gap-sm">
       <% @provider.images.each_with_index do |image, index| %>
         <button type="button" class="w-3 h-3 rounded-full" aria-current="<%= index == 0 ? 'true' : 'false' %>" aria-label="Slide <%= index + 1 %>" data-carousel-slide-to="<%= index %>"></button>
       <% end %>
@@ -43,10 +43,10 @@
       </span>
     </button>
   </div>
-  <div class="mt-6 flex items-center gap-2" data-controller="copy">
+  <div class="mt-6 flex items-center gap-xs" data-controller="copy">
     <%= image_tag "copy.svg", alt: "Copy Link", class: "w-4 h-4 cursor-pointer", data: { action: "click->copy#copy" } %>
   </div>
-  <div class="grid grid-cols-2 gap-4 mb-6">
+  <div class="grid grid-cols-2 gap-md mb-6">
     <div class="text-gray-600">
       <p class="font-semibold">Location:</p>
       <p><%= @provider.location %></p>
@@ -69,14 +69,14 @@
     <p class="text-gray-600"><%= @provider.bio %></p>
   </div>
   <% if current_user == @provider.user %>
-    <div class="flex flex-col gap-4">
+    <div class="flex flex-col gap-md">
       <% if @provider.stripe_account_id.nil? %>
         <div class="text-red-600">
           To receive payments, you need to set up your Stripe account
           <input type="hidden" name="authenticity_token" value="<%=form_authenticity_token%>">
-          <%= button_to "Set up Stripe Account", 
+          <%= button_to "Set up Stripe Account",
               stripe_connect_index_path(provider_id: @provider.id),
-              method: :post, 
+              method: :post,
               class: "mt-2 mb-2 bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded",
               data: { turbo: false } %>
         </div>
@@ -147,7 +147,7 @@
                 Would you like to book this appointment with <%= @provider.name %>?
               </p>
             </div>
-            <div class="mt-6 flex justify-end gap-3">
+            <div class="mt-6 flex justify-end gap-sm">
               <button type="button"
                 class="bg-gray-200 text-gray-700 px-4 py-2 rounded hover:bg-gray-300"
                 data-action="click->appointment-calendar#hideConfirmation">

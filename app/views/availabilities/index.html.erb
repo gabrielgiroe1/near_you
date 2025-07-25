@@ -3,35 +3,35 @@
   <div class="mb-8">
     <h3 class="text-lg font-semibold mb-4">Add New Availability</h3>
     <% existing_availability = @provider.availabilities.find_by(day_of_week: params[:day_of_week]) %>
-    <%= form_with(model: [@provider, existing_availability || Availability.new], local: true, class: "flex flex-col gap-4") do |f| %>
-      <div class="grid grid-cols-1 md:grid-cols-4 gap-4">
+    <%= form_with(model: [@provider, existing_availability || Availability.new], local: true, class: "flex flex-col gap-md") do |f| %>
+      <div class="grid grid-cols-1 md:grid-cols-4 gap-md">
         <div>
           <%= f.label :day_of_week, class: "block text-sm font-medium text-gray-700" %>
-          <%= f.select :day_of_week, 
+          <%= f.select :day_of_week,
           @days_of_week,
           { selected: existing_availability&.day_of_week, prompt: "Select day" },
           class: "mt-1 block w-full rounded-md border-gray-300 shadow-sm" %>
         </div>
         <div>
           <%= f.label :start_time, class: "block text-sm font-medium text-gray-700" %>
-          <%= f.time_field :start_time, 
-          value: existing_availability&.start_time, 
+          <%= f.time_field :start_time,
+          value: existing_availability&.start_time,
           class: "mt-1 block w-full rounded-md border-gray-300 shadow-sm" %>
         </div>
         <div>
           <%= f.label :end_time, class: "block text-sm font-medium text-gray-700" %>
-          <%= f.time_field :end_time, 
-          value: existing_availability&.end_time, 
+          <%= f.time_field :end_time,
+          value: existing_availability&.end_time,
           class: "mt-1 block w-full rounded-md border-gray-300 shadow-sm" %>
         </div>
         <div>
           <%= f.label :session_duration, "Session Duration (minutes)", class: "block text-sm font-medium text-gray-700" %>
-          <%= f.number_field :session_duration, 
+          <%= f.number_field :session_duration,
         value: existing_availability&.session_duration || 60,
         class: "mt-1 block w-full rounded-md border-gray-300 shadow-sm" %>
         </div>
         <div class="flex items-end">
-          <%= f.submit existing_availability ? "Update Availability" : "Add Availability", 
+          <%= f.submit existing_availability ? "Update Availability" : "Add Availability",
           class: "w-full bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded" %>
         </div>
       </div>
@@ -58,8 +58,8 @@
               <td class="px-6 py-4 whitespace-nowrap"><%= availability.end_time.strftime("%I:%M %p") %></td>
               <td class="px-6 py-4 whitespace-nowrap"><%= availability.session_duration %></td>
               <td class="px-6 py-4 whitespace-nowrap">
-                <%= button_to "Remove", 
-                    provider_availability_path(@provider, availability), 
+                <%= button_to "Remove",
+                    provider_availability_path(@provider, availability),
                     method: :delete,
                     class: "text-red-600 hover:text-red-900",
                     data: { confirm: "Are you sure?" } %>

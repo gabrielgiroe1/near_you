@@ -1,7 +1,7 @@
 <% if user_signed_in? %>
   <% if current_user.user? %>
     <h2 class="text-4xl font-semibold mb-6">Browse Providers</h2>
-    <div class="flex flex-wrap gap-6 mb-8">
+    <div class="flex flex-wrap gap-md mb-8">
       <!-- Filter Providers -->
       <div class="w-full lg:w-1/4 xl:w-1/5">
         <%= render partial: "filter_providers", locals: { providers: @providers } %>
@@ -18,16 +18,16 @@
   <% end %>
 <% else %>
 <!-- Interests -->
-<div class="flex flex-col gap-10">
+<div class="flex flex-col gap-lg">
   <h3 class="text-2xl font-bold text-gray-900">Services Offered</h3>
 
   <% Provider.categories.each do |category, interests| %>
-    <div class="flex flex-col gap-4">
+    <div class="flex flex-col gap-md">
       <!-- Category Title -->
       <h4 class="text-lg font-semibold text-gray-800 mt-4"><%= category %></h4>
 
       <!-- Interest Buttons -->
-      <div class="flex flex-wrap gap-4">
+      <div class="flex flex-wrap gap-md">
         <% interests.each do |interest| %>
           <div class="inline-flex items-center px-4 py-2 bg-blue-50 text-sm font-medium text-gray-800 border border-gray-200 rounded-full shadow-sm hover:bg-blue-100 transition duration-200 cursor-pointer">
             <%= inline_svg_tag("check.svg", class: "w-4 h-4 mr-2 text-blue-400") %>

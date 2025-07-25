@@ -1,6 +1,6 @@
 <% @providers&.each do |provider| %>
   <%= link_to provider_path(provider), class:"provider-card-link", data: {turbo: false} do %>
-    <div class="provider-card flex items-center gap-4 p-4 border rounded-lg mb-4 cursor-pointer">
+    <div class="provider-card flex items-center gap-md p-4 border rounded-lg mb-4 cursor-pointer">
       <% if provider.profile_picture.attached? %>
         <%= image_tag provider.profile_picture, class: "rounded-full w-12 h-12 object-cover" %>
       <% else %>
