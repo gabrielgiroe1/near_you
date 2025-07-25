@@ -20,7 +20,7 @@
             <% if user_signed_in? %>
               <!-- Main Navigation Menu -->
               <div class="relative" data-controller="dropdown">
-                <button class="flex items-center gap-1 text-gray-700 hover:text-gray-900" data-action="click->dropdown#toggle">
+                <button class="flex items-center gap-2 text-gray-700 hover:text-gray-900" data-action="click->dropdown#toggle">
                   <span><%= current_user.name || current_user.email %></span>
                   <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
