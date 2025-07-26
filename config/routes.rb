@@ -1,4 +1,6 @@
 Rails.application.routes.draw do
+  get "favorites/create"
+  get "favorites/destroy"
   mount MissionControl::Jobs::Engine, at: "/jobs"
 
   get "up", to: "rails/health#show", as: :rails_health_check
@@ -11,7 +13,10 @@ Rails.application.routes.draw do
 
   root "providers#index"
 
+  get :favorites, to: "favorites#index", as: :favorites
   resources :providers, only: [:index, :show, :new, :create, :edit, :update] do
+    post :favorite, to: "favorites#create", as: :favorite
+    delete :unfavorite, to: "favorites#destroy", as: :unfavorite
     collection do
       get :service_types
     end

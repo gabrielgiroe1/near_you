@@ -99,13 +99,14 @@
   <% end %>
   <div class="flex justify-between items-center mb-8">
     <% if current_user == @provider.user %>
-      <%= link_to "Edit Profile", edit_provider_path(@provider), 
+      <%= link_to "Edit Profile", edit_provider_path(@provider),
           class: "bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded" %>
-      <%= link_to "Manage Availability", 
-          provider_availabilities_path(@provider), 
+      <%= link_to "Manage Availability",
+          provider_availabilities_path(@provider),
           class: "bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded" %>
     <% else %>
       <div data-controller="appointment-calendar" data-appointment-calendar-provider-id-value="<%= @provider.id %>">
+        <%= render "favorites/favorite_button", provider: @provider %>
         <% if @provider.availabilities.any? { |availability| availability.available? } %>
           <button type="button"
           class="bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded"

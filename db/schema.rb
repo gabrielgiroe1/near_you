@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.0].define(version: 2025_06_29_094245) do
+ActiveRecord::Schema[8.0].define(version: 2025_07_25_192304) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pg_catalog.plpgsql"
 
@@ -70,6 +70,16 @@ ActiveRecord::Schema[8.0].define(version: 2025_06_29_094245) do
     t.integer "session_duration", default: 60, null: false
     t.index ["provider_id", "day_of_week"], name: "index_provider_day_of_week", unique: true
     t.index ["provider_id"], name: "index_availabilities_on_provider_id"
+  end
+
+  create_table "favorites", force: :cascade do |t|
+    t.bigint "user_id", null: false
+    t.bigint "provider_id", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["provider_id"], name: "index_favorites_on_provider_id"
+    t.index ["user_id", "provider_id"], name: "index_favorites_on_user_id_and_provider_id", unique: true
+    t.index ["user_id"], name: "index_favorites_on_user_id"
   end
 
   create_table "noticed_events", force: :cascade do |t|
@@ -158,6 +168,8 @@ ActiveRecord::Schema[8.0].define(version: 2025_06_29_094245) do
   add_foreign_key "appointments", "providers"
   add_foreign_key "appointments", "users"
   add_foreign_key "availabilities", "providers"
+  add_foreign_key "favorites", "providers"
+  add_foreign_key "favorites", "users"
   add_foreign_key "providers", "users"
   add_foreign_key "review_responses", "providers"
   add_foreign_key "review_responses", "reviews"
