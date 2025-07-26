@@ -8,7 +8,7 @@
 
     <% if @favorites.any? %>
       <!-- Simple Stats -->
-      <div class="flex gap-8 mb-12 text-sm text-gray-600">
+      <div id="favorites_stats" class="flex gap-8 mb-12 text-sm text-gray-600">
         <div><span class="font-medium text-gray-900"><%= @favorites.count %></span> favorites&nbsp;</div>
         <div><span class="font-medium text-gray-900"><%= current_user.appointments.joins(:provider).where(providers: { id: @favorites.pluck(:provider_id) }).count %></span> total appointments</div>
       </div>
@@ -16,46 +16,48 @@
       <!-- Clean Provider Cards -->
       <div class="space-y-6 mt-4">
         <% @favorites.each do |favorite| %>
-          <% provider = Provider.find(favorite.provider_id) %>
-          <% appointments_count = current_user.appointments.where(provider: provider).count %>
-          <div class="border border-gray-200 rounded-lg p-6 hover:border-gray-300 transition-colors mb-4">
-            <div class="flex items-start justify-between">
-              <!-- Provider Info -->
-              <div class="flex items-center gap-4">
-                <div class="w-12 h-12 bg-gray-100 rounded-full flex items-center justify-center text-lg font-medium text-gray-700">
-                  <%= provider.name.first.upcase %>
+          <turbo-frame id="favorite_button_<%= favorite.id %>">
+            <div id="favorite_<%= favorite.id %>" class="border border-gray-200 rounded-lg p-6 hover:border-gray-300 transition-colors mb-4">
+            <% provider = Provider.find(favorite.provider_id) %>
+            <% appointments_count = current_user.appointments.where(provider: provider).count %>
+              <div class="flex items-start justify-between">
+                <!-- Provider Info -->
+                <div class="flex items-center gap-4">
+                  <div class="w-12 h-12 bg-gray-100 rounded-full flex items-center justify-center text-lg font-medium text-gray-700">
+                    <%= provider.name.first.upcase %>
+                  </div>
+                  <div>
+                    <h3 class="text-lg font-medium text-gray-900"><%= provider.name %></h3>
+                    <p class="text-gray-600 capitalize"><%= provider.service_type.humanize %></p>
+                    <% if provider.rating.present? %>
+                      <div class="flex items-center gap-1 mt-1">
+                        <%= inline_svg_tag("solid/star.svg", class: "w-4 h-4 text-yellow-500") %>
+                        <span class="text-sm text-gray-700"><%= provider.rating %></span>
+                      </div>
+                    <% end %>
+                  </div>
                 </div>
-                <div>
-                  <h3 class="text-lg font-medium text-gray-900"><%= provider.name %></h3>
-                  <p class="text-gray-600 capitalize"><%= provider.service_type.humanize %></p>
-                  <% if provider.rating.present? %>
-                    <div class="flex items-center gap-1 mt-1">
-                      <%= inline_svg_tag("solid/star.svg", class: "w-4 h-4 text-yellow-500") %>
-                      <span class="text-sm text-gray-700"><%= provider.rating %></span>
-                    </div>
+
+                <!-- Provider Details -->
+                <div class="text-right text-sm">
+                  <div class="text-gray-600 mb-1"><%= provider.experience %> experience</div>
+                  <div class="font-medium text-gray-900 mb-1"><%= number_to_currency(provider.hourly_rate) %>/hr</div>
+                  <div class="text-gray-600 mb-1"><%= provider.location %></div>
+                  <div class="text-blue-600">
+                    <%= appointments_count %> <%= appointments_count == 1 ? 'appointment' : 'appointments' %>
+                  </div>
+                </div>
+
+                <!-- Actions -->
+                <div class="flex items-center gap-3 ml-6">
+                  <%= link_to provider_path(provider), class: "px-4 py-2 text-sm rounded-md hover:bg-gray-800 transition-colors" do %>
+                    View Profile
                   <% end %>
+                  <%= render "favorites/favorite_button", provider: provider %>
                 </div>
-              </div>
-
-              <!-- Provider Details -->
-              <div class="text-right text-sm">
-                <div class="text-gray-600 mb-1"><%= provider.experience %> experience</div>
-                <div class="font-medium text-gray-900 mb-1"><%= number_to_currency(provider.hourly_rate) %>/hr</div>
-                <div class="text-gray-600 mb-1"><%= provider.location %></div>
-                <div class="text-blue-600">
-                  <%= appointments_count %> <%= appointments_count == 1 ? 'appointment' : 'appointments' %>
-                </div>
-              </div>
-
-              <!-- Actions -->
-              <div class="flex items-center gap-3 ml-6">
-                <%= link_to provider_path(provider), class: "px-4 py-2 text-sm rounded-md hover:bg-gray-800 transition-colors" do %>
-                  View Profile
-                <% end %>
-                <%= render "favorites/favorite_button", provider: provider %>
               </div>
             </div>
-          </div>
+          </turbo-frame>
         <% end %>
       </div>
     <% else %>
