@@ -50,7 +50,7 @@
 
                 <!-- Actions -->
                 <div class="flex items-center gap-3 ml-6">
-                  <%= link_to provider_path(provider), class: "px-4 py-2 text-sm rounded-md hover:bg-gray-800 transition-colors" do %>
+                  <%= link_to provider_path(provider), data: {turbo_frame: "_top"}, class: "px-4 py-2 text-sm rounded-md hover:bg-gray-800 transition-colors" do %>
                     View Profile
                   <% end %>
                   <%= render "favorites/favorite_button", provider: provider %>
