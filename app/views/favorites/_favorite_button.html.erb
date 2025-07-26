@@ -1,0 +1,19 @@
+<% if current_user.favorites.exists?(provider: provider) %>
+  <!-- Unfavorite -->
+  <turbo-frame id="favorite_button_<%= provider.id %>">
+    <%= link_to provider_unfavorite_path(provider),
+        data: { turbo_method: :delete},
+        class: "favorite-button" do %>
+      <%= inline_svg_tag("solid/heart.svg", class: "w-6 h-6 text-red-500 fill-current") %>
+    <% end %>
+  </turbo-frame>
+<% else %>
+  <!-- Favorite -->
+  <turbo-frame id="favorite_button_<%= provider.id %>">
+    <%= link_to provider_favorite_path(provider),
+      data: { turbo_method: :post },
+      class: "favorite-button" do %>
+      <%= inline_svg_tag("heart.svg", class: "w-6 h-6 text-gray-400") %>
+    <% end %>
+  </turbo-frame>
+<% end %>

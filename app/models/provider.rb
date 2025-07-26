@@ -3,6 +3,8 @@ class Provider < ApplicationRecord
   has_many :appointments, dependent: :destroy
   has_many :availabilities, dependent: :destroy
   has_many :notifications, as: :recipient, dependent: :destroy, class_name: "Noticed::Notification"
+  has_many :favorites, dependent: :destroy
+  has_many :favorited_by, through: :favorites, source: :user
   has_many :reviews, dependent: :destroy
   has_many :review_responses, dependent: :destroy
   has_many_attached :images

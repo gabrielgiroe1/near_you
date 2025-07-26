@@ -1,0 +1,3 @@
+<%= turbo_stream.replace "favorite_button_#{@provider.id}" do %>
+  <%= render "favorites/favorite_button", provider: @provider %>
+<% end %>

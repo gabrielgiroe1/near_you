@@ -3,6 +3,8 @@ class User < ApplicationRecord
   has_many :appointments, dependent: :destroy
   has_many :notifications, as: :recipient, dependent: :destroy, class_name: "Noticed::Notification"
   has_many :reviews, dependent: :destroy
+  has_many :favorites, dependent: :destroy
+  has_many :favorited_providers, through: :favorites, source: :provider
   has_one_attached :profile_picture
 
   # Include default devise modules. Others available are:
@@ -22,5 +24,9 @@ class User < ApplicationRecord
 
   def user?
     role == "user"
+  end
+
+  def favorited?(provider)
+    favorited_providers.exists?(provider.id)
   end
 end
