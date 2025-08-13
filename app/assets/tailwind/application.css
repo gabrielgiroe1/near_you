@@ -5,4 +5,4 @@
 @source "../../../app/views/**/*";
 @source "../../../app/components/**/*.erb";
 
-@import "./components/pagy.css";
+/* @import "./components/pagy.css"; */
