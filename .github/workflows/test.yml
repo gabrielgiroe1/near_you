@@ -159,6 +159,9 @@ jobs:
           ruby-version: 3.4.1
           bundler-cache: true
 
+      - name: Build Tailwind CSS
+        run: bundle exec rails tailwindcss:build
+
       - name: Set up database
         env:
           DATABASE_URL: "postgresql://postgres:${{ secrets.POSTGRES_PASSWORD }}@localhost:5432/near_you_test"
@@ -199,6 +202,9 @@ jobs:
         with:
           ruby-version: 3.4.1
           bundler-cache: true
+
+      - name: Build Tailwind CSS
+        run: bundle exec rails tailwindcss:build
 
       - name: Set up database
         env:
