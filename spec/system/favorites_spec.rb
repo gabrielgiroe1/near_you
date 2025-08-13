@@ -25,7 +25,7 @@ RSpec.describe "Favorites", type: :system do
     first(".favorite-button").click
     expect(page).to have_css(".favorite-button")
     user.reload
-    expect(user.favorites.where(provider: provider)).to exist
+    expect(user.favorites.where(provider: provider)).to be_present
   end
 
   it "requires authentication" do
