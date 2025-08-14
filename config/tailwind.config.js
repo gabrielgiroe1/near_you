@@ -6,7 +6,13 @@ module.exports = {
     './app/helpers/**/*.rb',
     './app/javascript/**/*.js',
     './app/views/**/*',
-    './app/components/**/*.erb'
+    './app/components/**/*.erb',
+    './app/assets/stylesheets/**/*.css'
+  ],
+  safelist: [
+    'pagy',
+    'current',
+    'gap'
   ],
   theme: {
     extend: {

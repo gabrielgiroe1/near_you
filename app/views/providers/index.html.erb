@@ -11,7 +11,7 @@
       <div id="providers-container" class="w-full lg:w-3/4 xl:w-4/5">
         <%= turbo_frame_tag "providers" do %>
           <%= render partial: "providers_list", locals: { providers: @providers } %>
-          <%= raw pagy_nav(@pagy) if @pagy.present? %>
+          <%== pagy_nav(@pagy) if @pagy.present? %>
         <% end %>
       </div>
     </div>

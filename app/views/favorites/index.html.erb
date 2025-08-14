@@ -73,6 +73,6 @@
         <%= link_to "Browse Providers", providers_path, class: "px-4 py-2 bg-black text-white text-sm rounded-md hover:bg-gray-800 transition-colors" %>
       </div>
     <% end %>
-  <%= raw pagy_nav(@pagy) if @pagy.present? %>
+  <%== pagy_nav(@pagy) if @pagy.present? %>
   </div>
 </div>
