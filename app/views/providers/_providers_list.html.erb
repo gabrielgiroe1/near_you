@@ -110,8 +110,9 @@
           <div class="mt-4 flex items-center gap-4 text-sm text-gray-600">
             <div class="flex items-center">
               <%= inline_svg_tag("calendar.svg", class: "w-4 h-4 mr-1") %>
-              Available today
-              <%raise%>
+              <span class="<%= provider.next_available_day == Date.current ? 'text-green-600 font-medium' : 'text-gray-600' %>">
+                <%= provider.next_available_day_text %>
+              </span>
             </div>
             <div class="flex items-center">
               <%= inline_svg_tag("user.svg", class: "w-4 h-4 mr-1") %>

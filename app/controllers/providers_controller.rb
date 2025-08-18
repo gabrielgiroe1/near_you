@@ -14,11 +14,11 @@ class ProvidersController < ApplicationController
     else
       @categories = Provider.categories
 
-      @providers = Provider.includes(:user)
+      @providers = Provider.includes(:user, :availabilities, :appointments)
 
       @pagy, @providers = pagy(apply_filters(@providers, params).then { |scope| apply_sorting(scope, params) })
 
-      @service_types = params[:category].present? ? Provider.categories[params[:category]] : Provider.distinct.pluck(:service_type)
+      @service_types = params[:category].present? ? Provider.categories[params[:category].to_sym] : Provider.distinct.pluck(:service_type)
 
       respond_to do |format|
         format.html # Regular rendering
@@ -32,10 +32,11 @@ class ProvidersController < ApplicationController
   end
 
   def service_types
-    @provider = current_user
-    @service_types = Provider.categories[params[:category]] || []
-
+    # Convert string category to symbol to match the categories hash keys
+    category_key = params[:category]&.to_sym
+    @service_types = Provider.categories[category_key] || []
     @frame_id = params[:frame_id]
+    @selected_service_type = params[:service_type]
 
     respond_to do |format|
       format.turbo_stream
@@ -170,7 +171,9 @@ class ProvidersController < ApplicationController
     scope = scope.where(category: params[:category]) if params[:category].present?
 
     if params[:service_type].present?
-      scope = scope.where(service_type: params[:service_type])
+      # Convert human-readable service type to enum key
+      enum_key = Provider.service_type_to_enum_key(params[:service_type])
+      scope = scope.where(service_type: enum_key) if enum_key
     end
 
     if params[:location].present? && params[:location].strip.present?
@@ -209,20 +212,20 @@ class ProvidersController < ApplicationController
 
   def apply_sorting(scope, params)
     case params[:sort]
-    when 'price_low'
+      when "price_low"
       scope.order(hourly_rate: :asc)
-    when 'price_high'
+      when "price_high"
       scope.order(hourly_rate: :desc)
-    when 'rating'
+      when "rating"
       scope.order(rating: :desc)
-    when 'popular'
+      when "popular"
       # Sort by number of appointments (most popular)
       scope.left_joins(:appointments)
-           .group('providers.id')
-           .order(Arel.sql('COUNT(appointments.id) DESC'))
-    when 'recent'
+           .group("providers.id")
+           .order(Arel.sql("COUNT(appointments.id) DESC"))
+      when "recent"
       scope.order(created_at: :desc)
-    else
+      else
       scope.order(created_at: :desc)
     end
   end
