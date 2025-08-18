@@ -1,18 +1,110 @@
 <% if user_signed_in? %>
   <% if current_user.user? %>
-    <h2 class="text-4xl font-semibold mb-6">Browse Providers</h2>
-    <div class="flex flex-wrap gap-4 mb-8">
-      <!-- Filter Providers -->
-      <div class="w-full lg:w-1/4 xl:w-1/5">
-        <%= render partial: "filter_providers", locals: { providers: @providers } %>
-      </div>
+    <!-- Header Section -->
+    <div class="bg-gradient-to-br from-blue-50 via-white to-purple-50 -mx-6 px-6 py-12 mb-8">
+      <div class="max-w-7xl mx-auto">
+        <div class="text-center mb-8">
+          <h1 class="text-4xl md:text-5xl font-bold text-gray-900 mb-4">
+            Find Your Perfect
+            <span class="bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent">
+              Service Provider
+            </span>
+          </h1>
+          <p class="text-xl text-gray-600 max-w-2xl mx-auto">
+            Connect with trusted professionals in your area. Book appointments, read reviews, and get the help you need.
+          </p>
+        </div>
 
-      <!-- Providers List -->
-      <div id="providers-container" class="w-full lg:w-3/4 xl:w-4/5">
-        <%= turbo_frame_tag "providers" do %>
-          <%= render partial: "providers_list", locals: { providers: @providers } %>
-          <%== pagy_nav(@pagy) if @pagy.present? %>
-        <% end %>
+        <!-- Quick Stats -->
+        <div class="grid grid-cols-2 md:grid-cols-4 gap-6 max-w-4xl mx-auto">
+          <div class="text-center">
+            <div class="text-3xl font-bold text-blue-600"><%= @pagy.count %>+</div>
+            <div class="text-sm text-gray-600">Verified Providers</div>
+          </div>
+          <div class="text-center">
+            <div class="text-3xl font-bold text-green-600">4.9</div>
+            <div class="text-sm text-gray-600">Average Rating</div>
+          </div>
+          <div class="text-center">
+            <div class="text-3xl font-bold text-purple-600">24h</div>
+            <div class="text-sm text-gray-600">Response Time</div>
+          </div>
+          <div class="text-center">
+            <div class="text-3xl font-bold text-orange-600">100%</div>
+            <div class="text-sm text-gray-600">Satisfaction</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Main Content -->
+    <div class="max-w-7xl mx-auto">
+      <div class="flex flex-col lg:flex-row gap-8">
+        <!-- Sidebar Filters -->
+        <div class="lg:w-80 flex-shrink-0">
+          <div class="sticky top-6">
+            <%= render partial: "filter_providers", locals: { providers: @providers } %>
+          </div>
+        </div>
+
+        <!-- Providers List -->
+        <div id="providers-container" class="flex-1">
+          <!-- Results Header -->
+          <div class="flex items-center justify-between mb-6">
+            <div>
+              <h2 class="text-2xl font-semibold text-gray-900">
+                <% if params[:service_type].present? %>
+                  <%= params[:service_type].humanize %> Providers
+                <% elsif params[:location].present? %>
+                  Providers in <%= params[:location] %>
+                <% else %>
+                  All Providers
+                <% end %>
+              </h2>
+              <p class="text-gray-600">
+                <span class="font-medium"><%= @pagy.count %></span>
+                provider<%= @pagy.count == 1 ? '' : 's' %> available
+                <% if params[:location].present? %>
+                  in <span class="font-medium"><%= params[:location] %></span>
+                <% end %>
+              </p>
+            </div>
+
+            <!-- Sort Options -->
+            <div class="hidden sm:block">
+              <%= form_with url: providers_path, method: :get, local: true, class: "flex items-center gap-2" do |form| %>
+                <% %w[category service_type location min_price max_price].each do |param| %>
+                  <%= form.hidden_field param.to_sym, value: params[param] if params[param].present? %>
+                <% end %>
+                <%= form.select :sort,
+                  options_for_select([
+                    ['Most Popular', 'popular'],
+                    ['Highest Rated', 'rating'],
+                    ['Lowest Price', 'price_low'],
+                    ['Highest Price', 'price_high'],
+                    ['Most Recent', 'recent']
+                  ], selected: params[:sort]),
+                  { prompt: 'Sort by' },
+                  {
+                    class: "text-sm border border-gray-300 rounded-lg px-3 py-2 bg-white focus:ring-2 focus:ring-blue-500 focus:border-transparent",
+                    onchange: "this.form.submit();"
+                  }
+                %>
+              <% end %>
+            </div>
+          </div>
+
+          <%= turbo_frame_tag "providers" do %>
+            <%= render partial: "providers_list", locals: { providers: @providers } %>
+
+            <!-- Pagination -->
+            <% if @pagy.present? %>
+              <div class="mt-12 flex justify-center">
+                <%== pagy_nav(@pagy) %>
+              </div>
+            <% end %>
+          <% end %>
+        </div>
       </div>
     </div>
   <% end %>

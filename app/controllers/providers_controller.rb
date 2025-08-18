@@ -16,7 +16,7 @@ class ProvidersController < ApplicationController
 
       @providers = Provider.includes(:user)
 
-      @pagy, @providers = pagy(apply_filters(@providers, params).order(created_at: :desc))
+      @pagy, @providers = pagy(apply_filters(@providers, params).then { |scope| apply_sorting(scope, params) })
 
       @service_types = params[:category].present? ? Provider.categories[params[:category]] : Provider.distinct.pluck(:service_type)
 
@@ -184,7 +184,47 @@ class ProvidersController < ApplicationController
         term: term
       )
     end
+
+    # Price range filtering
+    if params[:min_price].present? && params[:min_price].strip.present?
+      begin
+        min_price = Float(params[:min_price])
+        scope = scope.where("hourly_rate >= ?", min_price) if min_price > 0
+      rescue ArgumentError
+        # Invalid number, ignore the filter
+      end
+    end
+
+    if params[:max_price].present? && params[:max_price].strip.present?
+      begin
+        max_price = Float(params[:max_price])
+        scope = scope.where("hourly_rate <= ?", max_price) if max_price > 0
+      rescue ArgumentError
+        # Invalid number, ignore the filter
+      end
+    end
+
     scope
+  end
+
+  def apply_sorting(scope, params)
+    case params[:sort]
+    when 'price_low'
+      scope.order(hourly_rate: :asc)
+    when 'price_high'
+      scope.order(hourly_rate: :desc)
+    when 'rating'
+      scope.order(rating: :desc)
+    when 'popular'
+      # Sort by number of appointments (most popular)
+      scope.left_joins(:appointments)
+           .group('providers.id')
+           .order(Arel.sql('COUNT(appointments.id) DESC'))
+    when 'recent'
+      scope.order(created_at: :desc)
+    else
+      scope.order(created_at: :desc)
+    end
   end
 
   def set_provider

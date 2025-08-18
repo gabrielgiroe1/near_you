@@ -1,32 +1,118 @@
-<div class="relative" data-controller="category-service">
-  <button id="filter-button"
-          class="bg-blue-600 text-white px-4 py-2 rounded-lg shadow-lg hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500"
-          data-action="click->category-service#toggle">
-    Filters
+<!-- Mobile Filter Button -->
+<div class="lg:hidden mb-6">
+  <button id="mobile-filter-button"
+    class="w-full flex items-center justify-between px-4 py-3 bg-white border border-gray-300 rounded-lg hover:bg-gray-50 focus:ring-2 focus:ring-blue-500"
+    data-controller="category-service"
+    data-action="click->category-service#toggle">
+    <span class="flex items-center text-gray-700 font-medium">
+      <%= inline_svg_tag("filter.svg", class: "w-5 h-5 mr-2") %>
+      Filters & Search
+    </span>
+    <%= inline_svg_tag("chevron-down.svg", class: "w-5 h-5 text-gray-400") %>
   </button>
-  <div id="filter-dropdown" class="hidden absolute mt-2 w-64 bg-white rounded-lg shadow-lg z-20">
-    <%= form_with url: providers_path, method: :get, local: true, id: "filters-form" do |form| %>
-      <div class="p-4 flex flex-col gap-4">
-        <!-- Filter by Category -->
-        <%= render "shared/category_service_type",
-          form: form,
-          frame_id: "filter_service_type_frame",
-          selected_category: params[:category],
-          selected_service_type: params[:service_type],
-          service_types: @service_types %>
-        <!-- Filter by Location -->
-        <div>
-          <label for="location" class="block text-gray-700 font-medium">Location</label>
-          <%= select_tag :location,
-            options_for_select(["Bucharest", "Cluj-Napoca", "Timisoara", "Iasi"], selected: params[:location]),
-            prompt: "Select a Location", class: "form-select w-full mt-2 p-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500" %>
-        </div>
-        <!-- Filter Actions -->
-        <div class="flex justify-between items-center mt-4">
-          <%= submit_tag "Apply Filters", class: "px-4 py-2 bg-green-600 text-white rounded-lg hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-green-500" %>
-          <%= link_to "Clear All", providers_path, class: "text-red-600 hover:underline text-sm" %>
-        </div>
+</div>
+
+<!-- Filter Panel -->
+<div class="bg-white rounded-2xl border border-gray-200 shadow-sm overflow-hidden"
+  id="filter-panel"
+  class="hidden lg:block">
+
+  <!-- Filter Header -->
+  <div class="px-6 py-4 border-b border-gray-100 bg-gray-50">
+    <div class="flex items-center justify-between">
+      <h3 class="text-lg font-semibold text-gray-900 flex items-center">
+        <%= inline_svg_tag("filter.svg", class: "w-5 h-5 mr-2 text-blue-600") %>
+        Filters
+      </h3>
+      <% if params[:category].present? || params[:service_type].present? || params[:location].present? || params[:min_price].present? || params[:max_price].present? %>
+        <%= link_to providers_path, class: "text-sm text-blue-600 hover:text-blue-700 font-medium" do %>
+          Clear all
+        <% end %>
+      <% end %>
+    </div>
+  </div>
+
+  <%= form_with url: providers_path, method: :get, local: true, id: "filters-form", class: "divide-y divide-gray-100" do |form| %>
+
+    <!-- Service Type Filter -->
+    <div class="px-6 py-6">
+      <h4 class="text-sm font-semibold text-gray-900 mb-4 flex items-center">
+        <%= inline_svg_tag("briefcase.svg", class: "w-4 h-4 mr-2 text-gray-600") %>
+        Service Type
+      </h4>
+      <%= render "shared/category_service_type",
+        form: form,
+        frame_id: "filter_service_type_frame",
+        selected_category: params[:category],
+        selected_service_type: params[:service_type],
+        service_types: @service_types %>
+    </div>
+
+    <!-- Location Filter -->
+    <div class="px-6 py-6">
+      <h4 class="text-sm font-semibold text-gray-900 mb-4 flex items-center">
+        <%= inline_svg_tag("location.svg", class: "w-4 h-4 mr-2 text-gray-600") %>
+        Location
+      </h4>
+      <%= select_tag :location,
+        options_for_select([
+          ["Bucharest", "Bucharest"],
+          ["Cluj-Napoca", "Cluj-Napoca"],
+          ["Timisoara", "Timisoara"],
+          ["Iasi", "Iasi"]
+        ], selected: params[:location]),
+        prompt: "All locations",
+        class: "w-full px-4 py-3 border border-gray-300 rounded-lg bg-white focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-colors text-sm",
+        onchange: "this.form.submit();"
+      %>
+    </div>
+
+    <!-- Price Range Filter -->
+    <div class="px-6 py-6">
+      <h4 class="text-sm font-semibold text-gray-900 mb-4 flex items-center">
+        <%= inline_svg_tag("currency.svg", class: "w-4 h-4 mr-2 text-gray-600") %>
+        Price Range (RON/hour)
+      </h4>
+      
+      <div class="grid grid-cols-2 gap-3">
+        <%= form.number_field :min_price, 
+          value: params[:min_price],
+          placeholder: "Min price",
+          min: 0,
+          step: 0.01,
+          class: "px-3 py-2 border border-gray-300 rounded-lg text-sm focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+        %>
+        <%= form.number_field :max_price,
+          value: params[:max_price],
+          placeholder: "Max price",
+          min: 0,
+          step: 0.01,
+          class: "px-3 py-2 border border-gray-300 rounded-lg text-sm focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+        %>
       </div>
+      <button type="submit" class="w-full mt-3 px-4 py-2 bg-blue-600 text-white text-sm rounded-lg hover:bg-blue-700 transition-colors">
+        Apply Price Filter
+      </button>
+    </div>
+
+  <% end %>
+</div>
+
+<!-- Popular Services Quick Links -->
+<div class="mt-8 bg-gradient-to-br from-blue-50 to-purple-50 rounded-2xl p-6">
+  <h4 class="text-lg font-semibold text-gray-900 mb-4 flex items-center">
+    <%= inline_svg_tag("lightning.svg", class: "w-5 h-5 mr-2 text-blue-600") %>
+    Popular Services
+  </h4>
+  <div class="space-y-2">
+    <% ["masseur", "hairstylist", "electrician", "tutor", "photographer"].each do |service| %>
+      <%= link_to providers_path(service_type: service),
+        class: "flex items-center justify-between p-3 rounded-lg bg-white/70 hover:bg-white transition-all group" do %>
+        <span class="text-sm font-medium text-gray-700 group-hover:text-blue-600 capitalize">
+          <%= service.humanize %>
+        </span>
+        <%= inline_svg_tag("chevron-right.svg", class: "w-4 h-4 text-gray-400 group-hover:text-blue-600 group-hover:translate-x-1 transition-all") %>
+      <% end %>
     <% end %>
   </div>
 </div>
