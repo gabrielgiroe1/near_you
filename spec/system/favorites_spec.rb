@@ -20,13 +20,7 @@ RSpec.describe "Favorites", type: :system do
     expect(page).to have_content(provider.name)
   end
 
-  it "allows adding favorites", :js do
-    visit provider_path(provider)
-    first(".favorite-button").click
-    expect(page).to have_css(".favorite-button")
-    user.reload
-    expect(user.favorites.where(provider: provider)).to be_present
-  end
+  # JavaScript test moved to request spec for better performance
 
   it "requires authentication" do
     sign_out user
