@@ -98,7 +98,95 @@ class Provider < ApplicationRecord
     }
   end
 
+  # Convert human-readable service type to enum key
+  def self.service_type_to_enum_key(human_readable_type)
+    return nil if human_readable_type.blank?
+
+    # Convert to snake_case format that matches the enum
+    snake_case = human_readable_type.downcase
+      .gsub(/\s+/, "_")
+      .gsub(/[^a-z0-9_]/, "")
+
+    # Return the key if it exists in the enum, otherwise nil
+    service_types.key?(snake_case) ? snake_case : nil
+  end
+
   def recalculate_average_rating!
     update!(rating: reviews.average(:rating).to_f.round(2))
+  end
+
+  def next_available_day
+    # Start from today
+    current_date = Date.current
+
+    # Check up to 2 weeks ahead
+    (0..14).each do |days_ahead|
+      check_date = current_date + days_ahead.days
+      day_name = check_date.strftime("%A")
+
+      # Find availability for this day of the week
+      availability = availabilities.find_by(day_of_week: day_name, available: true)
+      next unless availability
+
+      # Check if there are any available time slots for this day
+      if has_available_slots?(check_date, availability)
+        return check_date
+      end
+    end
+
+    nil # No availability found in the next 2 weeks
+  end
+
+  def next_available_day_text
+    next_day = next_available_day
+    return "No availability yet" unless next_day
+
+    case next_day
+      when Date.current
+      "Available today"
+      when Date.current + 1.day
+      "Available tomorrow"
+      when (Date.current + 2.days)..(Date.current + 6.days)
+      "Available #{next_day.strftime('%A')}"
+      else
+      "Available #{next_day.strftime('%b %d')}"
+    end
+  end
+
+  private
+
+  def has_available_slots?(date, availability)
+    # Generate time slots for the day
+    current_time = DateTime.new(
+      date.year, date.month, date.day,
+      availability.start_time.hour, availability.start_time.min
+    )
+
+    end_time = DateTime.new(
+      date.year, date.month, date.day,
+      availability.end_time.hour, availability.end_time.min
+    )
+
+    session_duration = availability.session_duration || 60
+
+    # Check if any slot is available
+    while current_time + session_duration.minutes <= end_time
+      slot_end_time = current_time + session_duration.minutes
+
+      # Skip past slots if checking today
+      if date == Date.current && current_time <= Time.current
+        current_time += session_duration.minutes
+        next
+      end
+
+      # Check if this slot is free (no overlapping appointments)
+      unless appointments.active.overlapping(current_time, slot_end_time).exists?
+        return true
+      end
+
+      current_time += session_duration.minutes
+    end
+
+    false
   end
 end

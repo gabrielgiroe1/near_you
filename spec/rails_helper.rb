@@ -50,6 +50,12 @@ RSpec.configure do |config|
     ActiveRecord::Migration.maintain_test_schema!
   end
 
+  # Performance optimizations
+  config.before(:suite) do
+    # Ensure database is clean and optimized
+    ActiveRecord::Migration.maintain_test_schema!
+  end
+
   # You can uncomment this line to turn off ActiveRecord support entirely.
   # config.use_active_record = false
 

@@ -1,7 +1,7 @@
 import { Controller } from "@hotwired/stimulus"
 
 export default class extends Controller {
-  static targets = ["menu"]
+  static targets = ["menu", "filterButton"]
 
   toggle() {
     this.menuTarget.classList.toggle("hidden")
@@ -21,4 +21,4 @@ export default class extends Controller {
   disconnect() {
     document.removeEventListener("click", this.clickOutside.bind(this))
   }
-} 
+}

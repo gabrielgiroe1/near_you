@@ -5,11 +5,14 @@ export default class extends Controller {
   static targets = ["categorySelect", "serviceSelect"]
 
   connect() {
-    console.log("CategoryServiceController connected!");
+    // Initialize service types on page load if category is already selected
+    const categorySelect = this.categorySelectTarget;
+    if (categorySelect && categorySelect.value) {
+      // Don't fetch again, the server should have already populated @service_types
+    }
   }
 
   toggle(event) {
-    console.log("Toggle dropdown");
     const dropdown = this.element.querySelector("#filter-dropdown");
     if (dropdown) {
       dropdown.classList.toggle("hidden");
@@ -21,13 +24,20 @@ export default class extends Controller {
   fetchServiceTypes(event) {
     const category = event.target.value;
     const frameId = this.element.dataset.categoryServiceFrameIdValue;
+
     if (category) {
-      fetch(`/providers/service_types?category=${encodeURIComponent(category)}&frame_id=${frameId}`, {
+      const url = `/providers/service_types?category=${encodeURIComponent(category)}&frame_id=${frameId}`;
+
+      fetch(url, {
         method: "GET",
         headers: { Accept: "text/vnd.turbo-stream.html" }
       })
-        .then(response => response.text())
-        .then(html => {Turbo.renderStreamMessage(html);})
+        .then(response => {
+          return response.text();
+        })
+        .then(html => {
+          Turbo.renderStreamMessage(html);
+        })
         .catch(error => console.error("Error fetching service types:", error));
     } else {
       console.warn("No category selected, resetting dropdown.");
@@ -35,8 +45,8 @@ export default class extends Controller {
       if (serviceTypeFrame) {
         serviceTypeFrame.innerHTML = `
           <div>
-            <label for="service_type" class="block text-gray-700 font-medium">Service Type</label>
-            <select name="service_type" id="service_type" class="form-select w-full mt-2 p-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500">
+            <label for="service_type" class="block text-sm font-medium text-gray-700 mt-4">Service Type</label>
+            <select name="service_type" id="service_type" class="mt-1 block w-full rounded-md border-gray-300 shadow-xs" onchange="this.form.submit();">
               <option value="">Select a Service Type</option>
             </select>
           </div>
