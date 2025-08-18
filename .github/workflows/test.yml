@@ -169,10 +169,10 @@ jobs:
           bundle exec rails db:create
           bundle exec rails db:schema:load
 
-      - name: Run integration tests
+      - name: Run integration tests (parallel)
         env:
           DATABASE_URL: "postgresql://postgres:${{ secrets.POSTGRES_PASSWORD }}@localhost:5432/near_you_test"
-        run: bundle exec rspec spec/integration/ spec/controllers/ spec/requests/
+        run: bundle exec rspec spec/integration/ spec/controllers/ spec/requests/ --format progress
 
   # Full test suite with coverage
   test-full:
