@@ -63,7 +63,7 @@ RSpec.describe "Appointments with Stripe Integration", type: :request do
         post "/providers/#{provider_without_stripe.id}/appointments", params: appointment_params
 
         expect(response).to redirect_to("/providers/#{provider_without_stripe.id}")
-        expect(flash[:alert]).to include("hasn't set up payments yet")
+        expect(flash[:alert]).to include("needs to complete their payment setup before accepting bookings")
       end
     end
   end

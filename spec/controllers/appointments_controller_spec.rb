@@ -89,7 +89,7 @@ RSpec.describe AppointmentsController, type: :controller do
       it "redirects with alert when provider has no Stripe account" do
         post :create, params: appointment_params.merge(provider_id: provider_without_stripe.id)
         expect(response).to redirect_to(provider_path(provider_without_stripe))
-        expect(flash[:alert]).to include("hasn't set up payments yet")
+        expect(flash[:alert]).to include("needs to complete their payment setup before accepting bookings")
       end
     end
 
