@@ -124,8 +124,13 @@
         <!-- Footer CTA -->
         <div class="px-6 py-4 bg-gray-50 border-t border-gray-100">
           <div class="flex items-center justify-between">
-            <span class="text-sm text-gray-600">View profile & book</span>
-            <%= inline_svg_tag("arrow-right.svg", class: "w-5 h-5 text-blue-500 group-hover:translate-x-1 transition-transform") %>
+            <% unless provider.can_accept_bookings? %>
+              <span class="text-sm text-yellow-600 font-medium">Setup in progress</span>
+              <%= inline_svg_tag("warning.svg", class: "w-5 h-5 text-yellow-500") %>
+            <% else %>
+              <span class="text-sm text-gray-600">View profile & book</span>
+              <%= inline_svg_tag("arrow-right.svg", class: "w-5 h-5 text-blue-500 group-hover:translate-x-1 transition-transform") %>
+            <% end %>
           </div>
         </div>
       </div>

@@ -115,6 +115,10 @@ class Provider < ApplicationRecord
     update!(rating: reviews.average(:rating).to_f.round(2))
   end
 
+  def can_accept_bookings?
+    stripe_account_id.present? && stripe_status == "active"
+  end
+
   def next_available_day
     # Start from today
     current_date = Date.current

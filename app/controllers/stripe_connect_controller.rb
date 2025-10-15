@@ -12,7 +12,7 @@ class StripeConnectController < ApplicationController
       refresh_url: "#{redirect_url}/stripe/refresh",
       return_url: "#{redirect_url}/providers/#{@provider.id}",
       type: "account_onboarding",
-      collect: "eventually_due"
+      collect: "currently_due"
     })
 
     # Redirect to the Stripe onboarding page

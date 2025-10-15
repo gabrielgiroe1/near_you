@@ -37,7 +37,7 @@ RSpec.describe StripeConnectController, type: :request do
           hash_including(
             account: "acct_test_new_123",
             type: "account_onboarding",
-            collect: "eventually_due"
+            collect: "currently_due"
           )
         )
 

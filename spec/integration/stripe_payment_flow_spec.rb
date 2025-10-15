@@ -194,7 +194,7 @@ RSpec.describe "Stripe Payment Flow Integration", type: :request do
       post "/providers/#{incomplete_provider.id}/appointments", params: appointment_params.merge(provider_id: incomplete_provider.id)
 
       expect(response).to redirect_to(provider_path(incomplete_provider))
-      expect(flash[:alert]).to include("hasn't set up payments yet")
+      expect(flash[:alert]).to include("needs to complete their payment setup before accepting bookings")
       expect(Appointment.count).to eq(0)
     end
 

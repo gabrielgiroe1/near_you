@@ -30,8 +30,8 @@ class AppointmentsController < ApplicationController
   def create
     @provider = Provider.find(params[:provider_id])
 
-    unless @provider.stripe_account_id.present?
-      redirect_to provider_path(@provider), alert: "This provider hasn't set up payments yet"
+    unless @provider.can_accept_bookings?
+      redirect_to provider_path(@provider), alert: "This provider needs to complete their payment setup before accepting bookings"
       return
     end
 
