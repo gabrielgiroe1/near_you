@@ -1,6 +1,7 @@
 require "rails_helper"
 
 RSpec.describe Provider, type: :model do
+  include ActiveSupport::Testing::TimeHelpers
   describe ".categories" do
     it "returns a hash of categories" do
       categories = described_class.categories
@@ -30,16 +31,19 @@ RSpec.describe Provider, type: :model do
     let(:provider) { create(:provider, user: user, service_type: "masseur") }
 
     it "returns today if provider is available today" do
-      create(:availability,
-        provider: provider,
-        day_of_week: Date.current.strftime("%A"),
-        available: true,
-        start_time: Time.current.beginning_of_day + 9.hours,
-        end_time: Time.current.beginning_of_day + 17.hours,
-        session_duration: 60
-      )
+      # Set time to 10 AM to ensure there are available slots later in the day
+      travel_to Time.current.beginning_of_day + 10.hours do
+        create(:availability,
+          provider: provider,
+          day_of_week: Date.current.strftime("%A"),
+          available: true,
+          start_time: Time.current.beginning_of_day + 9.hours,
+          end_time: Time.current.beginning_of_day + 17.hours,
+          session_duration: 60
+        )
 
-      expect(provider.next_available_day).to eq(Date.current)
+        expect(provider.next_available_day).to eq(Date.current)
+      end
     end
 
     it "returns nil if no availability within 2 weeks" do

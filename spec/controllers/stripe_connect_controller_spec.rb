@@ -80,7 +80,7 @@ RSpec.describe StripeConnectController, type: :request do
       it "uses request.base_url for redirect URLs" do
         expect(Stripe::AccountLink).to receive(:create).with(
           hash_including(
-            refresh_url: "http://www.example.com/stripe/refresh",
+            refresh_url: "http://www.example.com/stripe_connect/refresh?provider_id=#{provider.id}",
             return_url: "http://www.example.com/providers/#{provider.id}"
           )
         )
@@ -98,7 +98,7 @@ RSpec.describe StripeConnectController, type: :request do
       it "uses BASE_URL for redirect URLs" do
         expect(Stripe::AccountLink).to receive(:create).with(
           hash_including(
-            refresh_url: "https://myapp.com/stripe/refresh",
+            refresh_url: "https://myapp.com/stripe_connect/refresh?provider_id=#{provider.id}",
             return_url: "https://myapp.com/providers/#{provider.id}"
           )
         )
@@ -117,7 +117,7 @@ RSpec.describe StripeConnectController, type: :request do
       it "handles the error and redirects with alert" do
         post "/stripe_connect", params: { provider_id: provider.id }
 
-        expect(response).to redirect_to(providers_path)
+        expect(response).to redirect_to(provider_path(provider))
         expect(flash[:alert]).to include("Account creation failed")
       end
 
@@ -175,7 +175,7 @@ RSpec.describe StripeConnectController, type: :request do
         )
       )
 
-      expect(Rails.logger).to receive(:info).with(/Stripe account create for Provider ID \d+/)
+      expect(Rails.logger).to receive(:info).with(/Stripe account created for Provider ID \d+/)
 
       post "/stripe_connect", params: { provider_id: provider_without_stripe.id }
     end

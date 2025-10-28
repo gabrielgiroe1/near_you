@@ -8,14 +8,19 @@ module StripeHelpers
     # Mock successful checkout session creation
 
     # Mock successful account creation
-    allow(Stripe::Account).to receive(:create).and_return(
-      OpenStruct.new(
+
+    # Mock account retrieval (for refresh_account_status)
+    allow(Stripe::Account).to receive_messages(create: OpenStruct.new(
         id: "acct_test_123",
         charges_enabled: false,
         payouts_enabled: false,
         requirements: OpenStruct.new(currently_due: [])
-      )
-    )
+      ), retrieve: OpenStruct.new(
+        id: "acct_test_123",
+        charges_enabled: false,
+        payouts_enabled: false,
+        requirements: OpenStruct.new(currently_due: [])
+      ))
 
     # Mock successful account link creation
     allow(Stripe::AccountLink).to receive(:create).and_return(
