@@ -7,7 +7,7 @@ class StripeController < ApplicationController
     payload = params.to_json if payload.blank? && params.present?
 
     sig_header = request.env["HTTP_STRIPE_SIGNATURE"]
-    endpoint_secret = ENV["STRIPE_WEBHOOK_SECRET"]
+    endpoint_secret = Rails.configuration.stripe[:webhook_secret]
 
     begin
       event = Stripe::Webhook.construct_event(payload, sig_header, endpoint_secret)
@@ -22,6 +22,12 @@ class StripeController < ApplicationController
           handle_payment_intent_failed(event["data"]["object"])
         when "checkout.session.expired"
           handle_checkout_session_expired(event["data"]["object"])
+        when "charge.refunded"
+          handle_charge_refunded(event["data"]["object"])
+        when "transfer.created"
+          handle_transfer_created(event["data"]["object"])
+        when "transfer.failed"
+          handle_transfer_failed(event["data"]["object"])
           # Add more event types as needed
         else
           Rails.logger.info "Unhandled event type: #{event["type"]}"
@@ -91,5 +97,45 @@ class StripeController < ApplicationController
 
     Rails.logger.info "Deleting expired pending appointment #{appointment.id} from Stripe session #{session["id"]}"
     appointment.destroy
+  end
+
+  def handle_charge_refunded(charge)
+    # Log refund information
+    payment_intent_id = charge["payment_intent"]
+    appointment = Appointment.find_by(stripe_payment_intent_id: payment_intent_id)
+
+    if appointment
+      Rails.logger.info "Charge refunded for appointment #{appointment.id}"
+      # Additional refund tracking logic if needed
+    else
+      Rails.logger.warn "Charge refunded for unknown payment intent: #{payment_intent_id}"
+    end
+  end
+
+  def handle_transfer_created(transfer)
+    # Log successful transfer to provider
+    destination_account = transfer["destination"]
+    amount = transfer["amount"]
+
+    provider = Provider.find_by(stripe_account_id: destination_account)
+    if provider
+      Rails.logger.info "Transfer of #{amount} cents created to provider #{provider.id} (#{provider.name})"
+    else
+      Rails.logger.warn "Transfer created to unknown account: #{destination_account}"
+    end
+  end
+
+  def handle_transfer_failed(transfer)
+    # Log failed transfer to provider
+    destination_account = transfer["destination"]
+    failure_message = transfer["failure_message"]
+
+    provider = Provider.find_by(stripe_account_id: destination_account)
+    if provider
+      Rails.logger.error "Transfer failed to provider #{provider.id}: #{failure_message}"
+      # You might want to notify the provider or admin about this
+    else
+      Rails.logger.error "Transfer failed to unknown account #{destination_account}: #{failure_message}"
+    end
   end
 end
