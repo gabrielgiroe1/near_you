@@ -4,9 +4,8 @@ class AppointmentConfirmationJob < ApplicationJob
   def perform(appointment_id)
     appointment = Appointment.find(appointment_id)
 
-    # Send emails
-    AppointmentMailer.confirmation_email_user(appointment).deliver_now
-    AppointmentMailer.confirmation_email_provider(appointment).deliver_now
+    AppointmentMailer.confirmation_email_user(appointment).deliver_later
+    AppointmentMailer.confirmation_email_provider(appointment).deliver_later
 
     # Send notifications
     AppointmentConfirmationNotifier.with(appointment: appointment).deliver(appointment.user)
