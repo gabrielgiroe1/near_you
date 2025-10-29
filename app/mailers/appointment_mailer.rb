@@ -1,5 +1,5 @@
 class AppointmentMailer < ApplicationMailer
-  default from: "notifications@near-you.com"
+  default from: "gabriel.giroe@localhub.solutions"
 
   def confirmation_email_user(appointment)
     @appointment = appointment
