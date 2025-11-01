@@ -1,5 +1,6 @@
 class StripeController < ApplicationController
   skip_before_action :verify_authenticity_token # Webhooks don't include CSRF tokens
+  skip_before_action :authenticate_user! # Webhooks are unauthenticated requests from Stripe
 
   def webhook
     # Handle both raw body (production) and params (test environment)
