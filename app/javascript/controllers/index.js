@@ -2,6 +2,31 @@
 // Run that command whenever you add a new controller or create them with
 // ./bin/rails generate stimulus controllerName
 
-import { application } from "controllers/application"
-import { eagerLoadControllersFrom } from "@hotwired/stimulus-loading"
-eagerLoadControllersFrom("controllers", application)
+import { application } from "./application"
+
+import AppointmentCalendarController from "./appointment_calendar_controller"
+application.register("appointment-calendar", AppointmentCalendarController)
+
+import CategoryServiceController from "./category_service_controller"
+application.register("category-service", CategoryServiceController)
+
+import CopyController from "./copy_controller"
+application.register("copy", CopyController)
+
+import DropdownController from "./dropdown_controller"
+application.register("dropdown", DropdownController)
+
+import HelloController from "./hello_controller"
+application.register("hello", HelloController)
+
+import HeroSearchController from "./hero_search_controller"
+application.register("hero-search", HeroSearchController)
+
+import LocationModalController from "./location_modal_controller"
+application.register("location-modal", LocationModalController)
+
+import NotificationsController from "./notifications_controller"
+application.register("notifications", NotificationsController)
+
+import SearchModalController from "./search_modal_controller"
+application.register("search-modal", SearchModalController)

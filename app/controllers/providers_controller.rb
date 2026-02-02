@@ -1,5 +1,5 @@
 class ProvidersController < ApplicationController
-  skip_before_action :authenticate_user!, only: [:index]
+  skip_before_action :authenticate_user!, only: [:index, :search_suggestions]
   before_action :authenticate_user!, only: [:show, :edit, :update, :available_slots]
   before_action :set_provider, only: [:show, :edit, :update, :available_slots]
 
@@ -37,6 +37,23 @@ class ProvidersController < ApplicationController
     @service_types = Provider.categories[category_key] || []
     @frame_id = params[:frame_id]
     @selected_service_type = params[:service_type]
+
+    respond_to do |format|
+      format.turbo_stream
+    end
+  end
+
+  def search_suggestions
+    query = params[:q].to_s.strip.downcase
+    return head :bad_request if query.length < 2
+
+    # Search providers by name
+    @providers = Provider.joins(:user)
+      .where("lower(providers.name) LIKE :q OR lower(users.name) LIKE :q", q: "%#{query}%")
+      .limit(5)
+
+    # Search service types
+    @service_types = Provider.service_types.select { |_k, v| v.downcase.include?(query) }.first(5)
 
     respond_to do |format|
       format.turbo_stream

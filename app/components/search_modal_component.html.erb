@@ -1,0 +1,103 @@
+<!-- Search Modal -->
+<div id="search-modal"
+     class="hidden fixed inset-0 z-50"
+     data-controller="search-modal"
+     data-action="open-search-modal@window->search-modal#open"
+     role="dialog"
+     aria-modal="true"
+     aria-labelledby="search-modal-title">
+
+  <!-- Backdrop -->
+  <div class="absolute inset-0 bg-black/50 transition-opacity duration-300 opacity-0"
+       data-search-modal-target="backdrop"
+       data-action="click->search-modal#close"></div>
+
+  <!-- Modal Panel -->
+  <div class="absolute inset-x-0 bottom-0 md:inset-auto md:top-1/2 md:left-1/2 md:-translate-x-1/2 md:-translate-y-1/2
+              bg-white rounded-t-2xl md:rounded-2xl shadow-xl
+              max-h-[85vh] md:max-h-[80vh] md:w-full md:max-w-lg
+              flex flex-col
+              transform transition-all duration-300
+              translate-y-full md:translate-y-0 md:scale-95 md:opacity-0"
+       data-search-modal-target="panel">
+
+    <!-- Header -->
+    <div class="flex items-center gap-4 p-4 border-b border-gray-200">
+      <button type="button"
+              class="p-2 -ml-2 hover:bg-gray-100 rounded-full transition-colors"
+              data-action="click->search-modal#close"
+              aria-label="Închide">
+        <%= inline_svg_tag("chevron-left.svg", class: "w-5 h-5 text-gray-600") %>
+      </button>
+      <h2 id="search-modal-title" class="text-lg font-semibold text-gray-900">Caută servicii</h2>
+    </div>
+
+    <!-- Search Input -->
+    <div class="p-4 border-b border-gray-100">
+      <div class="relative">
+        <div class="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none">
+          <%= inline_svg_tag("search.svg", class: "w-5 h-5 text-gray-400") %>
+        </div>
+        <input type="text"
+               class="w-full border border-gray-300 bg-gray-50 rounded-xl py-3 pl-10 pr-4 text-sm placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+               placeholder="Caută servicii sau furnizori..."
+               data-search-modal-target="input"
+               data-action="input->search-modal#onInput keydown->search-modal#onKeydown"
+               autocomplete="off">
+      </div>
+    </div>
+
+    <!-- Results Area -->
+    <div class="flex-1 overflow-y-auto">
+      <!-- Live Search Results (hidden initially) -->
+      <div class="hidden p-4" data-search-modal-target="results">
+        <div id="search-results-list" class="space-y-1" data-search-modal-target="resultsList">
+          <!-- Results populated by Turbo Stream -->
+        </div>
+      </div>
+
+      <!-- Default Content (popular services & categories) -->
+      <div data-search-modal-target="defaultContent">
+        <!-- Popular Services -->
+        <div class="p-4">
+          <h3 class="text-xs font-medium text-gray-500 uppercase tracking-wider mb-3">Servicii populare</h3>
+          <div class="flex flex-wrap gap-2">
+            <% popular_services.each do |service| %>
+              <button type="button"
+                      class="px-3 py-2 bg-gray-100 hover:bg-blue-100 hover:text-blue-700 text-sm text-gray-700 rounded-lg transition-colors"
+                      data-action="click->search-modal#selectService"
+                      data-service="<%= service %>">
+                <%= service %>
+              </button>
+            <% end %>
+          </div>
+        </div>
+
+        <!-- Categories -->
+        <div class="p-4 pt-0">
+          <h3 class="text-xs font-medium text-gray-500 uppercase tracking-wider mb-3">Categorii</h3>
+          <div class="space-y-2">
+            <% categories.each do |category, services| %>
+              <details class="group">
+                <summary class="flex items-center justify-between p-3 bg-gray-50 hover:bg-gray-100 rounded-lg cursor-pointer transition-colors list-none">
+                  <span class="font-medium text-gray-900"><%= category %></span>
+                  <%= inline_svg_tag("chevron-right.svg", class: "w-4 h-4 text-gray-400 transition-transform group-open:rotate-90") %>
+                </summary>
+                <div class="mt-1 ml-4 space-y-1">
+                  <% services.each do |service| %>
+                    <button type="button"
+                            class="w-full text-left px-3 py-2 text-sm text-gray-700 hover:bg-blue-50 hover:text-blue-700 rounded-lg transition-colors"
+                            data-action="click->search-modal#selectService"
+                            data-service="<%= service %>">
+                      <%= service %>
+                    </button>
+                  <% end %>
+                </div>
+              </details>
+            <% end %>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
