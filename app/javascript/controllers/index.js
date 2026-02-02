@@ -2,31 +2,31 @@
 // Run that command whenever you add a new controller or create them with
 // ./bin/rails generate stimulus controllerName
 
-import { application } from "./application"
+import { application } from "controllers/application"
 
-import AppointmentCalendarController from "./appointment_calendar_controller"
+import AppointmentCalendarController from "controllers/appointment_calendar_controller"
 application.register("appointment-calendar", AppointmentCalendarController)
 
-import CategoryServiceController from "./category_service_controller"
+import CategoryServiceController from "controllers/category_service_controller"
 application.register("category-service", CategoryServiceController)
 
-import CopyController from "./copy_controller"
+import CopyController from "controllers/copy_controller"
 application.register("copy", CopyController)
 
-import DropdownController from "./dropdown_controller"
+import DropdownController from "controllers/dropdown_controller"
 application.register("dropdown", DropdownController)
 
-import HelloController from "./hello_controller"
+import HelloController from "controllers/hello_controller"
 application.register("hello", HelloController)
 
-import HeroSearchController from "./hero_search_controller"
+import HeroSearchController from "controllers/hero_search_controller"
 application.register("hero-search", HeroSearchController)
 
-import LocationModalController from "./location_modal_controller"
+import LocationModalController from "controllers/location_modal_controller"
 application.register("location-modal", LocationModalController)
 
-import NotificationsController from "./notifications_controller"
+import NotificationsController from "controllers/notifications_controller"
 application.register("notifications", NotificationsController)
 
-import SearchModalController from "./search_modal_controller"
+import SearchModalController from "controllers/search_modal_controller"
 application.register("search-modal", SearchModalController)
