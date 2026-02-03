@@ -1,12 +1,12 @@
 # frozen_string_literal: true
 
 class SearchBarComponent < ViewComponent::Base
+  attr_reader :search, :location
+
   def initialize(search: nil, location: nil)
     @search = search
     @location = location
   end
-
-  attr_reader :search, :location
 
   def service_types
     Provider.service_types.values

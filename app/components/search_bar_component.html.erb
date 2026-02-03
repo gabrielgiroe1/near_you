@@ -1,6 +1,5 @@
 <div class="w-full max-w-3xl mx-auto"
-     data-controller="hero-search"
-     data-action="service-selected->hero-search#selectService location-selected->hero-search#selectLocation">
+     data-controller="hero-search">
   <%= form_with url: providers_path, method: :get, local: true, data: { hero_search_target: "form" } do |form| %>
     <!-- Hidden inputs for search and location -->
     <%= form.hidden_field :search, value: search, data: { hero_search_target: "searchInput" } %>
@@ -47,16 +46,12 @@
     </div>
   <% end %>
 
-  <!-- Service Search Modal -->
+  <!-- Combined Search Modal -->
   <%= render SearchModalComponent.new(
     service_types: service_types,
     categories: categories,
     popular_services: popular_services,
-    current_search: search
-  ) %>
-
-  <!-- Location Modal -->
-  <%= render LocationModalComponent.new(
+    current_search: search,
     cities: cities,
     current_location: location
   ) %>

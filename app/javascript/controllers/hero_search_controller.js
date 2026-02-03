@@ -10,29 +10,127 @@ export default class extends Controller {
 
   connect() {
     console.log("hero-search controller connected")
+
+    // Listen for selection events from the modal
+    document.addEventListener("modal:service-selected", this.handleServiceSelected.bind(this))
+    document.addEventListener("modal:location-selected", this.handleLocationSelected.bind(this))
+  }
+
+  disconnect() {
+    document.removeEventListener("modal:service-selected", this.handleServiceSelected.bind(this))
+    document.removeEventListener("modal:location-selected", this.handleLocationSelected.bind(this))
   }
 
   openServiceModal() {
-    // Dispatch a global event that the search-modal controller will listen for
-    window.dispatchEvent(new CustomEvent("open-search-modal"))
+    this.openModal("service")
   }
 
   openLocationModal() {
-    // Dispatch a global event that the location-modal controller will listen for
-    window.dispatchEvent(new CustomEvent("open-location-modal"))
+    this.openModal("location")
   }
 
-  // Called when a service is selected from the modal
-  selectService(event) {
+  openModal(context) {
+    const modal = document.getElementById("search-modal")
+    if (!modal) {
+      console.error("Search modal not found")
+      return
+    }
+
+    // Store context on the modal element
+    modal.dataset.context = context
+
+    // Show modal
+    modal.classList.remove("hidden")
+
+    // Force reflow
+    modal.offsetHeight
+
+    // Animate in
+    requestAnimationFrame(() => {
+      const backdrop = modal.querySelector('[data-role="backdrop"]')
+      const panel = modal.querySelector('[data-role="panel"]')
+
+      if (backdrop) {
+        backdrop.classList.remove("opacity-0")
+        backdrop.classList.add("opacity-100")
+      }
+
+      if (panel) {
+        panel.classList.remove("scale-95", "opacity-0")
+        panel.classList.add("scale-100", "opacity-100")
+
+        // Only animate translate-y on mobile (slide up from bottom)
+        if (window.innerWidth < 768) {
+          panel.classList.remove("translate-y-full")
+          panel.classList.add("translate-y-0")
+        }
+      }
+    })
+
+    // Update context UI
+    this.updateModalContext(modal, context)
+
+    // Prevent body scroll
+    document.body.style.overflow = "hidden"
+  }
+
+  updateModalContext(modal, context) {
+    const isService = context === "service"
+
+    const serviceInput = modal.querySelector('[data-role="serviceInput"]')
+    const locationInput = modal.querySelector('[data-role="locationInput"]')
+    const serviceContext = modal.querySelector('[data-role="serviceContext"]')
+    const locationContext = modal.querySelector('[data-role="locationContext"]')
+
+    // Update input highlighting
+    if (serviceInput) {
+      serviceInput.classList.toggle("ring-2", isService)
+      serviceInput.classList.toggle("ring-blue-500", isService)
+      serviceInput.classList.toggle("border-transparent", isService)
+    }
+
+    if (locationInput) {
+      locationInput.classList.toggle("ring-2", !isService)
+      locationInput.classList.toggle("ring-blue-500", !isService)
+      locationInput.classList.toggle("border-transparent", !isService)
+    }
+
+    // Show/hide context content
+    if (serviceContext) {
+      serviceContext.classList.toggle("hidden", !isService)
+    }
+
+    if (locationContext) {
+      locationContext.classList.toggle("hidden", isService)
+    }
+
+    // Focus the appropriate input
+    setTimeout(() => {
+      if (isService && serviceInput) {
+        serviceInput.focus()
+      } else if (!isService && locationInput) {
+        locationInput.focus()
+      }
+    }, 100)
+  }
+
+  handleServiceSelected(event) {
     const service = event.detail.service
-    this.searchInputTarget.value = service
-    this.serviceDisplayTarget.textContent = service
+    if (this.hasSearchInputTarget) {
+      this.searchInputTarget.value = service
+    }
+    if (this.hasServiceDisplayTarget) {
+      this.serviceDisplayTarget.textContent = service
+    }
   }
 
-  // Called when a location is selected from the modal
-  selectLocation(event) {
+  handleLocationSelected(event) {
     const location = event.detail.location
-    this.locationInputTarget.value = location
-    this.locationDisplayTarget.textContent = location
+    if (this.hasLocationInputTarget) {
+      this.locationInputTarget.value = location
+    }
+    if (this.hasLocationDisplayTarget) {
+      this.locationDisplayTarget.textContent = location
+    }
   }
 }
