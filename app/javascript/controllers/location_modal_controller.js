@@ -32,13 +32,14 @@ export default class extends Controller {
       this.backdropTarget.classList.remove("opacity-0")
       this.backdropTarget.classList.add("opacity-100")
 
-      // Mobile: slide up, Desktop: fade/scale
+      // Animate opacity and scale for all screen sizes
+      this.panelTarget.classList.remove("scale-95", "opacity-0")
+      this.panelTarget.classList.add("scale-100", "opacity-100")
+
+      // Only animate translate-y on mobile
       if (window.innerWidth < 768) {
         this.panelTarget.classList.remove("translate-y-full")
         this.panelTarget.classList.add("translate-y-0")
-      } else {
-        this.panelTarget.classList.remove("scale-95", "opacity-0")
-        this.panelTarget.classList.add("scale-100", "opacity-100")
       }
     })
 
@@ -61,12 +62,14 @@ export default class extends Controller {
     this.backdropTarget.classList.remove("opacity-100")
     this.backdropTarget.classList.add("opacity-0")
 
+    // Animate opacity and scale for all screen sizes
+    this.panelTarget.classList.remove("scale-100", "opacity-100")
+    this.panelTarget.classList.add("scale-95", "opacity-0")
+
+    // Only animate translate-y on mobile
     if (window.innerWidth < 768) {
       this.panelTarget.classList.remove("translate-y-0")
       this.panelTarget.classList.add("translate-y-full")
-    } else {
-      this.panelTarget.classList.remove("scale-100", "opacity-100")
-      this.panelTarget.classList.add("scale-95", "opacity-0")
     }
 
     // Hide after animation
