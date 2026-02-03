@@ -10,9 +10,12 @@
               Service Provider
             </span>
           </h1>
-          <p class="text-xl text-gray-600 max-w-2xl mx-auto">
+          <p class="text-xl text-gray-600 max-w-2xl mx-auto mb-8">
             Connect with trusted professionals in your area. Book appointments, read reviews, and get the help you need.
           </p>
+
+          <!-- Hero Search Bar -->
+          <%= render SearchBarComponent.new(search: params[:search], location: params[:location]) %>
         </div>
 
         <!-- Quick Stats -->

@@ -1,0 +1,44 @@
+<%= turbo_stream.update "search-results-list" do %>
+  <% if @service_types.present? %>
+    <div class="mb-4">
+      <h4 class="text-xs font-medium text-gray-500 uppercase tracking-wider mb-2">Servicii</h4>
+      <% @service_types.each do |key, value| %>
+        <button type="button"
+                class="w-full flex items-center gap-3 p-3 text-left hover:bg-blue-50 hover:text-blue-700 rounded-lg transition-colors"
+                data-action="click->search-modal#selectService"
+                data-service="<%= value %>">
+          <%= inline_svg_tag("briefcase.svg", class: "w-4 h-4 text-gray-400 flex-shrink-0") %>
+          <span class="text-gray-900"><%= value %></span>
+        </button>
+      <% end %>
+    </div>
+  <% end %>
+
+  <% if @providers.present? %>
+    <div>
+      <h4 class="text-xs font-medium text-gray-500 uppercase tracking-wider mb-2">Furnizori</h4>
+      <% @providers.each do |provider| %>
+        <button type="button"
+                class="w-full flex items-center gap-3 p-3 text-left hover:bg-blue-50 hover:text-blue-700 rounded-lg transition-colors"
+                data-action="click->search-modal#selectService"
+                data-service="<%= provider.name %>">
+          <% if provider.profile_picture.attached? %>
+            <%= image_tag provider.profile_picture, class: "w-8 h-8 rounded-full object-cover flex-shrink-0" %>
+          <% else %>
+            <%= inline_svg_tag("user.svg", class: "w-8 h-8 text-gray-400 flex-shrink-0") %>
+          <% end %>
+          <div class="min-w-0">
+            <div class="font-medium text-gray-900 truncate"><%= provider.name %></div>
+            <div class="text-sm text-gray-500 truncate"><%= provider.service_type_before_type_cast&.humanize %></div>
+          </div>
+        </button>
+      <% end %>
+    </div>
+  <% end %>
+
+  <% if @service_types.blank? && @providers.blank? %>
+    <div class="text-center py-8 text-gray-500">
+      Nu s-au găsit rezultate pentru căutarea ta.
+    </div>
+  <% end %>
+<% end %>

@@ -4,7 +4,7 @@ export default class extends Controller {
   static targets = ["modal", "timeSlot", "confirmationModal"]
 
   connect() {
-    console.log("Appointment Calendar Controller connected")
+    console.log("Appointment Calendar Controller connected!!!!")
   }
 
   show() {

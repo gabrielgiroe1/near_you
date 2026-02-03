@@ -19,6 +19,7 @@ Rails.application.routes.draw do
     delete :unfavorite, to: "favorites#destroy", as: :unfavorite
     collection do
       get :service_types
+      get :search_suggestions
     end
     resources :availabilities, only: [:index, :create, :update, :destroy]
     get "available_slots", on: :member
