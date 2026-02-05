@@ -1,0 +1,58 @@
+<%#
+  Notifications Page - Mobile-first design
+  Shows all user notifications in a list format
+%>
+
+<div class="min-h-screen bg-white -mx-4 px-4 lg:mx-0 lg:px-0">
+  <!-- Header -->
+  <div class="pt-6 pb-4 border-b border-gray-100">
+    <h1 class="text-xl font-bold text-gray-900 text-center">Notificări</h1>
+  </div>
+
+  <!-- Notifications List -->
+  <div class="max-w-lg mx-auto">
+    <% if @notifications.any? %>
+      <div class="divide-y divide-gray-100">
+        <% @notifications.each do |notification| %>
+          <%= form_tag read_notification_path(notification), method: :patch, class: "block" do %>
+            <%= hidden_field_tag :authenticity_token, form_authenticity_token %>
+            <button type="submit" class="w-full flex items-start gap-4 px-4 py-4 text-left hover:bg-gray-50 transition-colors <%= notification.read_at ? 'bg-white' : 'bg-primary-50' %>">
+              <!-- Icon -->
+              <div class="flex-shrink-0 w-10 h-10 rounded-full bg-primary-100 flex items-center justify-center">
+                <%= inline_svg_tag("bell.svg", class: "w-5 h-5 text-primary-600") %>
+              </div>
+
+              <!-- Content -->
+              <div class="flex-1 min-w-0">
+                <p class="text-sm text-gray-900 <%= notification.read_at ? '' : 'font-medium' %>">
+                  <% if current_user.provider? %>
+                    <%= notification.event.message_provider %>
+                  <% else %>
+                    <%= notification.event.message_user %>
+                  <% end %>
+                </p>
+                <p class="text-xs text-gray-500 mt-1">
+                  <%= time_ago_in_words(notification.created_at) %> ago
+                </p>
+              </div>
+
+              <!-- Unread indicator -->
+              <% unless notification.read_at %>
+                <div class="flex-shrink-0 w-2 h-2 rounded-full bg-primary-500 mt-2"></div>
+              <% end %>
+            </button>
+          <% end %>
+        <% end %>
+      </div>
+    <% else %>
+      <!-- Empty State -->
+      <div class="py-16 text-center">
+        <div class="w-16 h-16 mx-auto mb-4 rounded-full bg-gray-100 flex items-center justify-center">
+          <%= inline_svg_tag("bell.svg", class: "w-8 h-8 text-gray-400") %>
+        </div>
+        <h3 class="text-lg font-medium text-gray-900 mb-1">Nicio notificare</h3>
+        <p class="text-sm text-gray-500">Nu ai notificări noi momentan.</p>
+      </div>
+    <% end %>
+  </div>
+</div>

@@ -1,55 +1,158 @@
-<nav class="bg-white shadow-lg mb-8">
-      <div class="max-w-6xl mx-auto px-4 py-3">
-        <div class="flex justify-between items-center">
-          <%= link_to "Near You", root_path, class:"text-2xl font-bold text-blue-500"%>
+<%#
+  Navbar Component - Phase 2.1 Redesign
+  - Desktop: Sticky top navbar with blur on scroll
+  - Mobile: Minimal top bar + fixed bottom navigation (MERO style)
+  - Profile tab links to dedicated profile page
+%>
 
-          <div class="flex items-center gap-4">
-            <% if user_signed_in? %>
-              <!-- Main Navigation Menu -->
-              <div class="relative" data-controller="dropdown">
-                <button class="flex items-center gap-1 text-gray-700 hover:text-gray-900" data-action="click->dropdown#toggle">
-                  <span><%= current_user.name || current_user.email %></span>
-                  <%= inline_svg_tag("chevron-down.svg", class: "w-4 h-4") %>
-                </button>
-                <!-- Dropdown Menu -->
-                <div class="absolute right-0 mt-2 w-48 bg-white rounded-md shadow-lg py-1 hidden" data-dropdown-target="menu">
-                  <%= link_to "Edit Profile", current_user.user? ? edit_user_registration_path : edit_provider_path(current_user.provider), class: "block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100" %>
-                  <%= link_to "My Appointments", appointments_path,
-                    class: "block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100" %>
-                  <% if current_user.provider? %>
-                    <%= link_to "My Provider Profile", provider_path(current_user.provider),
-                      class: "block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100" %>
-                  <% else %>
-                    <%= link_to "Browse Providers", root_path,
-                      class: "block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100" %>
-                    <%= button_to "Become a Provider", new_provider_path,
-                      method: :get,
-                      class: "block w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-gray-100" %>
+<div data-controller="navbar">
+  <!-- Top Navbar (Desktop full, Mobile minimal) -->
+  <nav
+    data-navbar-target="nav"
+    class="fixed top-0 left-0 right-0 z-sticky bg-white border-b border-gray-100 transition-all duration-300"
+  >
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="flex items-center justify-between h-14 lg:h-16">
 
-                    <%= link_to "My Favorites", favorites_path, method: :get,
-                      class: "block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100" %>
+        <!-- Logo -->
+        <%= link_to root_path, class: "flex items-center gap-2" do %>
+          <span class="text-2xl font-bold text-primary-600">
+            NearYou
+          </span>
+        <% end %>
+
+        <!-- Right: Desktop Actions -->
+        <div class="flex items-center gap-3">
+          <!-- Notifications (all screens) -->
+          <% if user_signed_in? %>
+            <%= render "shared/notifications" %>
+          <% end %>
+
+          <!-- Desktop User Menu -->
+          <% if user_signed_in? %>
+            <div class="hidden lg:block relative" data-controller="dropdown">
+              <button
+                data-action="click->dropdown#toggle"
+                class="flex items-center gap-2 p-1.5 rounded-xl hover:bg-gray-100 transition-colors"
+              >
+                <div class="w-8 h-8 rounded-full bg-gradient-to-br from-primary-400 to-primary-600 flex items-center justify-center text-white font-medium text-sm">
+                  <%= current_user.name&.first&.upcase || current_user.email&.first&.upcase %>
+                </div>
+                <%= inline_svg_tag("chevron-down.svg", class: "w-4 h-4 text-gray-500") %>
+              </button>
+
+              <div
+                data-dropdown-target="menu"
+                class="hidden absolute right-0 mt-2 w-56 bg-white rounded-xl shadow-lg border border-gray-100 py-2 z-dropdown"
+              >
+                <div class="px-4 py-3 border-b border-gray-100">
+                  <p class="text-sm font-semibold text-gray-900 truncate"><%= current_user.name || "User" %></p>
+                  <p class="text-xs text-gray-500 truncate"><%= current_user.email %></p>
+                </div>
+
+                <div class="py-1">
+                  <%= link_to edit_user_registration_path, class: "flex items-center gap-3 px-4 py-2 text-sm text-gray-700 hover:bg-gray-50" do %>
+                    <%= inline_svg_tag("user-circle.svg", class: "w-4 h-4 text-gray-400") %>
+                    Detalii cont
                   <% end %>
-                  <div class="border-t border-gray-100"></div>
-                  <%= button_to "Logout", destroy_user_session_path,
-                    method: :delete,
-                    class: "block w-full text-left px-4 py-2 text-sm text-red-600 hover:bg-gray-100" %>
+                  <%= link_to appointments_path, class: "flex items-center gap-3 px-4 py-2 text-sm text-gray-700 hover:bg-gray-50" do %>
+                    <%= inline_svg_tag("calendar.svg", class: "w-4 h-4 text-gray-400") %>
+                    Programări
+                  <% end %>
+                  <%= link_to favorites_path, class: "flex items-center gap-3 px-4 py-2 text-sm text-gray-700 hover:bg-gray-50" do %>
+                    <%= inline_svg_tag("heart-outline.svg", class: "w-4 h-4 text-gray-400") %>
+                    Favorite
+                  <% end %>
+                  <% unless current_user.provider? %>
+                    <%= link_to new_provider_path, class: "flex items-center gap-3 px-4 py-2 text-sm text-gray-700 hover:bg-gray-50" do %>
+                      <%= inline_svg_tag("building.svg", class: "w-4 h-4 text-gray-400") %>
+                      Listează-ți afacerea
+                    <% end %>
+                  <% end %>
                 </div>
-              </div>
-              <%= render "shared/notifications" if user_signed_in? %>
-            <% else %>
-              <!-- Guest Navigation Links -->
-              <div data-controller="dropdown">
-                <button data-action="click->dropdown#toggle" class="flex items-center gap-1">
-                  <%= inline_svg_tag("default_profile_picture.svg", class: "w-6 h-4 cursor-pointer rounded-full", override: true) %>
-                </button>
-                <div data-dropdown-target="menu" class="absolute right-0 mt-2 w-48 bg-white rounded-md shadow-lg py-1 hidden z-10">
-                  <%= link_to "Sign In", new_user_session_path, class: "block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100" %>
-                  <%= link_to "Sign Up", new_user_registration_path, class: "block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100" %>
-                </div>
-              </div>
 
-            <% end %>
-          </div>
+                <div class="border-t border-gray-100 pt-1">
+                  <%= button_to destroy_user_session_path, method: :delete, class: "flex items-center gap-3 w-full px-4 py-2 text-sm text-gray-700 hover:bg-gray-50" do %>
+                    <%= inline_svg_tag("logout.svg", class: "w-4 h-4 text-gray-400") %>
+                    Ieși din cont
+                  <% end %>
+                </div>
+              </div>
+            </div>
+          <% else %>
+            <div class="hidden lg:flex items-center gap-3">
+              <%= link_to "Sign In", new_user_session_path, class: "text-sm font-medium text-gray-700 hover:text-gray-900" %>
+            </div>
+          <% end %>
         </div>
       </div>
-    </nav>
+    </div>
+  </nav>
+
+  <!-- Spacer for fixed top navbar -->
+  <div class="h-14 lg:h-16"></div>
+
+  <!-- Mobile Bottom Navigation (MERO style) -->
+  <nav class="lg:hidden fixed bottom-0 left-0 right-0 z-sticky bg-white border-t border-gray-200">
+    <div class="flex items-stretch justify-around h-16 px-2 safe-bottom">
+      <!-- Acasă -->
+      <%= link_to root_path, class: "flex-1 flex flex-col items-center justify-center gap-0.5 #{current_page?(root_path) ? 'text-primary-600' : 'text-gray-400'}" do %>
+        <%= inline_svg_tag("home-solid.svg", class: "w-6 h-6") %>
+        <span class="text-[10px] font-medium">Acasă</span>
+      <% end %>
+
+      <!-- Descoperă -->
+      <button
+        type="button"
+        class="flex-1 flex flex-col items-center justify-center gap-0.5 text-gray-400"
+      >
+        <%= inline_svg_tag("search.svg", class: "w-6 h-6") %>
+        <span class="text-[10px] font-medium">Descoperă</span>
+      </button>
+
+      <!-- Programări -->
+      <% appointments_active = current_page?(appointments_path) %>
+      <%= link_to (user_signed_in? ? appointments_path : new_user_session_path), class: "flex-1 flex flex-col items-center justify-center gap-0.5 #{appointments_active ? 'text-primary-600' : 'text-gray-400'}" do %>
+        <%= inline_svg_tag("calendar-outline.svg", class: "w-6 h-6") %>
+        <span class="text-[10px] font-medium">Programări</span>
+      <% end %>
+
+      <!-- Favorite -->
+      <% favorites_active = current_page?(favorites_path) %>
+      <%= link_to (user_signed_in? ? favorites_path : new_user_session_path), class: "flex-1 flex flex-col items-center justify-center gap-0.5 #{favorites_active ? 'text-primary-600' : 'text-gray-400'}" do %>
+
+        <%= inline_svg_tag("heart.svg", class: "w-6 h-6") %>
+        <span class="text-[10px] font-medium">Favorite</span>
+      <% end %>
+
+      <!-- Profile / Sign In -->
+      <% if user_signed_in? %>
+        <% profile_active = current_page?(profile_path) rescue false %>
+        <%= link_to profile_path, class: "flex-1 flex flex-col items-center justify-center gap-0.5 #{profile_active ? 'text-primary-600' : 'text-gray-400'}" do %>
+          <div class="w-6 h-6 rounded-full bg-gradient-to-br from-primary-400 to-primary-600 flex items-center justify-center text-white text-[10px] font-semibold overflow-hidden">
+            <% if current_user.respond_to?(:avatar) && current_user.avatar.attached? %>
+              <%= image_tag current_user.avatar, class: "w-full h-full object-cover" %>
+            <% else %>
+              <%= current_user.name&.first&.upcase || current_user.email&.first&.upcase %>
+            <% end %>
+          </div>
+          <span class="text-[10px] font-medium truncate max-w-[50px]"><%= current_user.name&.split&.first || "Profil" %></span>
+        <% end %>
+      <% else %>
+        <%= link_to new_user_session_path, class: "flex-1 flex flex-col items-center justify-center gap-0.5 text-gray-400" do %>
+          <%= inline_svg_tag("user-circle.svg", class: "w-6 h-6") %>
+          <span class="text-[10px] font-medium">Sign In</span>
+        <% end %>
+      <% end %>
+    </div>
+  </nav>
+
+  <!-- Spacer for fixed bottom navbar (mobile only) -->
+  <div class="lg:hidden h-16"></div>
+</div>
+
+<style>
+  .navbar-scrolled {
+    @apply bg-white/95 backdrop-blur-md shadow-sm;
+  }
+</style>

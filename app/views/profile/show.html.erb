@@ -1,0 +1,106 @@
+<%#
+  Profile Page - MERO style account menu
+  Mobile-first design with list-style navigation
+%>
+
+<div class="min-h-screen bg-white -mx-4 px-4 lg:mx-0 lg:px-0">
+  <!-- Profile Header -->
+  <div class="pt-8 pb-6 flex flex-col items-center">
+    <!-- Avatar -->
+    <div class="w-24 h-24 rounded-full bg-gradient-to-br from-primary-400 to-primary-600 flex items-center justify-center text-white text-3xl font-semibold overflow-hidden shadow-lg mb-4">
+      <% if current_user.respond_to?(:avatar) && current_user.avatar.attached? %>
+        <%= image_tag current_user.avatar, class: "w-full h-full object-cover" %>
+      <% else %>
+        <%= current_user.name&.first&.upcase || current_user.email&.first&.upcase %>
+      <% end %>
+    </div>
+
+    <!-- Name -->
+    <h1 class="text-xl font-bold text-gray-900">
+      <%= current_user.name || current_user.email.split('@').first %>
+    </h1>
+  </div>
+
+  <!-- Menu Items -->
+  <div class="max-w-lg mx-auto">
+    <!-- Primary Menu Section -->
+    <nav class="border-t border-gray-100">
+      <!-- Detalii cont -->
+      <%= link_to edit_user_registration_path, class: "flex items-center justify-between px-4 py-4 border-b border-gray-100 hover:bg-gray-50 transition-colors" do %>
+        <div class="flex items-center gap-4">
+          <%= inline_svg_tag("user-circle.svg", class: "w-6 h-6 text-gray-600") %>
+          <span class="text-base text-gray-900">Detalii cont</span>
+        </div>
+        <%= inline_svg_tag("chevron-right.svg", class: "w-5 h-5 text-primary-600") %>
+      <% end %>
+
+      <!-- Programări -->
+      <%= link_to appointments_path, class: "flex items-center justify-between px-4 py-4 border-b border-gray-100 hover:bg-gray-50 transition-colors" do %>
+        <div class="flex items-center gap-4">
+          <%= inline_svg_tag("calendar.svg", class: "w-6 h-6 text-gray-600") %>
+          <span class="text-base text-gray-900">Programări</span>
+        </div>
+        <%= inline_svg_tag("chevron-right.svg", class: "w-5 h-5 text-primary-600") %>
+      <% end %>
+
+      <!-- Notificări -->
+      <%= link_to notifications_path, class: "flex items-center justify-between px-4 py-4 border-b border-gray-100 hover:bg-gray-50 transition-colors" do %>
+        <div class="flex items-center gap-4">
+          <%= inline_svg_tag("bell.svg", class: "w-6 h-6 text-gray-600") %>
+          <span class="text-base text-gray-900">Notificări</span>
+          <% unread_count = current_user.notifications.unread.count %>
+          <% if unread_count > 0 %>
+            <span class="inline-flex items-center justify-center px-2 py-0.5 text-xs font-medium bg-primary-100 text-primary-700 rounded-full">
+              <%= unread_count %>
+            </span>
+          <% end %>
+        </div>
+        <%= inline_svg_tag("chevron-right.svg", class: "w-5 h-5 text-primary-600") %>
+      <% end %>
+
+      <!-- Favorite -->
+      <%= link_to favorites_path, class: "flex items-center justify-between px-4 py-4 border-b border-gray-100 hover:bg-gray-50 transition-colors" do %>
+        <div class="flex items-center gap-4">
+          <%= inline_svg_tag("heart-outline.svg", class: "w-6 h-6 text-gray-600") %>
+          <span class="text-base text-gray-900">Favorite</span>
+        </div>
+        <%= inline_svg_tag("chevron-right.svg", class: "w-5 h-5 text-primary-600") %>
+      <% end %>
+
+      <!-- Listează-ți afacerea (only for non-providers) -->
+      <% unless current_user.provider? %>
+        <%= link_to new_provider_path, class: "flex items-center justify-between px-4 py-4 border-b border-gray-100 hover:bg-gray-50 transition-colors" do %>
+          <div class="flex items-center gap-4">
+            <%= inline_svg_tag("building.svg", class: "w-6 h-6 text-gray-600") %>
+            <span class="text-base text-gray-900">Listează-ți afacerea</span>
+          </div>
+          <%= inline_svg_tag("chevron-right.svg", class: "w-5 h-5 text-primary-600") %>
+        <% end %>
+      <% else %>
+        <!-- My Provider Profile (for providers) -->
+        <%= link_to provider_path(current_user.provider), class: "flex items-center justify-between px-4 py-4 border-b border-gray-100 hover:bg-gray-50 transition-colors" do %>
+          <div class="flex items-center gap-4">
+            <%= inline_svg_tag("building.svg", class: "w-6 h-6 text-gray-600") %>
+            <span class="text-base text-gray-900">Profilul meu de furnizor</span>
+          </div>
+          <%= inline_svg_tag("chevron-right.svg", class: "w-5 h-5 text-primary-600") %>
+        <% end %>
+      <% end %>
+    </nav>
+
+    <!-- Secondary Menu Section -->
+    <nav class="mt-8 border-t border-gray-100">
+      <!-- Centru de ajutor -->
+      <button type="button" class="w-full flex items-center justify-between px-4 py-4 border-b border-gray-100 hover:bg-gray-50 transition-colors">
+        <span class="text-base text-gray-900">Centru de ajutor</span>
+        <%= inline_svg_tag("chevron-right.svg", class: "w-5 h-5 text-primary-600") %>
+      </button>
+
+      <!-- Ieși din cont -->
+      <%= button_to destroy_user_session_path, method: :delete, class: "w-full flex items-center justify-between px-4 py-4 border-b border-gray-100 hover:bg-gray-50 transition-colors" do %>
+        <span class="text-base text-gray-900">Ieși din cont</span>
+        <%= inline_svg_tag("chevron-right.svg", class: "w-5 h-5 text-primary-600") %>
+      <% end %>
+    </nav>
+  </div>
+</div>

@@ -13,6 +13,9 @@ Rails.application.routes.draw do
 
   root "providers#index"
 
+  # Profile page (mobile account menu)
+  get :profile, to: "profile#show", as: :profile
+
   get :favorites, to: "favorites#index", as: :favorites
   resources :providers, only: [:index, :show, :new, :create, :edit, :update] do
     post :favorite, to: "favorites#create", as: :favorite
@@ -46,7 +49,7 @@ Rails.application.routes.draw do
     end
   end
 
-  resources :notifications, only: [] do
+  resources :notifications, only: [:index] do
     member do
       patch :read
     end
