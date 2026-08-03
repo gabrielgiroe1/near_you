@@ -90,7 +90,7 @@ end
 
 gem "avo"
 gem "aws-sdk-s3", require: false
-gem "devise", "4.9.4"
+gem "devise", "~> 5.0", ">= 5.0.4"
 gem "httparty"
 gem "kamal", require: false
 gem "language_filter", "~> 0.3.01"
