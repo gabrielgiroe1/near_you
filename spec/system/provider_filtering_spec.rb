@@ -5,8 +5,6 @@ RSpec.describe "Provider Filtering", :js, type: :system do
   let!(:masseur) { create(:provider, service_type: "masseur", category: "Health & Wellness", hourly_rate: 50, location: "Bucharest") }
   let!(:nutritionist) { create(:provider, service_type: "nutritionist", category: "Health & Wellness", hourly_rate: 80, location: "Cluj-Napoca") }
 
-
-
   before do
     driven_by(:selenium_chrome_headless)
     sign_in user
@@ -24,7 +22,7 @@ RSpec.describe "Provider Filtering", :js, type: :system do
     expect(page).to have_current_path(
                     providers_path(service_type: "Masseur"),
                     ignore_query: false
-                    )
+                  )
 
     open_filters
 
