@@ -1,0 +1,125 @@
+<%= link_to provider_path(provider), class: "block group", data: { turbo: false } do %>
+  <div class="bg-white rounded-2xl shadow-sm hover:shadow-lg transition-all duration-300 overflow-hidden border border-gray-100 hover:border-gray-200">
+
+    <%# ── Image Gallery Strip ── %>
+    <div class="relative">
+      <% if has_gallery? %>
+        <div class="grid gap-0.5 <%= visible_images.size >= 3 ? 'grid-cols-3' : "grid-cols-#{visible_images.size}" %> h-44">
+          <% visible_images.each_with_index do |image, index| %>
+            <div class="relative overflow-hidden <%= index == 0 && visible_images.size == 1 ? 'col-span-3' : '' %>">
+              <%= image_tag image.variant(resize_to_fill: [400, 300]),
+                    class: "w-full h-full object-cover",
+                    loading: "lazy" %>
+
+              <%# "+N" indicator on the last visible image %>
+              <% if index == visible_images.size - 1 && extra_images_count > 0 %>
+                <div class="absolute inset-0 bg-black/40 flex items-center justify-center">
+                  <span class="text-white font-semibold text-lg">+<%= extra_images_count %></span>
+                </div>
+              <% end %>
+            </div>
+          <% end %>
+        </div>
+      <% else %>
+        <%# Fallback gradient placeholder %>
+        <div class="h-44 bg-gradient-to-br from-teal-400 to-blue-500 flex items-center justify-center">
+          <span class="text-white/70 text-4xl font-bold"><%= provider.user.name&.first&.upcase %></span>
+        </div>
+      <% end %>
+
+      <%# Badges overlay %>
+      <% if new_provider? %>
+        <div class="absolute top-3 left-3">
+          <span class="bg-blue-600 text-white text-xs font-semibold px-2.5 py-1 rounded-full shadow-sm">
+            Nou
+          </span>
+        </div>
+      <% end %>
+    </div>
+
+    <%# ── Provider Info Section ── %>
+    <div class="p-4">
+      <div class="flex items-start gap-3">
+        <%# Profile Picture %>
+        <div class="flex-shrink-0 relative">
+          <% if provider.profile_picture.attached? %>
+            <%= image_tag provider.profile_picture.variant(resize_to_fill: [96, 96]),
+                  class: "w-12 h-12 rounded-full object-cover ring-2 ring-white shadow-sm",
+                  loading: "lazy" %>
+          <% else %>
+            <div class="w-12 h-12 rounded-full bg-gradient-to-br from-teal-500 to-blue-600 flex items-center justify-center ring-2 ring-white shadow-sm">
+              <span class="text-white font-semibold text-sm"><%= provider.user.name&.first&.upcase %></span>
+            </div>
+          <% end %>
+          <%# Verification badge %>
+          <div class="absolute -bottom-0.5 -right-0.5 bg-green-500 text-white rounded-full p-0.5 ring-2 ring-white">
+            <%= inline_svg_tag("checkmark.svg", class: "w-2.5 h-2.5") %>
+          </div>
+        </div>
+
+        <%# Name, service type, rating, location %>
+        <div class="flex-1 min-w-0">
+          <div class="flex items-start justify-between">
+            <div class="flex-1 min-w-0">
+              <h3 class="text-base font-semibold text-gray-900 group-hover:text-teal-600 transition-colors truncate">
+                <%= provider.user.name %>
+              </h3>
+              <p class="text-sm text-gray-500 capitalize">
+                <%= provider.service_type.humanize %>
+              </p>
+            </div>
+
+            <%# Price Badge %>
+            <div class="flex-shrink-0 ml-2">
+              <div class="bg-teal-50 text-teal-700 px-2.5 py-0.5 rounded-full text-sm font-semibold">
+                <%= provider.hourly_rate %> RON
+              </div>
+            </div>
+          </div>
+
+          <%# Rating %>
+          <div class="flex items-center gap-1 mt-1">
+            <% if display_rating %>
+              <%= inline_svg_tag("solid/star.svg", class: "w-4 h-4 text-yellow-400") %>
+              <span class="text-sm font-semibold text-gray-800"><%= display_rating %></span>
+              <span class="text-sm text-gray-400">(<%= review_count_text %>)</span>
+            <% else %>
+              <%= inline_svg_tag("star.svg", class: "w-4 h-4 text-gray-300") %>
+              <span class="text-sm text-gray-400">Nou pe platformă</span>
+            <% end %>
+          </div>
+
+          <%# Location %>
+          <div class="flex items-center text-sm text-gray-500 mt-1">
+            <%= inline_svg_tag("location-marker.svg", class: "w-3.5 h-3.5 mr-1 flex-shrink-0") %>
+            <span class="truncate"><%= provider.location %></span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <%# ── Footer Section ── %>
+    <div class="px-4 py-3 border-t border-gray-100 flex items-center justify-between">
+      <div class="flex items-center gap-4 text-sm">
+        <%# Availability %>
+        <div class="flex items-center gap-1.5">
+          <% if available_today? %>
+            <span class="w-2 h-2 rounded-full bg-green-500"></span>
+          <% end %>
+          <span class="<%= availability_color %> font-medium"><%= availability_text %></span>
+        </div>
+      </div>
+
+      <% unless provider.can_accept_bookings? %>
+        <span class="text-xs text-yellow-600 font-medium flex items-center gap-1">
+          Setup in progress
+        </span>
+      <% else %>
+        <div class="flex items-center gap-1 text-sm text-teal-600 font-medium group-hover:text-teal-700">
+          <span>Vezi profil</span>
+          <%= inline_svg_tag("arrow-right.svg", class: "w-4 h-4 group-hover:translate-x-0.5 transition-transform") %>
+        </div>
+      <% end %>
+    </div>
+  </div>
+<% end %>
