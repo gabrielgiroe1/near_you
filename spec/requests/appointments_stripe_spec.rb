@@ -98,11 +98,11 @@ RSpec.describe "Appointments with Stripe Integration", type: :request do
         get "/appointments/#{appointment.id}/cancel"
 
         expect(Stripe::Refund).to have_received(:create).with(
-          hash_including(
-            payment_intent: appointment.stripe_payment_intent_id,
-            reverse_transfer: true
-          )
-        )
+        hash_including(
+        payment_intent: appointment.stripe_payment_intent_id,
+        reverse_transfer: true
+      )
+      )
       end
     end
 
@@ -122,8 +122,8 @@ RSpec.describe "Appointments with Stripe Integration", type: :request do
 
       before do
         allow(Stripe::Refund).to receive(:create).and_raise(
-          Stripe::StripeError.new("Refund failed")
-        )
+        Stripe::StripeError.new("Refund failed")
+      )
       end
 
       it "cancels appointment but shows error" do

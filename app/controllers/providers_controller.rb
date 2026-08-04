@@ -14,7 +14,7 @@ class ProvidersController < ApplicationController
     else
       @categories = Provider.categories
 
-      @providers = Provider.includes(:user, :availabilities, :appointments)
+      @providers = Provider.includes(:user, :availabilities, :appointments, :reviews, images_attachments: :blob, profile_picture_attachment: :blob)
 
       @pagy, @providers = pagy(apply_filters(@providers, params).then { |scope| apply_sorting(scope, params) })
 
