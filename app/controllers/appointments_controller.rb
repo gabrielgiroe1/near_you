@@ -30,10 +30,10 @@ class AppointmentsController < ApplicationController
   def create
     @provider = Provider.find(params[:provider_id])
 
-    # unless @provider.can_accept_bookings?
-    #   redirect_to provider_path(@provider), alert: "This provider needs to complete their payment setup before accepting bookings"
-    #   return
-    # end
+    unless @provider.can_accept_bookings?
+      redirect_to provider_path(@provider), alert: "This provider needs to complete their payment setup before accepting bookings"
+      return
+    end
 
     # Get the day of week and time from params
     day_of_week = params[:appointment][:day_of_week]
