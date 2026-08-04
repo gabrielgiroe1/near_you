@@ -42,3 +42,10 @@
 /config/credentials/production.key
 /config/credentials/development.yml.enc
 /config/credentials/staging.key
+# Ignore key files for decrypting credentials and more.
+/config/credentials/*.key
+
+
+# Ignore key files for decrypting credentials and more.
+/config/*.key
+
