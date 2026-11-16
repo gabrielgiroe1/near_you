@@ -68,7 +68,7 @@
           <!-- Pagination -->
           <% if @pagy.present? %>
             <div class="mt-12 flex justify-center">
-              <%== pagy_nav(@pagy) %>
+              <%== @pagy.series_nav %>
             </div>
           <% end %>
         <% end %>
