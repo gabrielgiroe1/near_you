@@ -88,7 +88,7 @@ group :test do
   gem "selenium-webdriver"
 end
 
-gem "avo"
+gem "avo", ">= 4.4.4"
 gem "aws-sdk-s3", require: false
 gem "devise", "~> 5.0", ">= 5.0.4"
 gem "httparty"
@@ -108,5 +108,5 @@ gem "thruster", require: false
 gem "sentry-rails", "~> 5.24"
 gem "sentry-ruby", "~> 5.24"
 gem "view_component", "~> 3.23", ">= 3.23.2"
-gem "pagy", "~> 9.1"
+gem "pagy", ">= 43.8.2"
 gem "postmark-rails", "~> 0.22.1"
