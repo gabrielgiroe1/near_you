@@ -107,6 +107,6 @@ gem "solid_queue"
 gem "thruster", require: false
 gem "sentry-rails", "~> 5.24"
 gem "sentry-ruby", "~> 5.24"
-gem "view_component", "~> 3.23", ">= 3.23.2"
+gem "view_component", "~> 4.24"
 gem "pagy", ">= 43.8.2"
 gem "postmark-rails", "~> 0.22.1"
