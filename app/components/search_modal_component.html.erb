@@ -27,7 +27,7 @@
               class="p-2 -ml-2 hover:bg-gray-100 rounded-full transition-colors"
               data-action="click->search-modal#close"
               aria-label="Închide">
-        <%= inline_svg_tag("chevron-left.svg", class: "w-5 h-5 text-gray-600") %>
+        <%= helpers.inline_svg_tag("chevron-left.svg", class: "w-5 h-5 text-gray-600") %>
       </button>
       <h2 id="search-modal-title" class="text-lg font-semibold text-gray-900">Caută</h2>
     </div>
@@ -37,7 +37,7 @@
       <!-- Service Search Input -->
       <div class="relative">
         <div class="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none">
-          <%= inline_svg_tag("search.svg", class: "w-5 h-5 text-gray-400") %>
+          <%= helpers.inline_svg_tag("search.svg", class: "w-5 h-5 text-gray-400") %>
         </div>
         <input type="text"
                class="w-full border border-gray-300 bg-gray-50 rounded-xl py-3 pl-10 pr-4 text-sm placeholder-gray-500 focus:outline-none transition-all"
@@ -50,7 +50,7 @@
       <!-- Location Search Input -->
       <div class="relative">
         <div class="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none">
-          <%= inline_svg_tag("location.svg", class: "w-5 h-5 text-gray-400") %>
+          <%= helpers.inline_svg_tag("location.svg", class: "w-5 h-5 text-gray-400") %>
         </div>
         <input type="text"
                class="w-full border border-gray-300 bg-gray-50 rounded-xl py-3 pl-10 pr-4 text-sm placeholder-gray-500 focus:outline-none transition-all"
@@ -97,7 +97,7 @@
                 <details class="group">
                   <summary class="flex items-center justify-between p-3 bg-gray-50 hover:bg-gray-100 rounded-lg cursor-pointer transition-colors list-none">
                     <span class="font-medium text-gray-900"><%= category %></span>
-                    <%= inline_svg_tag("chevron-right.svg", class: "w-4 h-4 text-gray-400 transition-transform group-open:rotate-90") %>
+                    <%= helpers.inline_svg_tag("chevron-right.svg", class: "w-4 h-4 text-gray-400 transition-transform group-open:rotate-90") %>
                   </summary>
                   <div class="mt-1 ml-4 space-y-1">
                     <% services.each do |service| %>
@@ -123,7 +123,7 @@
           <button type="button"
                   class="w-full flex items-center gap-3 p-3 bg-blue-50 hover:bg-blue-100 text-blue-700 rounded-xl transition-colors"
                   data-action="click->search-modal#useMyLocation">
-            <%= inline_svg_tag("location.svg", class: "w-5 h-5") %>
+            <%= helpers.inline_svg_tag("location.svg", class: "w-5 h-5") %>
             <span class="font-medium" data-role="geoText">Locația ta</span>
           </button>
         </div>
@@ -137,10 +137,10 @@
                       data-action="click->search-modal#selectLocation"
                       data-city="<%= city %>"
                       data-role="cityItem">
-                <%= inline_svg_tag("search.svg", class: "w-4 h-4 text-gray-400 flex-shrink-0") %>
+                <%= helpers.inline_svg_tag("search.svg", class: "w-4 h-4 text-gray-400 flex-shrink-0") %>
                 <span class="text-gray-900"><%= city %></span>
                 <% if city == current_location %>
-                  <%= inline_svg_tag("check.svg", class: "w-4 h-4 text-blue-600 ml-auto") %>
+                  <%= helpers.inline_svg_tag("check.svg", class: "w-4 h-4 text-blue-600 ml-auto") %>
                 <% end %>
               </button>
             <% end %>

@@ -38,7 +38,7 @@
                 <div class="w-8 h-8 rounded-full bg-gradient-to-br from-primary-400 to-primary-600 flex items-center justify-center text-white font-medium text-sm">
                   <%= current_user.name&.first&.upcase || current_user.email&.first&.upcase %>
                 </div>
-                <%= inline_svg_tag("chevron-down.svg", class: "w-4 h-4 text-gray-500") %>
+                <%= helpers.inline_svg_tag("chevron-down.svg", class: "w-4 h-4 text-gray-500") %>
               </button>
 
               <div
@@ -52,20 +52,20 @@
 
                 <div class="py-1">
                   <%= link_to edit_user_registration_path, class: "flex items-center gap-3 px-4 py-2 text-sm text-gray-700 hover:bg-gray-50" do %>
-                    <%= inline_svg_tag("user-circle.svg", class: "w-4 h-4 text-gray-400") %>
+                    <%= helpers.inline_svg_tag("user-circle.svg", class: "w-4 h-4 text-gray-400") %>
                     Detalii cont
                   <% end %>
                   <%= link_to appointments_path, class: "flex items-center gap-3 px-4 py-2 text-sm text-gray-700 hover:bg-gray-50" do %>
-                    <%= inline_svg_tag("calendar.svg", class: "w-4 h-4 text-gray-400") %>
+                    <%= helpers.inline_svg_tag("calendar.svg", class: "w-4 h-4 text-gray-400") %>
                     Programări
                   <% end %>
                   <%= link_to favorites_path, class: "flex items-center gap-3 px-4 py-2 text-sm text-gray-700 hover:bg-gray-50" do %>
-                    <%= inline_svg_tag("heart-outline.svg", class: "w-4 h-4 text-gray-400") %>
+                    <%= helpers.inline_svg_tag("heart-outline.svg", class: "w-4 h-4 text-gray-400") %>
                     Favorite
                   <% end %>
                   <% unless current_user.provider? %>
                     <%= link_to new_provider_path, class: "flex items-center gap-3 px-4 py-2 text-sm text-gray-700 hover:bg-gray-50" do %>
-                      <%= inline_svg_tag("building.svg", class: "w-4 h-4 text-gray-400") %>
+                      <%= helpers.inline_svg_tag("building.svg", class: "w-4 h-4 text-gray-400") %>
                       Listează-ți afacerea
                     <% end %>
                   <% end %>
@@ -73,7 +73,7 @@
 
                 <div class="border-t border-gray-100 pt-1">
                   <%= button_to destroy_user_session_path, method: :delete, class: "flex items-center gap-3 w-full px-4 py-2 text-sm text-gray-700 hover:bg-gray-50" do %>
-                    <%= inline_svg_tag("logout.svg", class: "w-4 h-4 text-gray-400") %>
+                    <%= helpers.inline_svg_tag("logout.svg", class: "w-4 h-4 text-gray-400") %>
                     Ieși din cont
                   <% end %>
                 </div>
@@ -97,7 +97,7 @@
     <div class="flex items-stretch justify-around h-16 px-2 safe-bottom">
       <!-- Acasă -->
       <%= link_to root_path, class: "flex-1 flex flex-col items-center justify-center gap-0.5 #{current_page?(root_path) ? 'text-primary-600' : 'text-gray-400'}" do %>
-        <%= inline_svg_tag("home-solid.svg", class: "w-6 h-6") %>
+        <%= helpers.inline_svg_tag("home-solid.svg", class: "w-6 h-6") %>
         <span class="text-[10px] font-medium">Acasă</span>
       <% end %>
 
@@ -106,14 +106,14 @@
         type="button"
         class="flex-1 flex flex-col items-center justify-center gap-0.5 text-gray-400"
       >
-        <%= inline_svg_tag("search.svg", class: "w-6 h-6") %>
+        <%= helpers.inline_svg_tag("search.svg", class: "w-6 h-6") %>
         <span class="text-[10px] font-medium">Descoperă</span>
       </button>
 
       <!-- Programări -->
       <% appointments_active = current_page?(appointments_path) %>
       <%= link_to (user_signed_in? ? appointments_path : new_user_session_path), class: "flex-1 flex flex-col items-center justify-center gap-0.5 #{appointments_active ? 'text-primary-600' : 'text-gray-400'}" do %>
-        <%= inline_svg_tag("calendar-outline.svg", class: "w-6 h-6") %>
+        <%= helpers.inline_svg_tag("calendar-outline.svg", class: "w-6 h-6") %>
         <span class="text-[10px] font-medium">Programări</span>
       <% end %>
 
@@ -121,7 +121,7 @@
       <% favorites_active = current_page?(favorites_path) %>
       <%= link_to (user_signed_in? ? favorites_path : new_user_session_path), class: "flex-1 flex flex-col items-center justify-center gap-0.5 #{favorites_active ? 'text-primary-600' : 'text-gray-400'}" do %>
 
-        <%= inline_svg_tag("heart.svg", class: "w-6 h-6") %>
+        <%= helpers.inline_svg_tag("heart.svg", class: "w-6 h-6") %>
         <span class="text-[10px] font-medium">Favorite</span>
       <% end %>
 
@@ -140,7 +140,7 @@
         <% end %>
       <% else %>
         <%= link_to new_user_session_path, class: "flex-1 flex flex-col items-center justify-center gap-0.5 text-gray-400" do %>
-          <%= inline_svg_tag("user-circle.svg", class: "w-6 h-6") %>
+          <%= helpers.inline_svg_tag("user-circle.svg", class: "w-6 h-6") %>
           <span class="text-[10px] font-medium">Sign In</span>
         <% end %>
       <% end %>

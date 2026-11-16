@@ -11,7 +11,7 @@
       <button type="button"
               class="flex-1 flex items-center gap-3 px-4 py-3 text-left hover:bg-gray-50 rounded-xl transition-colors"
               data-action="click->hero-search#openServiceModal">
-        <%= inline_svg_tag("search.svg", class: "w-5 h-5 text-gray-400 flex-shrink-0") %>
+        <%= helpers.inline_svg_tag("search.svg", class: "w-5 h-5 text-gray-400 flex-shrink-0") %>
         <div class="flex flex-col min-w-0">
           <span class="text-xs font-medium text-gray-500">Ce cauți?</span>
           <span class="text-sm text-gray-900 truncate" data-hero-search-target="serviceDisplay">
@@ -28,7 +28,7 @@
       <button type="button"
               class="flex-1 flex items-center gap-3 px-4 py-3 text-left hover:bg-gray-50 rounded-xl transition-colors"
               data-action="click->hero-search#openLocationModal">
-        <%= inline_svg_tag("location.svg", class: "w-5 h-5 text-gray-400 flex-shrink-0") %>
+        <%= helpers.inline_svg_tag("location.svg", class: "w-5 h-5 text-gray-400 flex-shrink-0") %>
         <div class="flex flex-col min-w-0">
           <span class="text-xs font-medium text-gray-500">Unde?</span>
           <span class="text-sm text-gray-900 truncate" data-hero-search-target="locationDisplay">
@@ -40,7 +40,7 @@
       <!-- Search Button -->
       <button type="submit"
               class="mt-2 md:mt-0 md:ml-2 px-6 py-3 bg-blue-600 hover:bg-blue-700 text-white font-medium rounded-xl transition-colors flex items-center justify-center gap-2">
-        <%= inline_svg_tag("search.svg", class: "w-5 h-5") %>
+        <%= helpers.inline_svg_tag("search.svg", class: "w-5 h-5") %>
         <span>Caută</span>
       </button>
     </div>

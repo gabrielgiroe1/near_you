@@ -1,6 +1,6 @@
 source "https://rubygems.org"
 
-ruby "3.4.1"
+ruby "4.0.9"
 
 # Bundle edge Rails instead: gem "rails", github: "rails/rails", branch: "main"
 gem "rails", "~> 8.0", ">= 8.0.1"
@@ -88,7 +88,7 @@ group :test do
   gem "selenium-webdriver"
 end
 
-gem "avo"
+gem "avo", ">= 4.4.4"
 gem "aws-sdk-s3", require: false
 gem "devise", "~> 5.0", ">= 5.0.4"
 gem "httparty"
@@ -107,6 +107,6 @@ gem "solid_queue"
 gem "thruster", require: false
 gem "sentry-rails", "~> 5.24"
 gem "sentry-ruby", "~> 5.24"
-gem "view_component", "~> 3.23", ">= 3.23.2"
-gem "pagy", "~> 9.1"
+gem "view_component", "~> 4.24"
+gem "pagy", ">= 43.8.2"
 gem "postmark-rails", "~> 0.22.1"
