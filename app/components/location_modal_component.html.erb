@@ -27,7 +27,7 @@
               class="p-2 -ml-2 hover:bg-gray-100 rounded-full transition-colors"
               data-action="click->location-modal#close"
               aria-label="Închide">
-        <%= inline_svg_tag("chevron-left.svg", class: "w-5 h-5 text-gray-600") %>
+        <%= helpers.inline_svg_tag("chevron-left.svg", class: "w-5 h-5 text-gray-600") %>
       </button>
       <h2 id="location-modal-title" class="text-lg font-semibold text-gray-900">Selectează locația</h2>
     </div>
@@ -52,7 +52,7 @@
     <div class="p-4 pb-2">
       <div class="relative">
         <div class="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none">
-          <%= inline_svg_tag("search.svg", class: "w-5 h-5 text-gray-400") %>
+          <%= helpers.inline_svg_tag("search.svg", class: "w-5 h-5 text-gray-400") %>
         </div>
         <input type="text"
                class="w-full border border-gray-300 bg-gray-50 rounded-xl py-3 pl-10 pr-4 text-sm placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
@@ -73,10 +73,10 @@
                   data-action="click->location-modal#selectCity"
                   data-city="<%= city %>"
                   data-location-modal-target="cityItem">
-            <%= inline_svg_tag("location.svg", class: "w-4 h-4 text-gray-400 flex-shrink-0") %>
+            <%= helpers.inline_svg_tag("location.svg", class: "w-4 h-4 text-gray-400 flex-shrink-0") %>
             <span class="text-gray-900"><%= city %></span>
             <% if city == current_location %>
-              <%= inline_svg_tag("check.svg", class: "w-4 h-4 text-blue-600 ml-auto") %>
+              <%= helpers.inline_svg_tag("check.svg", class: "w-4 h-4 text-blue-600 ml-auto") %>
             <% end %>
           </button>
         <% end %>

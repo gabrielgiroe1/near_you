@@ -5,7 +5,7 @@ RSpec.describe "favorites/index.html.erb", type: :view do
   let(:provider) { create(:provider, name: "John Doe") }
 
   before do
-    allow(view).to receive_messages(current_user: user, pagy_nav: "")
+    allow(view).to receive(:current_user).and_return(user)
   end
 
   it "shows empty state when no favorites" do

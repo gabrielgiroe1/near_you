@@ -53,7 +53,7 @@
           <% end %>
           <%# Verification badge %>
           <div class="absolute -bottom-0.5 -right-0.5 bg-green-500 text-white rounded-full p-0.5 ring-2 ring-white">
-            <%= inline_svg_tag("checkmark.svg", class: "w-2.5 h-2.5") %>
+            <%= helpers.inline_svg_tag("checkmark.svg", class: "w-2.5 h-2.5") %>
           </div>
         </div>
 
@@ -80,18 +80,18 @@
           <%# Rating %>
           <div class="flex items-center gap-1 mt-1">
             <% if display_rating %>
-              <%= inline_svg_tag("solid/star.svg", class: "w-4 h-4 text-yellow-400") %>
+              <%= helpers.inline_svg_tag("solid/star.svg", class: "w-4 h-4 text-yellow-400") %>
               <span class="text-sm font-semibold text-gray-800"><%= display_rating %></span>
               <span class="text-sm text-gray-400">(<%= review_count_text %>)</span>
             <% else %>
-              <%= inline_svg_tag("star.svg", class: "w-4 h-4 text-gray-300") %>
+              <%= helpers.inline_svg_tag("star.svg", class: "w-4 h-4 text-gray-300") %>
               <span class="text-sm text-gray-400">Nou pe platformă</span>
             <% end %>
           </div>
 
           <%# Location %>
           <div class="flex items-center text-sm text-gray-500 mt-1">
-            <%= inline_svg_tag("location-marker.svg", class: "w-3.5 h-3.5 mr-1 flex-shrink-0") %>
+            <%= helpers.inline_svg_tag("location-marker.svg", class: "w-3.5 h-3.5 mr-1 flex-shrink-0") %>
             <span class="truncate"><%= provider.location %></span>
           </div>
         </div>
@@ -117,7 +117,7 @@
       <% else %>
         <div class="flex items-center gap-1 text-sm text-teal-600 font-medium group-hover:text-teal-700">
           <span>Vezi profil</span>
-          <%= inline_svg_tag("arrow-right.svg", class: "w-4 h-4 group-hover:translate-x-0.5 transition-transform") %>
+          <%= helpers.inline_svg_tag("arrow-right.svg", class: "w-4 h-4 group-hover:translate-x-0.5 transition-transform") %>
         </div>
       <% end %>
     </div>
