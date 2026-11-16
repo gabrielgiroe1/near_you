@@ -3,7 +3,7 @@ class FavoritesController < ApplicationController
   before_action :set_provider, only: [:create, :destroy]
 
   def index
-    @pagy, @favorites = pagy(current_user.favorites.includes(:provider).order(created_at: :desc))
+    @pagy, @favorites = pagy(:offset, current_user.favorites.includes(:provider).order(created_at: :desc), limit: 5)
   end
 
   def create

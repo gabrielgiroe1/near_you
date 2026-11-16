@@ -9,7 +9,7 @@
     <% if @favorites.any? %>
       <!-- Simple Stats -->
       <div id="favorites_stats" class="flex gap-8 mb-12 text-sm text-gray-600">
-        <div><span class="font-medium text-gray-900"><%= @favorites.count %></span> favorites&nbsp;</div>
+        <div><span class="font-medium text-gray-900"><%= @pagy&.count || 0 %></span> favorites&nbsp;</div>
         <div><span class="font-medium text-gray-900"><%= current_user.appointments.joins(:provider).where(providers: { id: @favorites.pluck(:provider_id) }).count %></span> total appointments</div>
       </div>
 
